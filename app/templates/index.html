@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScoutMyVehicle - The smarter way to find your car</title>
+  <meta name="application-name" content="ScoutMyVehicle">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23c0262b'><path d='M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z'/></svg>">
+</head>
+<body class="bg-white text-slate-900 min-h-screen antialiased flex flex-col justify-between" x-data="vehicleStockApp()">
+
+  <div>
+    <!-- Top Navbar (Clean, No City Names in Header) -->
+    <header class="border-b border-gray-100 bg-white sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <!-- Logo -->
+        <div class="flex items-center gap-2.5 cursor-pointer" @click="activeView = 'stock'">
+          <div class="w-7 h-7 rounded-md bg-[#c0262b] flex items-center justify-center text-white shadow-xs">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/></svg>
+          </div>
+          <div class="leading-tight">
+            <div class="font-bold text-slate-900 text-sm">Scout<span class="text-[#c0262b]">MyVehicle</span></div>
+            <div class="text-[11px] text-slate-500 font-normal">Real-Time Showroom Stock</div>
+          </div>
+        </div>
+
+        <!-- Customer Location Badge / Selector (Includes 'Others' Option) -->
+        <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-full text-xs">
+          <svg class="w-3.5 h-3.5 text-[#c0262b] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <span class="text-slate-500 font-normal text-[11px] hidden sm:inline">Location:</span>
+          <select x-model="customerLocation" @change="onLocationChange()" class="bg-transparent text-slate-900 font-semibold text-xs border-0 focus:ring-0 cursor-pointer p-0 pr-1">
+            <option value="Any">All Locations</option>
+            <option value="Haldwani">Haldwani (UK-04)</option>
+            <option value="Rudrapur">Rudrapur (UK-06)</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="flex items-center gap-6 text-xs text-slate-600 font-normal">
+          <button @click="activeView = 'stock'" :class="activeView === 'stock' ? 'text-slate-900 font-medium' : 'hover:text-slate-900'" class="transition">Browse stock</button>
+          <button @click="activeView = 'dealerships'" :class="activeView === 'dealerships' ? 'text-slate-900 font-medium' : 'hover:text-slate-900'" class="transition">Dealerships</button>
+          <button @click="showHowItWorks = true" class="hover:text-slate-900 transition">How it works</button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+
+      <!-- ================= VIEW 1: BROWSE STOCK ================= -->
+      <div x-show="activeView === 'stock'" class="space-y-8">
+        <!-- Title & Subtitle (Exact User Custom Text) -->
+        <div class="space-y-1">
+          <h1 class="text-2xl sm:text-3xl font-bold text-slate-950 tracking-tight">The smarter way to find your car.</h1>
+          <p class="text-xs sm:text-sm text-slate-500 font-normal">
+            Looking for a car? Let us find it.
+          </p>
+        </div>
+
+        <!-- Search & Filter Box -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 space-y-4 shadow-xs">
+          <!-- Search Field -->
+          <div>
+            <label class="block text-xs font-normal text-slate-600 mb-1.5">Search</label>
+            <input 
+              type="text" 
+              x-model="searchQuery" 
+              @input.debounce.250ms="applyFilters()" 
+              placeholder="Brand, model, variant, colour or showroom" 
+              class="filter-input"
+            >
+          </div>
+
+          <!-- Row 1: Brand, Model, Car Variant -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-normal text-slate-600 mb-1.5">Brand</label>
+              <select x-model="selectedBrand" @change="onBrandChange()" class="filter-input">
+                <option value="Any">All Brands</option>
+                <option value="Tata Motors">Tata Motors</option>
+                <option value="Mahindra">Mahindra</option>
+                <option value="Hyundai">Hyundai</option>
+                <option value="Kia">Kia</option>
+                <option value="Toyota">Toyota</option>
+                <option value="Maruti Suzuki">Maruti Suzuki</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-normal text-slate-600 mb-1.5">Model</label>
+              <select x-model="selectedModel" @change="onModelChange()" class="filter-input">
+                <option value="Any">All Models</option>
+                <template x-for="m in filteredModels" :key="m.model">
+                  <option :value="m.model" x-text="m.model"></option>
+                </template>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-normal text-slate-600 mb-1.5">Car Variant</label>
+              <select x-model="selectedVariant" @change="applyFilters()" class="filter-input">
+                <option value="Any">All Variants</option>
+                <template x-for="v in availableVariants" :key="v">
+                  <option :value="v" x-text="v"></option>
+                </template>
+              </select>
+            </div>
+          </div>
+
+          <!-- Row 2: Fuel, Transmission, Customer's Location (Price element removed) -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-normal text-slate-600 mb-1.5">Fuel</label>
+              <select x-model="selectedFuel" @change="applyFilters()" class="filter-input">
+                <option value="Any">Any Fuel</option>
+                <option value="Petrol">Petrol</option>
+                <option value="Diesel">Diesel</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="CNG">CNG</option>
+                <option value="Electric">Electric</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-normal text-slate-600 mb-1.5">Transmission</label>
+              <select x-model="selectedTransmission" @change="applyFilters()" class="filter-input">
+                <option value="Any">Any Transmission</option>
+                <option value="Manual">Manual</option>
+                <option value="Automatic">Automatic</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-normal text-slate-600 mb-1.5 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5 text-[#c0262b]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                Customer's Location
+              </label>
+              <select x-model="customerLocation" @change="onLocationChange()" class="filter-input">
+                <option value="Any">All Locations</option>
+                <option value="Haldwani">Haldwani (UK-04)</option>
+                <option value="Rudrapur">Rudrapur (UK-06)</option>
+                <option value="Others">Others</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stock Cards Grid (NO CAR IMAGES, NO PRICE, BLURRED DEALERSHIP NAME) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" x-show="inventory.length > 0">
+          <template x-for="item in inventory" :key="item.inventory_id">
+            <div class="stock-card flex flex-col justify-between">
+              <!-- Top Content -->
+              <div class="space-y-4">
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <div class="text-[11px] font-bold text-[#c0262b] uppercase tracking-wider" x-text="item.car_brand || 'Authorized Network'"></div>
+                    <h3 class="font-bold text-slate-900 text-base leading-snug" x-text="item.car_model"></h3>
+                    <p class="text-xs text-slate-500 font-normal mt-0.5" x-text="item.variant_name"></p>
+                  </div>
+
+                  <!-- Availability Badge -->
+                  <div>
+                    <template x-if="item.status === 'IN_STOCK'">
+                      <span class="badge-in-stock">In stock</span>
+                    </template>
+                    <template x-if="item.status === 'IN_TRANSIT'">
+                      <span class="badge-arriving-soon">Arriving soon</span>
+                    </template>
+                    <template x-if="item.status === 'WAITLIST'">
+                      <span class="badge-sold-out">Waitlist</span>
+                    </template>
+                  </div>
+                </div>
+
+                <!-- 2x2 Specs Table (Price Removed, Variant Added) -->
+                <div class="grid grid-cols-2 gap-y-3 gap-x-4 pt-1">
+                  <!-- Row 1: Fuel & Transmission -->
+                  <div>
+                    <div class="text-[11px] text-slate-400 font-normal">Fuel</div>
+                    <div class="text-xs font-semibold text-slate-800 mt-0.5" x-text="item.fuel_type"></div>
+                  </div>
+                  <div>
+                    <div class="text-[11px] text-slate-400 font-normal">Transmission</div>
+                    <div class="text-xs font-semibold text-slate-800 mt-0.5" x-text="item.transmission"></div>
+                  </div>
+
+                  <!-- Row 2: Colour & Variant -->
+                  <div>
+                    <div class="text-[11px] text-slate-400 font-normal">Colour</div>
+                    <div class="text-xs font-semibold text-slate-800 mt-0.5 truncate" x-text="item.colors_available || 'Any'"></div>
+                  </div>
+                  <div>
+                    <div class="text-[11px] text-slate-400 font-normal">Variant</div>
+                    <div class="text-xs font-semibold text-slate-800 mt-0.5 truncate" x-text="item.variant_name"></div>
+                  </div>
+                </div>
+
+                <!-- Dealership Info (Dealership Name Blurred) -->
+                <div class="pt-2 border-t border-slate-100">
+                  <div class="text-xs text-slate-600 font-normal flex items-center gap-1.5 overflow-hidden">
+                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <span class="blurred-dealer" style="filter: blur(5px); -webkit-filter: blur(5px); user-select: none;" x-text="item.dealer_name"></span>
+                    <span class="text-slate-300 text-xs shrink-0">•</span>
+                    <span class="text-slate-700 font-medium shrink-0" x-text="item.dealer_city"></span>
+                  </div>
+                  <div class="text-[11px] text-slate-400 mt-1 pl-5 font-normal flex items-center justify-between">
+                    <span>Verified live stock</span>
+                    <span x-show="customerLocation !== 'Any' && customerLocation !== 'Others' && item.dealer_city === customerLocation" class="text-emerald-700 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded text-[10px]">In your city</span>
+                    <span x-show="customerLocation === 'Others'" class="text-slate-500 font-medium bg-slate-50 px-1.5 py-0.5 rounded text-[10px]">Delivery to your city</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Lead Capture CTA Button (Replaces WhatsApp & Call buttons) -->
+              <div class="mt-5 pt-2 border-t border-slate-100">
+                <button 
+                  @click="openInquiry(item)" 
+                  class="w-full bg-[#c0262b] hover:bg-[#a51d22] text-white py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                  <span>Check Availability & Connect</span>
+                </button>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Empty Results -->
+        <div x-show="inventory.length === 0" class="border border-slate-200 rounded-2xl p-12 text-center text-slate-500 space-y-2">
+          <p class="font-medium text-slate-700">No matching vehicles found</p>
+          <p class="text-xs">Try selecting 'All Brands' or adjusting your filters.</p>
+          <button @click="resetFilters()" class="text-xs text-[#c0262b] font-semibold underline mt-2 cursor-pointer">Reset all filters</button>
+        </div>
+      </div>
+
+      <!-- ================= VIEW 2: DEALERSHIPS ================= -->
+      <div x-show="activeView === 'dealerships'" class="space-y-8" x-cloak>
+        <!-- Title & Subtitle -->
+        <div class="space-y-1">
+          <h1 class="text-2xl sm:text-3xl font-bold text-slate-950 tracking-tight">Authorized Dealership Network</h1>
+          <p class="text-xs sm:text-sm text-slate-500 font-normal">
+            Multi-brand verified partner showrooms with active inventory allocation.
+          </p>
+        </div>
+
+        <!-- Brand Filter Pills for Dealerships -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-1">
+          <button 
+            @click="dealerBrandFilter = 'Any'" 
+            :class="dealerBrandFilter === 'Any' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'"
+            class="px-3.5 py-1.5 rounded-full text-xs font-medium transition cursor-pointer shrink-0"
+          >
+            All Brands (<span x-text="dealerships.length"></span>)
+          </button>
+          <template x-for="brand in ['Tata Motors', 'Mahindra', 'Hyundai', 'Kia', 'Toyota', 'Maruti Suzuki']" :key="brand">
+            <button 
+              @click="dealerBrandFilter = brand" 
+              :class="dealerBrandFilter === brand ? 'bg-[#c0262b] text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'"
+              class="px-3.5 py-1.5 rounded-full text-xs font-medium transition cursor-pointer shrink-0"
+              x-text="brand"
+            ></button>
+          </template>
+        </div>
+
+        <!-- Dealership Cards Grid (3 columns) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <template x-for="d in filteredDealerships" :key="d.id">
+            <div class="stock-card flex flex-col justify-between">
+              <div class="space-y-3">
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-[#c0262b] bg-red-50 px-2 py-0.5 rounded" x-text="d.brand || 'Authorized'"></span>
+                    <h3 class="font-bold text-slate-900 text-base mt-1.5" x-text="d.name"></h3>
+                  </div>
+                  <span class="text-xs font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md" x-text="d.city"></span>
+                </div>
+                
+                <div class="text-xs text-slate-500 flex items-start gap-1 font-normal">
+                  <svg class="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                  <span x-text="d.address"></span>
+                </div>
+
+                <div class="text-xs font-semibold text-slate-800" x-text="getDealerModelCount(d.id) + ' vehicle models available'"></div>
+              </div>
+
+              <!-- Action CTA -->
+              <div class="mt-5 pt-3 border-t border-slate-100">
+                <button 
+                  @click="openInquiry({ dealership_id: d.id, dealer_name: d.name, dealer_city: d.city, car_model: d.brand + ' Models', variant_name: 'All Variants' })" 
+                  class="w-full btn-whatsapp-red text-xs py-2 px-3 flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                  <span>Inquire with Showroom</span>
+                </button>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ================= INQUIRY / LEAD CAPTURE MODAL ================= -->
+  <div x-show="inquiryModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs" x-cloak>
+    <div class="bg-white border border-slate-200 max-w-lg w-full rounded-2xl p-6 space-y-5 shadow-2xl relative max-h-[90vh] overflow-y-auto" @click.away="closeInquiryModal()">
+      
+      <!-- Close Button -->
+      <button @click="closeInquiryModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition p-1 cursor-pointer">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <!-- Form State -->
+      <div x-show="!inquirySubmitted" class="space-y-4">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-[#c0262b] bg-red-50 px-2 py-0.5 rounded">Priority Showroom Connect</span>
+          <h3 class="font-bold text-lg text-slate-950 mt-1">Check Vehicle Availability</h3>
+          <p class="text-xs text-slate-500">Provide your details to connect with the authorized showroom floor holding this stock.</p>
+        </div>
+
+        <!-- Selected Vehicle Summary Pill -->
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs space-y-1">
+          <div class="flex items-center justify-between font-bold text-slate-900">
+            <span x-text="selectedInquiryItem.car_model || 'Vehicle'"></span>
+            <span class="text-[11px] font-normal text-slate-500" x-text="selectedInquiryItem.dealer_city"></span>
+          </div>
+          <div class="text-slate-600 flex items-center gap-2 text-[11px]">
+            <span x-text="selectedInquiryItem.variant_name || ''"></span>
+            <span x-show="selectedInquiryItem.fuel_type">•</span>
+            <span x-text="selectedInquiryItem.fuel_type || ''"></span>
+            <span x-show="selectedInquiryItem.transmission">•</span>
+            <span x-text="selectedInquiryItem.transmission || ''"></span>
+          </div>
+        </div>
+
+        <!-- Form Elements -->
+        <form @submit.prevent="submitInquiry()" class="space-y-4 text-xs">
+          
+          <!-- Name & Phone -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block font-medium text-slate-700 mb-1">Your Full Name <span class="text-red-500">*</span></label>
+              <input 
+                type="text" 
+                x-model="inquiryForm.name" 
+                required 
+                placeholder="e.g. Rahul Sharma" 
+                class="filter-input"
+              >
+            </div>
+            <div>
+              <label class="block font-medium text-slate-700 mb-1">Mobile / WhatsApp Number <span class="text-red-500">*</span></label>
+              <input 
+                type="tel" 
+                x-model="inquiryForm.phone" 
+                required 
+                placeholder="+91 98765 43210" 
+                class="filter-input"
+              >
+            </div>
+          </div>
+
+          <!-- Customer City / Location -->
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">Your Location / City <span class="text-red-500">*</span></label>
+            <div class="grid grid-cols-3 gap-2">
+              <button 
+                type="button" 
+                @click="inquiryForm.location = 'Haldwani'" 
+                :class="inquiryForm.location === 'Haldwani' ? 'bg-slate-900 text-white font-bold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+                class="py-2 px-3 rounded-xl transition text-center cursor-pointer"
+              >
+                Haldwani
+              </button>
+              <button 
+                type="button" 
+                @click="inquiryForm.location = 'Rudrapur'" 
+                :class="inquiryForm.location === 'Rudrapur' ? 'bg-slate-900 text-white font-bold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+                class="py-2 px-3 rounded-xl transition text-center cursor-pointer"
+              >
+                Rudrapur
+              </button>
+              <button 
+                type="button" 
+                @click="inquiryForm.location = 'Others'" 
+                :class="inquiryForm.location === 'Others' ? 'bg-slate-900 text-white font-bold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+                class="py-2 px-3 rounded-xl transition text-center cursor-pointer"
+              >
+                Others
+              </button>
+            </div>
+            <div x-show="inquiryForm.location === 'Others'" class="mt-2" x-cloak>
+              <input 
+                type="text" 
+                x-model="inquiryForm.customCity" 
+                placeholder="Enter your town or district (e.g. Almora, Nainital, Kashipur)" 
+                class="filter-input"
+              >
+            </div>
+          </div>
+
+          <!-- Purchase Timeline (0-15 days, 15 - 30 days, 30 - 60 days, just enquiring) -->
+          <div>
+            <label class="block font-medium text-slate-700 mb-1.5">Purchase Timeline <span class="text-red-500">*</span></label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <template x-for="timeline in ['0-15 days', '15 - 30 days', '30 - 60 days', 'just enquiring']" :key="timeline">
+                <button 
+                  type="button" 
+                  @click="inquiryForm.timeline = timeline" 
+                  :class="inquiryForm.timeline === timeline ? 'bg-[#c0262b] text-white font-bold shadow-xs' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+                  class="py-2 px-2 text-center rounded-xl transition cursor-pointer text-[11px]"
+                  x-text="timeline"
+                ></button>
+              </template>
+            </div>
+          </div>
+
+          <!-- Do you need a finance option? (yes, no, not decided yet) -->
+          <div>
+            <label class="block font-medium text-slate-700 mb-1.5">Do you need a finance / car loan option? <span class="text-red-500">*</span></label>
+            <div class="grid grid-cols-3 gap-2">
+              <button 
+                type="button" 
+                @click="inquiryForm.finance = 'yes'" 
+                :class="inquiryForm.finance === 'yes' ? 'bg-[#c0262b] text-white font-bold shadow-xs' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+                class="py-2 px-3 text-center rounded-xl transition cursor-pointer text-xs"
+              >
+                Yes
+              </button>
+              <button 
+                type="button" 
+                @click="inquiryForm.finance = 'no'" 
+                :class="inquiryForm.finance === 'no' ? 'bg-[#c0262b] text-white font-bold shadow-xs' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+                class="py-2 px-3 text-center rounded-xl transition cursor-pointer text-xs"
+              >
+                No
+              </button>
+              <button 
+                type="button" 
+                @click="inquiryForm.finance = 'not decided yet'" 
+                :class="inquiryForm.finance === 'not decided yet' ? 'bg-[#c0262b] text-white font-bold shadow-xs' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+                class="py-2 px-3 text-center rounded-xl transition cursor-pointer text-xs"
+              >
+                Not decided yet
+              </button>
+            </div>
+          </div>
+
+          <!-- Optional Exchange Car Checkbox -->
+          <div class="pt-1">
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <input type="checkbox" x-model="inquiryForm.exchange" class="rounded text-[#c0262b] focus:ring-[#c0262b]">
+              <span class="text-slate-700">I have an existing car to exchange / evaluate</span>
+            </label>
+            <div x-show="inquiryForm.exchange" class="mt-2" x-cloak>
+              <input 
+                type="text" 
+                x-model="inquiryForm.exchangeDetails" 
+                placeholder="Current car make, model and year (e.g. 2018 Maruti Swift)" 
+                class="filter-input"
+              >
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-3">
+            <button 
+              type="submit" 
+              :disabled="submitting" 
+              class="w-full bg-[#c0262b] hover:bg-[#a51d22] text-white py-3 px-4 rounded-xl font-bold transition flex items-center justify-center gap-2 shadow-sm cursor-pointer disabled:opacity-50"
+            >
+              <span x-show="!submitting">Submit Inquiry & Connect</span>
+              <span x-show="submitting" class="flex items-center gap-2">
+                <svg class="animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+                Processing...
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Success Confirmation View -->
+      <div x-show="inquirySubmitted" class="space-y-4 py-4 text-center" x-cloak>
+        <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-xs">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-bold text-slate-900">Inquiry Confirmed!</h3>
+          <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+            Your details have been registered with the authorized showroom desk. A sales consultant will contact you via WhatsApp or phone shortly.
+          </p>
+        </div>
+
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-700 text-left space-y-1">
+          <div><strong>Customer:</strong> <span x-text="inquiryForm.name"></span> (<span x-text="inquiryForm.phone"></span>)</div>
+          <div><strong>Timeline:</strong> <span x-text="inquiryForm.timeline"></span></div>
+          <div><strong>Finance Requested:</strong> <span class="uppercase" x-text="inquiryForm.finance"></span></div>
+        </div>
+
+        <button @click="closeInquiryModal()" class="w-full bg-slate-900 hover:bg-slate-800 text-white py-2.5 px-4 rounded-xl text-xs font-bold transition cursor-pointer">
+          Done & Return to Stock
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- How It Works Modal -->
+  <div x-show="showHowItWorks" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs" x-cloak>
+    <div class="bg-white border border-slate-200 max-w-md w-full rounded-2xl p-6 space-y-4 shadow-xl relative" @click.away="showHowItWorks = false">
+      <button @click="showHowItWorks = false" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <h3 class="font-bold text-lg text-slate-900">How it works</h3>
+      
+      <div class="space-y-3 text-xs text-slate-600">
+        <div class="flex items-start gap-3">
+          <div class="w-6 h-6 rounded-full bg-slate-100 text-slate-900 flex items-center justify-center font-bold shrink-0">1</div>
+          <p><strong class="text-slate-900">Verified Showroom Stock:</strong> We aggregate real-time vehicle allocation across authorized dealerships across Tata, Mahindra, Hyundai, Kia, Toyota, and Maruti Suzuki.</p>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-6 h-6 rounded-full bg-slate-100 text-slate-900 flex items-center justify-center font-bold shrink-0">2</div>
+          <p><strong class="text-slate-900">Direct Showroom Allocation:</strong> Select your preferred timeline and finance need to route your lead straight to sales managers holding the units.</p>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-6 h-6 rounded-full bg-slate-100 text-slate-900 flex items-center justify-center font-bold shrink-0">3</div>
+          <p><strong class="text-slate-900">Zero Middlemen:</strong> You buy directly from the official authorized brand dealer at transparent showroom pricing.</p>
+        </div>
+      </div>
+
+      <button @click="showHowItWorks = false" class="w-full btn-whatsapp-red text-xs mt-2 cursor-pointer">Got it</button>
+    </div>
+  </div>
+
+  <!-- Footer (Clean Multi-Brand Rebranded) -->
+  <footer class="border-t border-slate-100 bg-white mt-16 pt-12 pb-8 text-xs text-slate-500 font-normal">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <!-- 3 Columns -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Col 1: About -->
+        <div class="space-y-2">
+          <div class="font-bold text-slate-900 text-sm">Scout<span class="text-[#c0262b]">MyVehicle</span></div>
+          <p class="leading-relaxed text-slate-500 max-w-sm">
+            An independent showroom vehicle tracker connecting buyers with authorized multi-brand dealership networks across Tata Motors, Mahindra, Hyundai, Kia, Toyota, and Maruti Suzuki.
+          </p>
+        </div>
+
+        <!-- Col 2: Explore -->
+        <div class="space-y-2">
+          <div class="font-bold text-slate-900 text-sm">Explore</div>
+          <ul class="space-y-1.5">
+            <li><button @click="activeView = 'stock'" class="hover:text-slate-900 cursor-pointer">Browse stock</button></li>
+            <li><button @click="activeView = 'dealerships'" class="hover:text-slate-900 cursor-pointer">Authorized Dealerships</button></li>
+            <li><button @click="showHowItWorks = true" class="hover:text-slate-900 cursor-pointer">How it works</button></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Network -->
+        <div class="space-y-2">
+          <div class="font-bold text-slate-900 text-sm">Authorized Network</div>
+          <p class="text-slate-700 leading-relaxed font-medium">
+            12 Authorized Dealership Showrooms Across 6 Major Brands
+          </p>
+          <div class="pt-1">
+            <a href="/admin/login" class="text-slate-400 hover:text-slate-600 flex items-center gap-1"><span>Showroom staff & admin login</span> <span class="text-[10px]">&rarr;</span></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copyright Bar -->
+      <div class="border-t border-slate-100 pt-6 text-center text-[11px] text-slate-400">
+        © 2026 ScoutMyVehicle. All brand trademarks belong to their respective manufacturers.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Alpine Application Logic -->
+  <script>
+    function vehicleStockApp() {
+      return {
+        activeView: 'stock',
+        showHowItWorks: false,
+        inventory: [],
+        dealerships: [],
+        cars: [],
+        availableVariants: [],
+        dealerBrandFilter: 'Any',
+        
+        // Filters
+        searchQuery: '',
+        selectedBrand: 'Any',
+        selectedModel: 'Any',
+        selectedVariant: 'Any',
+        selectedFuel: 'Any',
+        selectedTransmission: 'Any',
+        customerLocation: 'Any',
+
+        // Inquiry Modal State
+        inquiryModalOpen: false,
+        inquirySubmitted: false,
+        submitting: false,
+        selectedInquiryItem: {},
+        inquiryForm: {
+          name: '',
+          phone: '',
+          location: 'Haldwani',
+          customCity: '',
+          timeline: '0-15 days',
+          finance: 'not decided yet',
+          exchange: false,
+          exchangeDetails: ''
+        },
+
+        async init() {
+          await this.loadDealerships();
+          await this.loadCars();
+          await this.loadVariants();
+          await this.applyFilters();
+        },
+
+        get filteredModels() {
+          if (!this.selectedBrand || this.selectedBrand === 'Any') {
+            return this.cars;
+          }
+          return this.cars.filter(c => (c.make || '').toLowerCase() === this.selectedBrand.toLowerCase());
+        },
+
+        get filteredDealerships() {
+          if (!this.dealerBrandFilter || this.dealerBrandFilter === 'Any') {
+            return this.dealerships;
+          }
+          return this.dealerships.filter(d => (d.brand || '').toLowerCase() === this.dealerBrandFilter.toLowerCase());
+        },
+
+        async loadDealerships() {
+          try {
+            const res = await fetch('/api/dealerships');
+            this.dealerships = await res.json();
+          } catch (e) {
+            console.error(e);
+          }
+        },
+
+        async loadCars() {
+          try {
+            const res = await fetch('/api/cars');
+            this.cars = await res.json();
+          } catch (e) {
+            console.error(e);
+          }
+        },
+
+        async loadVariants() {
+          try {
+            const params = new URLSearchParams();
+            if (this.selectedModel && this.selectedModel !== 'Any') params.append('model', this.selectedModel);
+            if (this.selectedBrand && this.selectedBrand !== 'Any') params.append('brand', this.selectedBrand);
+            const res = await fetch(`/api/variants?${params.toString()}`);
+            this.availableVariants = await res.json();
+          } catch (e) {
+            console.error(e);
+          }
+        },
+
+        async onBrandChange() {
+          this.selectedModel = 'Any';
+          this.selectedVariant = 'Any';
+          await this.loadVariants();
+          await this.applyFilters();
+        },
+
+        async onModelChange() {
+          this.selectedVariant = 'Any';
+          await this.loadVariants();
+          await this.applyFilters();
+        },
+
+        async onLocationChange() {
+          await this.applyFilters();
+        },
+
+        async applyFilters() {
+          try {
+            const params = new URLSearchParams();
+            if (this.searchQuery) params.append('search', this.searchQuery);
+            if (this.selectedBrand && this.selectedBrand !== 'Any') params.append('brand', this.selectedBrand);
+            if (this.selectedModel && this.selectedModel !== 'Any') params.append('model', this.selectedModel);
+            if (this.selectedVariant && this.selectedVariant !== 'Any') params.append('variant', this.selectedVariant);
+            if (this.selectedFuel && this.selectedFuel !== 'Any') params.append('fuel_type', this.selectedFuel);
+            if (this.selectedTransmission && this.selectedTransmission !== 'Any') params.append('transmission', this.selectedTransmission);
+            if (this.customerLocation && this.customerLocation !== 'Any') params.append('customer_location', this.customerLocation);
+
+            const res = await fetch(`/api/inventory?${params.toString()}`);
+            this.inventory = await res.json();
+          } catch (e) {
+            console.error(e);
+          }
+        },
+
+        async resetFilters() {
+          this.searchQuery = '';
+          this.selectedBrand = 'Any';
+          this.selectedModel = 'Any';
+          this.selectedVariant = 'Any';
+          this.selectedFuel = 'Any';
+          this.selectedTransmission = 'Any';
+          this.customerLocation = 'Any';
+          await this.loadVariants();
+          await this.applyFilters();
+        },
+
+        getDealerModelCount(dealerId) {
+          const matching = this.inventory.filter(item => item.dealership_id === dealerId);
+          return matching.length > 0 ? matching.length : 2;
+        },
+
+        openInquiry(item) {
+          this.selectedInquiryItem = item || {};
+          this.inquirySubmitted = false;
+          this.submitting = false;
+          this.inquiryForm.location = (this.customerLocation && this.customerLocation !== 'Any') ? this.customerLocation : 'Haldwani';
+          this.inquiryModalOpen = true;
+        },
+
+        closeInquiryModal() {
+          this.inquiryModalOpen = false;
+          this.inquirySubmitted = false;
+        },
+
+        async submitInquiry() {
+          this.submitting = true;
+          try {
+            const finalCity = (this.inquiryForm.location === 'Others' && this.inquiryForm.customCity.trim()) 
+              ? this.inquiryForm.customCity.trim() 
+              : this.inquiryForm.location;
+
+            const payload = {
+              dealership_id: this.selectedInquiryItem.dealership_id || 1,
+              car_id: this.selectedInquiryItem.car_id || null,
+              variant_id: this.selectedInquiryItem.variant_id || null,
+              customer_name: this.inquiryForm.name.trim(),
+              customer_phone: this.inquiryForm.phone.trim(),
+              customer_city: finalCity,
+              inquiry_type: "availability_check",
+              buying_timeline: this.inquiryForm.timeline,
+              finance_required: this.inquiryForm.finance,
+              exchange_required: this.inquiryForm.exchange ? 1 : 0,
+              exchange_car_details: this.inquiryForm.exchange ? this.inquiryForm.exchangeDetails : null,
+              notes: `Timeline: ${this.inquiryForm.timeline} | Finance: ${this.inquiryForm.finance}`
+            };
+
+            const res = await fetch('/api/inquiries', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+              this.inquirySubmitted = true;
+            } else {
+              alert('Could not submit inquiry. Please check your inputs.');
+            }
+          } catch (e) {
+            console.error(e);
+            alert('Network error. Please try again.');
+          } finally {
+            this.submitting = false;
+          }
+        }
+      }
+    }
+  </script>
+</body>
+</html>

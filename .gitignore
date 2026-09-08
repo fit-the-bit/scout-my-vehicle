@@ -1,0 +1,27 @@
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# IDE & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Database & runtime
+*.sqlite3
+# scoutmycar.db is auto-seeded via python -m app.seed_data, but can be kept or ignored:
+# Uncomment below if you prefer not to track the SQLite database:
+# *.db
+
+# Logs
+*.log
