@@ -23,14 +23,19 @@ class TestScoutMyVehicle(unittest.TestCase):
         self.assertIn("The smarter way to find your car.", response.text)
         self.assertIn("Looking for a car? Let us find it.", response.text)
         self.assertIn("Others", response.text)
-        self.assertIn("Customer's Location", response.text)
         self.assertIn("Car Variant", response.text)
-        self.assertIn("blurred-dealer", response.text)
-        # Verify direct WhatsApp/Call buttons removed from cards and replaced with inquiry CTA
+        self.assertIn("Colour", response.text)
+        self.assertIn("Submit", response.text)
+        self.assertIn("Clear all", response.text)
+        self.assertIn("Don't pay extra /premium for the car you are looking for", response.text)
         self.assertIn("Check Availability & Connect", response.text)
+        self.assertIn("Email ID", response.text)
         self.assertIn("Purchase Timeline", response.text)
         self.assertIn("0-15 days", response.text)
         self.assertIn("Do you need a finance", response.text)
+        # Ensure no RTO codes exposed in customer view
+        self.assertNotIn("(UK-04)", response.text)
+        self.assertNotIn("(UK-06)", response.text)
 
     def test_dealer_portal_redirects_when_unauthenticated(self):
         response = self.client.get("/dealer", follow_redirects=False)
@@ -163,6 +168,20 @@ class TestScoutMyVehicle(unittest.TestCase):
         stock_items = res_stock.json()
         self.assertTrue(all(i["status"] == "IN_STOCK" for i in stock_items))
 
+        # Test color filtering
+        res_color = self.client.get("/api/inventory?color=White")
+        self.assertEqual(res_color.status_code, 200)
+        white_items = res_color.json()
+        self.assertGreater(len(white_items), 0)
+        self.assertTrue(all("white" in (i["colors_available"] or "").lower() for i in white_items))
+
+    def test_api_colors(self):
+        res = self.client.get("/api/colors")
+        self.assertEqual(res.status_code, 200)
+        colors = res.json()
+        self.assertGreater(len(colors), 5)
+        self.assertTrue(any("White" in c for c in colors))
+
     def test_api_compare(self):
         res = self.client.get("/api/compare/tata-nexon")
         self.assertEqual(res.status_code, 200)
@@ -171,13 +190,14 @@ class TestScoutMyVehicle(unittest.TestCase):
         self.assertGreaterEqual(len(data["dealerships"]), 12)
 
     def test_inquiry_creation_and_dealer_view(self):
-        # Create inquiry with purchase timeline and finance preference
+        # Create inquiry with email, purchase timeline and finance preference
         payload = {
             "dealership_id": 1,
             "car_id": 1,
             "variant_id": 1,
             "customer_name": "Rohan Rawat",
             "customer_phone": "+91 98970 11223",
+            "customer_email": "rohan.rawat@example.com",
             "customer_city": "Haldwani",
             "inquiry_type": "availability_check",
             "buying_timeline": "0-15 days",
@@ -192,12 +212,13 @@ class TestScoutMyVehicle(unittest.TestCase):
         self.assertTrue(data["success"])
         inquiry_id = data["inquiry_id"]
 
-        # Verify it appears in dealer's leads with timeline and finance_required
+        # Verify it appears in dealer's leads with email, timeline and finance_required
         leads_res = self.client.get("/api/dealer/inquiries/1")
         self.assertEqual(leads_res.status_code, 200)
         leads = leads_res.json()
         matching_lead = next((l for l in leads if l["id"] == inquiry_id), None)
         self.assertIsNotNone(matching_lead)
+        self.assertEqual(matching_lead["customer_email"], "rohan.rawat@example.com")
         self.assertEqual(matching_lead["buying_timeline"], "0-15 days")
         self.assertEqual(matching_lead["finance_required"], "yes")
 

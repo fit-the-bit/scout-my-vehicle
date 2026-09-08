@@ -27,14 +27,14 @@
           </div>
         </div>
 
-        <!-- Customer Location Badge / Selector (Includes 'Others' Option) -->
+        <!-- Customer Location Badge / Selector (No RTO Codes) -->
         <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-full text-xs">
           <svg class="w-3.5 h-3.5 text-[#c0262b] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
           <span class="text-slate-500 font-normal text-[11px] hidden sm:inline">Location:</span>
           <select x-model="customerLocation" @change="onLocationChange()" class="bg-transparent text-slate-900 font-semibold text-xs border-0 focus:ring-0 cursor-pointer p-0 pr-1">
             <option value="Any">All Locations</option>
-            <option value="Haldwani">Haldwani (UK-04)</option>
-            <option value="Rudrapur">Rudrapur (UK-06)</option>
+            <option value="Haldwani">Haldwani</option>
+            <option value="Rudrapur">Rudrapur</option>
             <option value="Others">Others</option>
           </select>
         </div>
@@ -61,20 +61,8 @@
           </p>
         </div>
 
-        <!-- Search & Filter Box -->
+        <!-- Filter Box (No Search Element) -->
         <div class="bg-white border border-slate-200 rounded-2xl p-5 space-y-4 shadow-xs">
-          <!-- Search Field -->
-          <div>
-            <label class="block text-xs font-normal text-slate-600 mb-1.5">Search</label>
-            <input 
-              type="text" 
-              x-model="searchQuery" 
-              @input.debounce.250ms="applyFilters()" 
-              placeholder="Brand, model, variant, colour or showroom" 
-              class="filter-input"
-            >
-          </div>
-
           <!-- Row 1: Brand, Model, Car Variant -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
@@ -111,7 +99,7 @@
             </div>
           </div>
 
-          <!-- Row 2: Fuel, Transmission, Customer's Location (Price element removed) -->
+          <!-- Row 2: Fuel, Transmission, Colour (Color in place of Location) -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <label class="block text-xs font-normal text-slate-600 mb-1.5">Fuel</label>
@@ -119,8 +107,8 @@
                 <option value="Any">Any Fuel</option>
                 <option value="Petrol">Petrol</option>
                 <option value="Diesel">Diesel</option>
-                <option value="Hybrid">Hybrid</option>
                 <option value="CNG">CNG</option>
+                <option value="Hybrid">Hybrid</option>
                 <option value="Electric">Electric</option>
               </select>
             </div>
@@ -131,25 +119,47 @@
                 <option value="Any">Any Transmission</option>
                 <option value="Manual">Manual</option>
                 <option value="Automatic">Automatic</option>
+                <option value="AMT">AMT</option>
+                <option value="DCT">DCT / DCA</option>
+                <option value="iMT">iMT</option>
+                <option value="IVT">IVT</option>
+                <option value="e-CVT">e-CVT</option>
               </select>
             </div>
 
             <div>
-              <label class="block text-xs font-normal text-slate-600 mb-1.5 flex items-center gap-1">
-                <svg class="w-3.5 h-3.5 text-[#c0262b]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                Customer's Location
-              </label>
-              <select x-model="customerLocation" @change="onLocationChange()" class="filter-input">
-                <option value="Any">All Locations</option>
-                <option value="Haldwani">Haldwani (UK-04)</option>
-                <option value="Rudrapur">Rudrapur (UK-06)</option>
-                <option value="Others">Others</option>
+              <label class="block text-xs font-normal text-slate-600 mb-1.5">Colour</label>
+              <select x-model="selectedColor" @change="applyFilters()" class="filter-input">
+                <option value="Any">All Colours</option>
+                <template x-for="c in availableColors" :key="c">
+                  <option :value="c" x-text="c"></option>
+                </template>
               </select>
             </div>
           </div>
+
+          <!-- Row 3: Action Buttons (Submit and Clear All) -->
+          <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+            <button 
+              type="button" 
+              @click="resetFilters()" 
+              class="px-4 py-2 text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl border border-slate-200 transition cursor-pointer flex items-center gap-1.5"
+            >
+              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              <span>Clear all</span>
+            </button>
+            <button 
+              type="button" 
+              @click="applyFilters()" 
+              class="px-5 py-2 text-xs font-bold text-white bg-[#c0262b] hover:bg-[#a51d22] rounded-xl shadow-xs transition cursor-pointer flex items-center gap-1.5"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <span>Submit</span>
+            </button>
+          </div>
         </div>
 
-        <!-- Stock Cards Grid (NO CAR IMAGES, NO PRICE, BLURRED DEALERSHIP NAME) -->
+        <!-- Stock Cards Grid (NO CAR IMAGES, NO PRICE, DEALER & LOCATION HIDDEN) -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" x-show="inventory.length > 0">
           <template x-for="item in inventory" :key="item.inventory_id">
             <div class="stock-card flex flex-col justify-between">
@@ -162,21 +172,13 @@
                     <p class="text-xs text-slate-500 font-normal mt-0.5" x-text="item.variant_name"></p>
                   </div>
 
-                  <!-- Availability Badge -->
+                  <!-- Availability Badge (Only In-Stock Vehicles Shown) -->
                   <div>
-                    <template x-if="item.status === 'IN_STOCK'">
-                      <span class="badge-in-stock">In stock</span>
-                    </template>
-                    <template x-if="item.status === 'IN_TRANSIT'">
-                      <span class="badge-arriving-soon">Arriving soon</span>
-                    </template>
-                    <template x-if="item.status === 'WAITLIST'">
-                      <span class="badge-sold-out">Waitlist</span>
-                    </template>
+                    <span class="badge-in-stock">In stock</span>
                   </div>
                 </div>
 
-                <!-- 2x2 Specs Table (Price Removed, Variant Added) -->
+                <!-- 2x2 Specs Table (Fuel, Transmission, Colour, Variant) -->
                 <div class="grid grid-cols-2 gap-y-3 gap-x-4 pt-1">
                   <!-- Row 1: Fuel & Transmission -->
                   <div>
@@ -199,18 +201,14 @@
                   </div>
                 </div>
 
-                <!-- Dealership Info (Dealership Name Blurred) -->
+                <!-- Verified Live Stock Indicator (Dealer Name & Location Completely Hidden) -->
                 <div class="pt-2 border-t border-slate-100">
-                  <div class="text-xs text-slate-600 font-normal flex items-center gap-1.5 overflow-hidden">
-                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                    <span class="blurred-dealer" style="filter: blur(5px); -webkit-filter: blur(5px); user-select: none;" x-text="item.dealer_name"></span>
-                    <span class="text-slate-300 text-xs shrink-0">•</span>
-                    <span class="text-slate-700 font-medium shrink-0" x-text="item.dealer_city"></span>
-                  </div>
-                  <div class="text-[11px] text-slate-400 mt-1 pl-5 font-normal flex items-center justify-between">
-                    <span>Verified live stock</span>
-                    <span x-show="customerLocation !== 'Any' && customerLocation !== 'Others' && item.dealer_city === customerLocation" class="text-emerald-700 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded text-[10px]">In your city</span>
-                    <span x-show="customerLocation === 'Others'" class="text-slate-500 font-medium bg-slate-50 px-1.5 py-0.5 rounded text-[10px]">Delivery to your city</span>
+                  <div class="text-[11px] text-emerald-700 font-medium flex items-center justify-between">
+                    <span class="flex items-center gap-1.5">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                      Verified Live Allocation
+                    </span>
+                    <span class="text-slate-400 font-normal">Ready for Booking</span>
                   </div>
                 </div>
               </div>
@@ -322,11 +320,11 @@
           <p class="text-xs text-slate-500">Provide your details to connect with the authorized showroom floor holding this stock.</p>
         </div>
 
-        <!-- Selected Vehicle Summary Pill -->
+        <!-- Selected Vehicle Summary Pill (No Dealer/Location) -->
         <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs space-y-1">
           <div class="flex items-center justify-between font-bold text-slate-900">
             <span x-text="selectedInquiryItem.car_model || 'Vehicle'"></span>
-            <span class="text-[11px] font-normal text-slate-500" x-text="selectedInquiryItem.dealer_city"></span>
+            <span class="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">Verified Live Stock</span>
           </div>
           <div class="text-slate-600 flex items-center gap-2 text-[11px]">
             <span x-text="selectedInquiryItem.variant_name || ''"></span>
@@ -337,10 +335,10 @@
           </div>
         </div>
 
-        <!-- Form Elements -->
+        <!-- Form Elements (Only Name & Phone Required, All Others Optional) -->
         <form @submit.prevent="submitInquiry()" class="space-y-4 text-xs">
           
-          <!-- Name & Phone -->
+          <!-- Name & Phone (Required) -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label class="block font-medium text-slate-700 mb-1">Your Full Name <span class="text-red-500">*</span></label>
@@ -364,53 +362,67 @@
             </div>
           </div>
 
-          <!-- Customer City / Location -->
-          <div>
-            <label class="block font-medium text-slate-700 mb-1">Your Location / City <span class="text-red-500">*</span></label>
-            <div class="grid grid-cols-3 gap-2">
-              <button 
-                type="button" 
-                @click="inquiryForm.location = 'Haldwani'" 
-                :class="inquiryForm.location === 'Haldwani' ? 'bg-slate-900 text-white font-bold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
-                class="py-2 px-3 rounded-xl transition text-center cursor-pointer"
-              >
-                Haldwani
-              </button>
-              <button 
-                type="button" 
-                @click="inquiryForm.location = 'Rudrapur'" 
-                :class="inquiryForm.location === 'Rudrapur' ? 'bg-slate-900 text-white font-bold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
-                class="py-2 px-3 rounded-xl transition text-center cursor-pointer"
-              >
-                Rudrapur
-              </button>
-              <button 
-                type="button" 
-                @click="inquiryForm.location = 'Others'" 
-                :class="inquiryForm.location === 'Others' ? 'bg-slate-900 text-white font-bold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
-                class="py-2 px-3 rounded-xl transition text-center cursor-pointer"
-              >
-                Others
-              </button>
-            </div>
-            <div x-show="inquiryForm.location === 'Others'" class="mt-2" x-cloak>
+          <!-- Email & Location (Optional) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block font-medium text-slate-700 mb-1">Email ID <span class="text-slate-400 text-[10px] font-normal">(Optional)</span></label>
               <input 
-                type="text" 
-                x-model="inquiryForm.customCity" 
-                placeholder="Enter your town or district (e.g. Almora, Nainital, Kashipur)" 
+                type="email" 
+                x-model="inquiryForm.email" 
+                placeholder="e.g. rahul@example.com" 
                 class="filter-input"
               >
             </div>
+            <div>
+              <label class="block font-medium text-slate-700 mb-1">Your Location / City <span class="text-slate-400 text-[10px] font-normal">(Optional)</span></label>
+              <div class="grid grid-cols-3 gap-1.5">
+                <button 
+                  type="button" 
+                  @click="inquiryForm.location = (inquiryForm.location === 'Haldwani' ? '' : 'Haldwani')" 
+                  :class="inquiryForm.location === 'Haldwani' ? 'bg-slate-900 text-white font-bold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+                  class="py-2 px-2 rounded-xl transition text-center cursor-pointer text-xs"
+                >
+                  Haldwani
+                </button>
+                <button 
+                  type="button" 
+                  @click="inquiryForm.location = (inquiryForm.location === 'Rudrapur' ? '' : 'Rudrapur')" 
+                  :class="inquiryForm.location === 'Rudrapur' ? 'bg-slate-900 text-white font-bold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+                  class="py-2 px-2 rounded-xl transition text-center cursor-pointer text-xs"
+                >
+                  Rudrapur
+                </button>
+                <button 
+                  type="button" 
+                  @click="inquiryForm.location = (inquiryForm.location === 'Others' ? '' : 'Others')" 
+                  :class="inquiryForm.location === 'Others' ? 'bg-slate-900 text-white font-bold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+                  class="py-2 px-2 rounded-xl transition text-center cursor-pointer text-xs"
+                >
+                  Others
+                </button>
+              </div>
+            </div>
           </div>
 
-          <!-- Purchase Timeline (0-15 days, 15 - 30 days, 30 - 60 days, just enquiring) -->
+          <!-- When Others is selected: Custom Location input -->
+          <div x-show="inquiryForm.location === 'Others'" class="pt-0.5" x-cloak>
+            <label class="block font-medium text-slate-700 mb-1">Enter Your City / Town <span class="text-slate-400 text-[10px] font-normal">(Optional)</span></label>
+            <input 
+              type="text" 
+              x-model="inquiryForm.customCity" 
+              placeholder="e.g. Almora, Nainital, Kashipur, Pantnagar" 
+              class="filter-input"
+            >
+          </div>
+
+          <!-- Purchase Timeline (Optional) -->
           <div>
-            <label class="block font-medium text-slate-700 mb-1.5">Purchase Timeline <span class="text-red-500">*</span></label>
+            <label class="block font-medium text-slate-700 mb-1.5">Purchase Timeline <span class="text-slate-400 text-[10px] font-normal">(Optional)</span></label>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
               <template x-for="timeline in ['0-15 days', '15 - 30 days', '30 - 60 days', 'just enquiring']" :key="timeline">
                 <button 
                   type="button" 
-                  @click="inquiryForm.timeline = timeline" 
+                  @click="inquiryForm.timeline = (inquiryForm.timeline === timeline ? '' : timeline)" 
                   :class="inquiryForm.timeline === timeline ? 'bg-[#c0262b] text-white font-bold shadow-xs' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
                   class="py-2 px-2 text-center rounded-xl transition cursor-pointer text-[11px]"
                   x-text="timeline"
@@ -419,13 +431,13 @@
             </div>
           </div>
 
-          <!-- Do you need a finance option? (yes, no, not decided yet) -->
+          <!-- Finance Option (Optional) -->
           <div>
-            <label class="block font-medium text-slate-700 mb-1.5">Do you need a finance / car loan option? <span class="text-red-500">*</span></label>
+            <label class="block font-medium text-slate-700 mb-1.5">Do you need a finance / car loan option? <span class="text-slate-400 text-[10px] font-normal">(Optional)</span></label>
             <div class="grid grid-cols-3 gap-2">
               <button 
                 type="button" 
-                @click="inquiryForm.finance = 'yes'" 
+                @click="inquiryForm.finance = (inquiryForm.finance === 'yes' ? '' : 'yes')" 
                 :class="inquiryForm.finance === 'yes' ? 'bg-[#c0262b] text-white font-bold shadow-xs' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
                 class="py-2 px-3 text-center rounded-xl transition cursor-pointer text-xs"
               >
@@ -433,7 +445,7 @@
               </button>
               <button 
                 type="button" 
-                @click="inquiryForm.finance = 'no'" 
+                @click="inquiryForm.finance = (inquiryForm.finance === 'no' ? '' : 'no')" 
                 :class="inquiryForm.finance === 'no' ? 'bg-[#c0262b] text-white font-bold shadow-xs' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
                 class="py-2 px-3 text-center rounded-xl transition cursor-pointer text-xs"
               >
@@ -441,7 +453,7 @@
               </button>
               <button 
                 type="button" 
-                @click="inquiryForm.finance = 'not decided yet'" 
+                @click="inquiryForm.finance = (inquiryForm.finance === 'not decided yet' ? '' : 'not decided yet')" 
                 :class="inquiryForm.finance === 'not decided yet' ? 'bg-[#c0262b] text-white font-bold shadow-xs' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
                 class="py-2 px-3 text-center rounded-xl transition cursor-pointer text-xs"
               >
@@ -492,14 +504,15 @@
         <div>
           <h3 class="text-lg font-bold text-slate-900">Inquiry Confirmed!</h3>
           <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
-            Your details have been registered with the authorized showroom desk. A sales consultant will contact you via WhatsApp or phone shortly.
+            Your inquiry has been submitted. An authorized showroom sales consultant will contact you via WhatsApp or phone shortly.
           </p>
         </div>
 
         <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-700 text-left space-y-1">
           <div><strong>Customer:</strong> <span x-text="inquiryForm.name"></span> (<span x-text="inquiryForm.phone"></span>)</div>
-          <div><strong>Timeline:</strong> <span x-text="inquiryForm.timeline"></span></div>
-          <div><strong>Finance Requested:</strong> <span class="uppercase" x-text="inquiryForm.finance"></span></div>
+          <div x-show="inquiryForm.email"><strong>Email:</strong> <span x-text="inquiryForm.email"></span></div>
+          <div x-show="inquiryForm.timeline"><strong>Timeline:</strong> <span x-text="inquiryForm.timeline"></span></div>
+          <div x-show="inquiryForm.finance"><strong>Finance Requested:</strong> <span class="uppercase" x-text="inquiryForm.finance"></span></div>
         </div>
 
         <button @click="closeInquiryModal()" class="w-full bg-slate-900 hover:bg-slate-800 text-white py-2.5 px-4 rounded-xl text-xs font-bold transition cursor-pointer">
@@ -519,18 +532,24 @@
 
       <h3 class="font-bold text-lg text-slate-900">How it works</h3>
       
+      <!-- Premium / Extra Pricing Warning -->
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-900 font-semibold flex items-center gap-2">
+        <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Don't pay extra /premium for the car you are looking for.</span>
+      </div>
+
       <div class="space-y-3 text-xs text-slate-600">
         <div class="flex items-start gap-3">
           <div class="w-6 h-6 rounded-full bg-slate-100 text-slate-900 flex items-center justify-center font-bold shrink-0">1</div>
-          <p><strong class="text-slate-900">Verified Showroom Stock:</strong> We aggregate real-time vehicle allocation across authorized dealerships across Tata, Mahindra, Hyundai, Kia, Toyota, and Maruti Suzuki.</p>
+          <p><strong class="text-slate-900">Verified Showroom Stock:</strong> We aggregate real-time vehicle allocation across authorized dealerships across Tata Motors, Mahindra, Hyundai, Kia, Toyota, and Maruti Suzuki.</p>
         </div>
         <div class="flex items-start gap-3">
           <div class="w-6 h-6 rounded-full bg-slate-100 text-slate-900 flex items-center justify-center font-bold shrink-0">2</div>
-          <p><strong class="text-slate-900">Direct Showroom Allocation:</strong> Select your preferred timeline and finance need to route your lead straight to sales managers holding the units.</p>
+          <p><strong class="text-slate-900">Direct Showroom Allocation:</strong> Connect directly with authorized sales desks holding genuine showroom inventory without unwarranted surcharges or endless waitlists.</p>
         </div>
         <div class="flex items-start gap-3">
           <div class="w-6 h-6 rounded-full bg-slate-100 text-slate-900 flex items-center justify-center font-bold shrink-0">3</div>
-          <p><strong class="text-slate-900">Zero Middlemen:</strong> You buy directly from the official authorized brand dealer at transparent showroom pricing.</p>
+          <p><strong class="text-slate-900">Zero Middlemen:</strong> You buy directly from the official authorized brand showroom at fair and transparent official prices.</p>
         </div>
       </div>
 
@@ -590,13 +609,14 @@
         dealerships: [],
         cars: [],
         availableVariants: [],
+        availableColors: [],
         dealerBrandFilter: 'Any',
         
         // Filters
-        searchQuery: '',
         selectedBrand: 'Any',
         selectedModel: 'Any',
         selectedVariant: 'Any',
+        selectedColor: 'Any',
         selectedFuel: 'Any',
         selectedTransmission: 'Any',
         customerLocation: 'Any',
@@ -609,10 +629,11 @@
         inquiryForm: {
           name: '',
           phone: '',
+          email: '',
           location: 'Haldwani',
           customCity: '',
-          timeline: '0-15 days',
-          finance: 'not decided yet',
+          timeline: '',
+          finance: '',
           exchange: false,
           exchangeDetails: ''
         },
@@ -621,6 +642,7 @@
           await this.loadDealerships();
           await this.loadCars();
           await this.loadVariants();
+          await this.loadColors();
           await this.applyFilters();
         },
 
@@ -668,16 +690,32 @@
           }
         },
 
+        async loadColors() {
+          try {
+            const params = new URLSearchParams();
+            if (this.selectedBrand && this.selectedBrand !== 'Any') params.append('brand', this.selectedBrand);
+            if (this.selectedModel && this.selectedModel !== 'Any') params.append('model', this.selectedModel);
+            const res = await fetch(`/api/colors?${params.toString()}`);
+            this.availableColors = await res.json();
+          } catch (e) {
+            console.error(e);
+          }
+        },
+
         async onBrandChange() {
           this.selectedModel = 'Any';
           this.selectedVariant = 'Any';
+          this.selectedColor = 'Any';
           await this.loadVariants();
+          await this.loadColors();
           await this.applyFilters();
         },
 
         async onModelChange() {
           this.selectedVariant = 'Any';
+          this.selectedColor = 'Any';
           await this.loadVariants();
+          await this.loadColors();
           await this.applyFilters();
         },
 
@@ -688,13 +726,15 @@
         async applyFilters() {
           try {
             const params = new URLSearchParams();
-            if (this.searchQuery) params.append('search', this.searchQuery);
             if (this.selectedBrand && this.selectedBrand !== 'Any') params.append('brand', this.selectedBrand);
             if (this.selectedModel && this.selectedModel !== 'Any') params.append('model', this.selectedModel);
             if (this.selectedVariant && this.selectedVariant !== 'Any') params.append('variant', this.selectedVariant);
+            if (this.selectedColor && this.selectedColor !== 'Any') params.append('color', this.selectedColor);
             if (this.selectedFuel && this.selectedFuel !== 'Any') params.append('fuel_type', this.selectedFuel);
             if (this.selectedTransmission && this.selectedTransmission !== 'Any') params.append('transmission', this.selectedTransmission);
-            if (this.customerLocation && this.customerLocation !== 'Any') params.append('customer_location', this.customerLocation);
+            if (this.customerLocation && this.customerLocation !== 'Any' && this.customerLocation !== 'Others') {
+              params.append('customer_location', this.customerLocation);
+            }
 
             const res = await fetch(`/api/inventory?${params.toString()}`);
             this.inventory = await res.json();
@@ -704,14 +744,15 @@
         },
 
         async resetFilters() {
-          this.searchQuery = '';
           this.selectedBrand = 'Any';
           this.selectedModel = 'Any';
           this.selectedVariant = 'Any';
+          this.selectedColor = 'Any';
           this.selectedFuel = 'Any';
           this.selectedTransmission = 'Any';
           this.customerLocation = 'Any';
           await this.loadVariants();
+          await this.loadColors();
           await this.applyFilters();
         },
 
@@ -738,7 +779,7 @@
           try {
             const finalCity = (this.inquiryForm.location === 'Others' && this.inquiryForm.customCity.trim()) 
               ? this.inquiryForm.customCity.trim() 
-              : this.inquiryForm.location;
+              : (this.inquiryForm.location || 'Not Specified');
 
             const payload = {
               dealership_id: this.selectedInquiryItem.dealership_id || 1,
@@ -746,13 +787,14 @@
               variant_id: this.selectedInquiryItem.variant_id || null,
               customer_name: this.inquiryForm.name.trim(),
               customer_phone: this.inquiryForm.phone.trim(),
+              customer_email: this.inquiryForm.email ? this.inquiryForm.email.trim() : null,
               customer_city: finalCity,
               inquiry_type: "availability_check",
-              buying_timeline: this.inquiryForm.timeline,
-              finance_required: this.inquiryForm.finance,
+              buying_timeline: this.inquiryForm.timeline || null,
+              finance_required: this.inquiryForm.finance || null,
               exchange_required: this.inquiryForm.exchange ? 1 : 0,
               exchange_car_details: this.inquiryForm.exchange ? this.inquiryForm.exchangeDetails : null,
-              notes: `Timeline: ${this.inquiryForm.timeline} | Finance: ${this.inquiryForm.finance}`
+              notes: (this.inquiryForm.timeline || this.inquiryForm.finance) ? `Timeline: ${this.inquiryForm.timeline || 'N/A'} | Finance: ${this.inquiryForm.finance || 'N/A'}` : null
             };
 
             const res = await fetch('/api/inquiries', {

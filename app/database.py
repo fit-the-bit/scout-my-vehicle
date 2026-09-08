@@ -98,6 +98,7 @@ def init_db():
         variant_id INTEGER,
         customer_name TEXT NOT NULL,
         customer_phone TEXT NOT NULL,
+        customer_email TEXT,
         customer_city TEXT NOT NULL,
         inquiry_type TEXT NOT NULL, -- 'availability_check', 'test_drive', 'price_quote', 'instant_booking'
         preferred_date TEXT,
@@ -174,6 +175,8 @@ def init_db():
     inq_cols = [c[1] for c in cursor.fetchall()]
     if "finance_required" not in inq_cols:
         cursor.execute("ALTER TABLE inquiries ADD COLUMN finance_required TEXT DEFAULT 'not decided yet';")
+    if "customer_email" not in inq_cols:
+        cursor.execute("ALTER TABLE inquiries ADD COLUMN customer_email TEXT;")
 
     conn.commit()
     conn.close()

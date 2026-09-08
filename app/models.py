@@ -2,17 +2,18 @@ from pydantic import BaseModel, Field
 from typing import Optional
 
 class InquiryCreate(BaseModel):
-    dealership_id: int
+    dealership_id: Optional[int] = 1
     car_id: Optional[int] = None
     variant_id: Optional[int] = None
     customer_name: str
     customer_phone: str
-    customer_city: str = "Haldwani"
-    inquiry_type: str = "availability_check" # 'availability_check', 'test_drive', 'price_quote', 'instant_booking'
+    customer_email: Optional[str] = None
+    customer_city: Optional[str] = "Haldwani"
+    inquiry_type: Optional[str] = "availability_check" # 'availability_check', 'test_drive', 'price_quote', 'instant_booking'
     preferred_date: Optional[str] = None
     preferred_time: Optional[str] = None
-    buying_timeline: Optional[str] = "0-15 days" # '0-15 days', '15 - 30 days', '30 - 60 days', 'just enquiring'
-    finance_required: Optional[str] = "not decided yet" # 'yes', 'no', 'not decided yet'
+    buying_timeline: Optional[str] = None # '0-15 days', '15 - 30 days', '30 - 60 days', 'just enquiring'
+    finance_required: Optional[str] = None # 'yes', 'no', 'not decided yet'
     exchange_required: Optional[int] = 0
     exchange_car_details: Optional[str] = None
     notes: Optional[str] = None

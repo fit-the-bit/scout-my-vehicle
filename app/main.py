@@ -260,6 +260,35 @@ async def get_variants(model: Optional[str] = None, brand: Optional[str] = None)
     conn.close()
     return rows
 
+@app.get("/api/colors")
+async def get_colors(brand: Optional[str] = None, model: Optional[str] = None):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    query = """
+        SELECT DISTINCT i.colors_available
+        FROM inventory i
+        JOIN variants v ON i.variant_id = v.id
+        JOIN cars c ON v.car_id = c.id
+        WHERE i.status = 'IN_STOCK' AND i.units_available > 0
+    """
+    params = []
+    if brand and brand.lower() not in ["all", "any"]:
+        query += " AND LOWER(c.make) = LOWER(?)"
+        params.append(brand)
+    if model and model.lower() not in ["all", "any"]:
+        query += " AND (LOWER(c.model) = LOWER(?) OR c.slug = ?)"
+        params.extend([model, model])
+    cursor.execute(query, params)
+    raw_colors = [r[0] for r in cursor.fetchall() if r[0]]
+    color_set = set()
+    for row in raw_colors:
+        for c in row.split(","):
+            c_clean = c.strip()
+            if c_clean:
+                color_set.add(c_clean)
+    conn.close()
+    return sorted(list(color_set))
+
 @app.get("/api/inventory")
 async def get_inventory(
     city: Optional[str] = None,
@@ -268,6 +297,7 @@ async def get_inventory(
     car_slug: Optional[str] = None,
     model: Optional[str] = None,
     variant: Optional[str] = None,
+    color: Optional[str] = None,
     status: Optional[str] = None,
     transmission: Optional[str] = None,
     fuel_type: Optional[str] = None,
@@ -320,6 +350,13 @@ async def get_inventory(
     """
     params = []
 
+    # Filter out unavailable cars by default (strictly available stock)
+    if status and status.lower() not in ["all", "any"]:
+        query += " AND i.status = ?"
+        params.append(status.upper())
+    else:
+        query += " AND i.status = 'IN_STOCK' AND i.units_available > 0"
+
     target_city = customer_location if (customer_location and customer_location.lower() not in ["all", "any", "others"]) else city
     if target_city and target_city.lower() not in ["all", "any", "others"]:
         query += " AND LOWER(d.city) = LOWER(?)"
@@ -340,9 +377,9 @@ async def get_inventory(
         query += " AND LOWER(v.name) LIKE LOWER(?)"
         params.append(f"%{variant}%")
 
-    if status and status.lower() not in ["all", "any"]:
-        query += " AND i.status = ?"
-        params.append(status.upper())
+    if color and color.lower() not in ["all", "any"]:
+        query += " AND LOWER(i.colors_available) LIKE LOWER(?)"
+        params.append(f"%{color}%")
 
     if transmission and transmission.lower() not in ["all", "any"]:
         query += " AND LOWER(v.transmission) LIKE LOWER(?)"
@@ -442,15 +479,16 @@ async def create_inquiry(inquiry: InquiryCreate):
     conn = get_db_connection()
     cursor = conn.cursor()
 
+    dealer_id = inquiry.dealership_id if inquiry.dealership_id else 1
     cursor.execute("""
         INSERT INTO inquiries (
-            dealership_id, car_id, variant_id, customer_name, customer_phone, customer_city,
+            dealership_id, car_id, variant_id, customer_name, customer_phone, customer_email, customer_city,
             inquiry_type, preferred_date, preferred_time, buying_timeline, finance_required,
             exchange_required, exchange_car_details, notes, status
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'NEW');
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'NEW');
     """, (
-        inquiry.dealership_id, inquiry.car_id, inquiry.variant_id,
-        inquiry.customer_name, inquiry.customer_phone, inquiry.customer_city,
+        dealer_id, inquiry.car_id, inquiry.variant_id,
+        inquiry.customer_name, inquiry.customer_phone, inquiry.customer_email, inquiry.customer_city,
         inquiry.inquiry_type, inquiry.preferred_date, inquiry.preferred_time,
         inquiry.buying_timeline, inquiry.finance_required, inquiry.exchange_required,
         inquiry.exchange_car_details, inquiry.notes
@@ -458,10 +496,10 @@ async def create_inquiry(inquiry: InquiryCreate):
     inquiry_id = cursor.lastrowid
     conn.commit()
 
-    # Fetch dealer details for response (for whatsapp/phone direct connect prompt)
-    cursor.execute("SELECT name, phone, whatsapp, city FROM dealerships WHERE id = ?;", (inquiry.dealership_id,))
+    # Fetch dealer details for response
+    cursor.execute("SELECT name, phone, whatsapp, city FROM dealerships WHERE id = ?;", (dealer_id,))
     dealer_row = cursor.fetchone()
-    dealer = dict(dealer_row) if dealer_row else {"name": "Mahindra Showroom", "phone": "+91 5946 220 188", "whatsapp": "919837012345", "city": "Uttarakhand"}
+    dealer = dict(dealer_row) if dealer_row else {"name": "Authorized Showroom", "phone": "+91 5946 220 188", "whatsapp": "919837012345", "city": "Uttarakhand"}
 
     conn.close()
 

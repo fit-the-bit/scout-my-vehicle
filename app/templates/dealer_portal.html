@@ -209,11 +209,17 @@
 
               <div>
                 <h4 class="text-base font-bold text-slate-950" x-text="inq.customer_name"></h4>
-                <div class="text-xs text-slate-500 flex items-center gap-2 mt-0.5 font-medium">
+                <div class="text-xs text-slate-500 flex flex-wrap items-center gap-2 mt-0.5 font-medium">
                   <span class="text-slate-800 font-bold flex items-center gap-1">
                     <i data-lucide="phone" class="w-3 h-3 text-emerald-600"></i>
                     <span x-text="inq.customer_phone"></span>
                   </span>
+                  <template x-if="inq.customer_email">
+                    <span class="text-slate-600 flex items-center gap-1">
+                      <i data-lucide="mail" class="w-3 h-3 text-sky-600"></i>
+                      <span x-text="inq.customer_email"></span>
+                    </span>
+                  </template>
                   <span>•</span>
                   <span x-text="inq.customer_city"></span>
                 </div>
