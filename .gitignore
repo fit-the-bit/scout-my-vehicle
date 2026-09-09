@@ -25,3 +25,11 @@ __pycache__/
 
 # Logs
 *.log
+.venv/ 
+__pycache__/ 
+*.pyc 
+*.db 
+.venv/ 
+__pycache__/ 
+*.pyc 
+*.db 

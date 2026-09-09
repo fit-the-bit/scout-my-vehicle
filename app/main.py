@@ -249,8 +249,8 @@ async def get_variants(model: Optional[str] = None, brand: Optional[str] = None)
     """
     params = []
     if model and model.lower() not in ["all", "any"]:
-        query += " AND (LOWER(c.model) = LOWER(?) OR c.slug = ?)"
-        params.extend([model, model])
+        query += " AND (LOWER(c.model) = LOWER(?) OR c.slug = ? OR LOWER(c.model) LIKE LOWER(?) OR LOWER(?) LIKE '%' || LOWER(c.model) || '%')"
+        params.extend([model, model, f"%{model}%", model])
     if brand and brand.lower() not in ["all", "any"]:
         query += " AND LOWER(c.make) = LOWER(?)"
         params.append(brand)
@@ -276,8 +276,8 @@ async def get_colors(brand: Optional[str] = None, model: Optional[str] = None):
         query += " AND LOWER(c.make) = LOWER(?)"
         params.append(brand)
     if model and model.lower() not in ["all", "any"]:
-        query += " AND (LOWER(c.model) = LOWER(?) OR c.slug = ?)"
-        params.extend([model, model])
+        query += " AND (LOWER(c.model) = LOWER(?) OR c.slug = ? OR LOWER(c.model) LIKE LOWER(?) OR LOWER(?) LIKE '%' || LOWER(c.model) || '%')"
+        params.extend([model, model, f"%{model}%", model])
     cursor.execute(query, params)
     raw_colors = [r[0] for r in cursor.fetchall() if r[0]]
     color_set = set()
@@ -367,8 +367,8 @@ async def get_inventory(
         params.extend([brand, brand])
 
     if model and model.lower() not in ["all", "any"]:
-        query += " AND (LOWER(c.model) = LOWER(?) OR c.slug = ?)"
-        params.extend([model, model])
+        query += " AND (LOWER(c.model) = LOWER(?) OR c.slug = ? OR LOWER(c.model) LIKE LOWER(?) OR LOWER(?) LIKE '%' || LOWER(c.model) || '%')"
+        params.extend([model, model, f"%{model}%", model])
     elif car_slug and car_slug.lower() not in ["all", "any"]:
         query += " AND c.slug = ?"
         params.append(car_slug)
@@ -382,12 +382,32 @@ async def get_inventory(
         params.append(f"%{color}%")
 
     if transmission and transmission.lower() not in ["all", "any"]:
-        query += " AND LOWER(v.transmission) LIKE LOWER(?)"
-        params.append(f"%{transmission}%")
+        t_low = transmission.lower().strip()
+        if t_low in ["manual", "mt"]:
+            query += " AND (LOWER(v.transmission) LIKE '%manual%' OR LOWER(v.transmission) = 'mt' OR LOWER(v.transmission) LIKE '%(mt)%') AND LOWER(v.transmission) NOT LIKE '%amt%' AND LOWER(v.transmission) NOT LIKE '%imt%'"
+        elif t_low in ["automatic", "at"]:
+            query += " AND (LOWER(v.transmission) LIKE '%automatic%' OR LOWER(v.transmission) = 'at' OR LOWER(v.transmission) LIKE '%(at)%') AND LOWER(v.transmission) NOT LIKE '%amt%'"
+        elif t_low in ["amt"]:
+            query += " AND LOWER(v.transmission) LIKE '%amt%'"
+        elif t_low in ["dct", "dca", "dsg"]:
+            query += " AND (LOWER(v.transmission) LIKE '%dct%' OR LOWER(v.transmission) LIKE '%dca%' OR LOWER(v.transmission) LIKE '%dsg%')"
+        elif t_low in ["cvt", "ivt"]:
+            query += " AND (LOWER(v.transmission) LIKE '%cvt%' OR LOWER(v.transmission) LIKE '%ivt%') AND LOWER(v.transmission) NOT LIKE '%e-cvt%'"
+        elif t_low in ["e-cvt", "ecvt"]:
+            query += " AND (LOWER(v.transmission) LIKE '%e-cvt%' OR LOWER(v.transmission) LIKE '%ecvt%')"
+        elif t_low in ["imt"]:
+            query += " AND LOWER(v.transmission) LIKE '%imt%'"
+        else:
+            query += " AND LOWER(v.transmission) LIKE LOWER(?)"
+            params.append(f"%{transmission}%")
 
     if fuel_type and fuel_type.lower() not in ["all", "any"]:
-        query += " AND LOWER(v.fuel_type) LIKE LOWER(?)"
-        params.append(f"%{fuel_type}%")
+        f_low = fuel_type.lower().strip()
+        if f_low == "petrol":
+            query += " AND LOWER(v.fuel_type) LIKE '%petrol%'"
+        else:
+            query += " AND LOWER(v.fuel_type) LIKE LOWER(?)"
+            params.append(f"%{fuel_type}%")
 
     if max_price and max_price > 0:
         price_val = int(max_price * 100000) if max_price <= 100 else int(max_price)

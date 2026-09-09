@@ -1,0 +1,672 @@
+Model,Variant,Fuel,Transmission
+Alto K10,Std,Petrol,MT
+Alto K10,LXi,Petrol,MT
+Alto K10,VXi,Petrol,MT
+Alto K10,VXi,CNG,MT
+Alto K10,VXi+,Petrol,MT
+Alto K10,VXi AGS,Petrol,AMT
+Alto K10,VXi+ AGS,Petrol,AMT
+S-Presso,Std,Petrol,MT
+S-Presso,LXi,Petrol,MT
+S-Presso,LXi,CNG,MT
+S-Presso,VXi,Petrol,MT
+S-Presso,VXi,CNG,MT
+S-Presso,VXi+,Petrol,MT
+S-Presso,VXi AGS,Petrol,AMT
+S-Presso,VXi+ AGS,Petrol,AMT
+Celerio,LXi,Petrol,MT
+Celerio,VXi,Petrol,MT
+Celerio,VXi,CNG,MT
+Celerio,ZXi,Petrol,MT
+Celerio,ZXi+,Petrol,MT
+Celerio,VXi AMT,Petrol,AMT
+Celerio,ZXi AMT,Petrol,AMT
+Celerio,ZXi+ AMT,Petrol,AMT
+Wagon R,LXi 1.0,Petrol,MT
+Wagon R,LXi 1.0,CNG,MT
+Wagon R,VXi 1.0,Petrol,MT
+Wagon R,VXi 1.0,CNG,MT
+Wagon R,VXi 1.2,Petrol,MT
+Wagon R,ZXi 1.2,Petrol,MT
+Wagon R,ZXi+ 1.2,Petrol,MT
+Wagon R,VXi 1.0 AGS,Petrol,AMT
+Wagon R,VXi 1.2 AGS,Petrol,AMT
+Wagon R,ZXi 1.2 AGS,Petrol,AMT
+Wagon R,ZXi+ 1.2 AGS,Petrol,AMT
+Swift,LXi,Petrol,MT
+Swift,VXi,Petrol,MT
+Swift,VXi,CNG,MT
+Swift,VXi (O),Petrol,MT
+Swift,VXi (O),CNG,MT
+Swift,ZXi,Petrol,MT
+Swift,ZXi,CNG,MT
+Swift,ZXi+,Petrol,MT
+Swift,VXi AMT,Petrol,AMT
+Swift,VXi (O) AMT,Petrol,AMT
+Swift,ZXi AMT,Petrol,AMT
+Swift,ZXi+ AMT,Petrol,AMT
+Dzire,LXi,Petrol,MT
+Dzire,VXi,Petrol,MT
+Dzire,VXi,CNG,MT
+Dzire,ZXi,Petrol,MT
+Dzire,ZXi,CNG,MT
+Dzire,ZXi+,Petrol,MT
+Dzire,VXi AGS,Petrol,AMT
+Dzire,ZXi AGS,Petrol,AMT
+Dzire,ZXi+ AGS,Petrol,AMT
+Brezza,LXi,Petrol,MT
+Brezza,LXi,CNG,MT
+Brezza,VXi,Petrol,MT
+Brezza,VXi,CNG,MT
+Brezza,ZXi,Petrol,MT
+Brezza,ZXi,CNG,MT
+Brezza,ZXi+,Petrol,MT
+Brezza,VXi AT,Petrol,AT
+Brezza,ZXi AT,Petrol,AT
+Brezza,ZXi+ AT,Petrol,AT
+Ertiga,LXi,Petrol,MT
+Ertiga,VXi,Petrol,MT
+Ertiga,VXi,CNG,MT
+Ertiga,ZXi,Petrol,MT
+Ertiga,ZXi,CNG,MT
+Ertiga,ZXi+,Petrol,MT
+Ertiga,VXi AT,Petrol,AT
+Ertiga,ZXi AT,Petrol,AT
+Ertiga,ZXi+ AT,Petrol,AT
+Eeco,5-Seater Std,Petrol,MT
+Eeco,5-Seater AC,Petrol,MT
+Eeco,5-Seater AC,CNG,MT
+Eeco,7-Seater Std,Petrol,MT
+Eeco,Cargo,Petrol,MT
+Eeco,Cargo,CNG,MT
+Victoris,LXi,Petrol,MT
+Victoris,VXi,Petrol,MT
+Victoris,VXi,CNG,MT
+Victoris,VXi AT,Petrol,AT
+Victoris,ZXi,Petrol,MT
+Victoris,ZXi,CNG,MT
+Victoris,ZXi AT,Petrol,AT
+Victoris,ZXi+,Petrol,MT
+Victoris,ZXi+ AT,Petrol,AT
+Victoris,ZXi+ Strong Hybrid,Hybrid,e-CVT
+Ignis,Sigma,Petrol,MT
+Ignis,Delta,Petrol,MT
+Ignis,Zeta,Petrol,MT
+Ignis,Alpha,Petrol,MT
+Ignis,Delta AMT,Petrol,AMT
+Ignis,Zeta AMT,Petrol,AMT
+Ignis,Alpha AMT,Petrol,AMT
+Baleno,Sigma,Petrol,MT
+Baleno,Delta,Petrol,MT
+Baleno,Delta,CNG,MT
+Baleno,Zeta,Petrol,MT
+Baleno,Zeta,CNG,MT
+Baleno,Alpha,Petrol,MT
+Baleno,Delta AMT,Petrol,AMT
+Baleno,Zeta AMT,Petrol,AMT
+Baleno,Alpha AMT,Petrol,AMT
+Fronx,Sigma,Petrol,MT
+Fronx,Sigma,CNG,MT
+Fronx,Delta,Petrol,MT
+Fronx,Delta,CNG,MT
+Fronx,Delta+,Petrol,MT
+Fronx,Zeta Turbo,Petrol,MT
+Fronx,Alpha Turbo,Petrol,MT
+Fronx,Delta+ AGS,Petrol,AMT
+Fronx,Zeta Turbo AT,Petrol,AT
+Fronx,Alpha Turbo AT,Petrol,AT
+Ciaz,Sigma,Petrol,MT
+Ciaz,Delta,Petrol,MT
+Ciaz,Zeta,Petrol,MT
+Ciaz,Alpha,Petrol,MT
+Ciaz,Delta AT,Petrol,AT
+Ciaz,Zeta AT,Petrol,AT
+Ciaz,Alpha AT,Petrol,AT
+Jimny,Zeta,Petrol,MT
+Jimny,Alpha,Petrol,MT
+Jimny,Zeta AT,Petrol,AT
+Jimny,Alpha AT,Petrol,AT
+Grand Vitara,Sigma,Petrol,MT
+Grand Vitara,Delta,Petrol,MT
+Grand Vitara,Delta,CNG,MT
+Grand Vitara,Zeta,Petrol,MT
+Grand Vitara,Zeta,CNG,MT
+Grand Vitara,Alpha,Petrol,MT
+Grand Vitara,Alpha AWD,Petrol,MT
+Grand Vitara,Delta AT,Petrol,AT
+Grand Vitara,Zeta AT,Petrol,AT
+Grand Vitara,Alpha AT,Petrol,AT
+Grand Vitara,Zeta+ Strong Hybrid,Hybrid,e-CVT
+Grand Vitara,Alpha+ Strong Hybrid,Hybrid,e-CVT
+XL6,Zeta,Petrol,MT
+XL6,Zeta,CNG,MT
+XL6,Alpha,Petrol,MT
+XL6,Alpha+,Petrol,MT
+XL6,Zeta AT,Petrol,AT
+XL6,Alpha AT,Petrol,AT
+XL6,Alpha+ AT,Petrol,AT
+Invicto,Zeta+ 7S,Hybrid,e-CVT
+Invicto,Zeta+ 8S,Hybrid,e-CVT
+Invicto,Alpha+ 7S,Hybrid,e-CVT
+Fronx,Delta+ Turbo,Petrol,MT
+Magnite,Visia,Petrol,MT
+Magnite,Visia+,Petrol,MT
+Magnite,Acenta,Petrol,MT
+Magnite,Acenta EZ-Shift,Petrol,AMT
+Magnite,N-Connecta,Petrol,MT
+Magnite,N-Connecta Turbo,Petrol,MT
+Magnite,N-Connecta Turbo CVT,Petrol,CVT
+Magnite,Tekna,Petrol,MT
+Magnite,Tekna Turbo,Petrol,MT
+Magnite,Tekna Turbo CVT,Petrol,CVT
+Magnite,Tekna+,Petrol,MT
+Magnite,Tekna+ Turbo CVT,Petrol,CVT
+X-Trail,CBU 1.5 Turbo,Petrol,CVT
+Magnite,Tekna+ Turbo,Petrol,MT
+Magnite,Acenta Turbo,Petrol,MT
+Magnite,Acenta Turbo CVT,Petrol,CVT
+Slavia,Classic,Petrol,MT
+Slavia,Signature,Petrol,MT
+Slavia,Signature AT,Petrol,AT
+Slavia,Prestige,Petrol,MT
+Slavia,Prestige AT,Petrol,AT
+Slavia,Prestige 1.5 TSI,Petrol,MT
+Slavia,Prestige 1.5 TSI DSG,Petrol,DSG
+Slavia,Monte Carlo 1.0 TSI,Petrol,MT
+Slavia,Monte Carlo 1.0 TSI AT,Petrol,AT
+Slavia,Monte Carlo 1.5 TSI DSG,Petrol,DSG
+Kylaq,Classic,Petrol,MT
+Kylaq,Signature,Petrol,MT
+Kylaq,Signature AT,Petrol,AT
+Kylaq,Prestige,Petrol,MT
+Kylaq,Prestige AT,Petrol,AT
+Kushaq,Classic,Petrol,MT
+Kushaq,Signature,Petrol,MT
+Kushaq,Signature AT,Petrol,AT
+Kushaq,Prestige,Petrol,MT
+Kushaq,Prestige AT,Petrol,AT
+Kushaq,Prestige 1.5 TSI DSG,Petrol,DSG
+Kushaq,Monte Carlo 1.0 TSI,Petrol,MT
+Kushaq,Monte Carlo 1.0 TSI AT,Petrol,AT
+Kushaq,Monte Carlo 1.5 TSI DSG,Petrol,DSG
+Kodiaq,L&K,Petrol,DSG
+Kylaq,Signature+,Petrol,MT
+Kylaq,Signature+ AT,Petrol,AT
+Kushaq,Prestige 1.5 TSI,Petrol,MT
+Tiago,XE,Petrol,MT
+Tiago,XM,Petrol,MT
+Tiago,XT,Petrol,MT
+Tiago,XT,CNG,MT
+Tiago,XZ+,Petrol,MT
+Tiago,XZ+,CNG,MT
+Tiago,XT AMT,Petrol,AMT
+Tiago,XZ+ AMT,Petrol,AMT
+Tiago,XZ+ CNG AMT,CNG,AMT
+Tiago EV,XE,Electric,AT
+Tiago EV,XT,Electric,AT
+Tiago EV,XZ+,Electric,AT
+Tiago EV,XZ+ Tech Lux,Electric,AT
+Tigor,XM,Petrol,MT
+Tigor,XZ,Petrol,MT
+Tigor,XZ,CNG,MT
+Tigor,XZ+,Petrol,MT
+Tigor,XZ+,CNG,MT
+Tigor,XZA+,Petrol,AMT
+Tigor,XZA+ CNG AMT,CNG,AMT
+Altroz,XE,Petrol,MT
+Altroz,XM+,Petrol,MT
+Altroz,XM+,CNG,MT
+Altroz,XT,Petrol,MT
+Altroz,XZ,Petrol,MT
+Altroz,XZ,Diesel,MT
+Altroz,XZ+,Petrol,MT
+Altroz,XZ+ i-Turbo,Petrol,MT
+Altroz,XZ+ CNG,CNG,MT
+Altroz,XZ+ Diesel,Diesel,MT
+Altroz,XZA DCA,Petrol,DCA
+Altroz,XZ+ DCA,Petrol,DCA
+Punch,Pure,Petrol,MT
+Punch,Pure,CNG,MT
+Punch,Adventure,Petrol,MT
+Punch,Adventure,CNG,MT
+Punch,Accomplished,Petrol,MT
+Punch,Accomplished,CNG,MT
+Punch,Creative,Petrol,MT
+Punch,Adventure AMT,Petrol,AMT
+Punch,Accomplished AMT,Petrol,AMT
+Punch,Creative AMT,Petrol,AMT
+Punch EV,Smart,Electric,AT
+Punch EV,Smart+,Electric,AT
+Punch EV,Adventure,Electric,AT
+Punch EV,Empowered,Electric,AT
+Punch EV,Empowered+,Electric,AT
+Nexon,Smart,Petrol,MT
+Nexon,Smart+,Petrol,MT
+Nexon,Pure,Petrol,MT
+Nexon,Pure,Diesel,MT
+Nexon,Pure,CNG,MT
+Nexon,Creative,Petrol,MT
+Nexon,Creative,Diesel,MT
+Nexon,Creative,CNG,MT
+Nexon,Fearless+,Petrol,MT
+Nexon,Fearless+,Diesel,MT
+Nexon,Creative AMT,Petrol,AMT
+Nexon,Creative DCA,Petrol,DCA
+Nexon,Creative Diesel AMT,Diesel,AMT
+Nexon,Fearless DCA,Petrol,DCA
+Nexon,Fearless Diesel AMT,Diesel,AMT
+Nexon EV,Creative,Electric,AT
+Nexon EV,Fearless,Electric,AT
+Nexon EV,Empowered+,Electric,AT
+Curvv,Smart,Petrol,MT
+Curvv,Pure+,Petrol,MT
+Curvv,Pure+,Diesel,MT
+Curvv,Creative,Petrol,MT
+Curvv,Creative,Diesel,MT
+Curvv,Accomplished+,Petrol,MT
+Curvv,Accomplished+,Diesel,MT
+Curvv,Creative DCA,Petrol,DCA
+Curvv,Creative Diesel DCA,Diesel,DCA
+Curvv,Accomplished+ DCA,Petrol,DCA
+Curvv,Accomplished+ Diesel DCA,Diesel,DCA
+Curvv EV,Creative,Electric,AT
+Curvv EV,Accomplished,Electric,AT
+Curvv EV,Empowered+,Electric,AT
+Harrier,Smart,Diesel,MT
+Harrier,Pure+,Diesel,MT
+Harrier,Adventure+,Diesel,MT
+Harrier,Fearless+,Diesel,MT
+Harrier,Pure+ AT,Diesel,AT
+Harrier,Adventure+ AT,Diesel,AT
+Harrier,Fearless+ AT,Diesel,AT
+Safari,Smart,Diesel,MT
+Safari,Pure+,Diesel,MT
+Safari,Adventure+,Diesel,MT
+Safari,Accomplished+,Diesel,MT
+Safari,Pure+ AT,Diesel,AT
+Safari,Adventure+ AT,Diesel,AT
+Safari,Accomplished+ AT,Diesel,AT
+Altroz,Racer R1,Petrol,MT
+Altroz,Racer R2,Petrol,MT
+Altroz,Racer R3,Petrol,MT
+Nexon,Fearless,Petrol,MT
+Nexon,Fearless,Diesel,MT
+Sierra,Smart,Petrol,MT
+Sierra,Pure,Petrol,MT
+Sierra,Pure,Diesel,MT
+Sierra,Adventure,Petrol,MT
+Sierra,Adventure,Diesel,MT
+Sierra,Adventure AT,Petrol,AT
+Sierra,Adventure AT,Diesel,AT
+Sierra,Accomplished,Petrol,MT
+Sierra,Accomplished,Diesel,MT
+Sierra,Accomplished AT,Petrol,AT
+Sierra,Accomplished AT,Diesel,AT
+Sierra EV,Pure,Electric,AT
+Sierra EV,Pure S,Electric,AT
+Sierra EV,Adventure,Electric,AT
+Sierra EV,Empowered,Electric,AT
+Sierra EV,Empowered A,Electric,AT
+Sierra EV,Empowered A QWD,Electric,AT
+Glanza,E,Petrol,MT
+Glanza,S,Petrol,MT
+Glanza,S,CNG,MT
+Glanza,G,Petrol,MT
+Glanza,G,CNG,MT
+Glanza,V,Petrol,MT
+Glanza,S AMT,Petrol,AMT
+Glanza,G AMT,Petrol,AMT
+Glanza,V AMT,Petrol,AMT
+Urban Cruiser Taisor,E,Petrol,MT
+Urban Cruiser Taisor,E,CNG,MT
+Urban Cruiser Taisor,S,Petrol,MT
+Urban Cruiser Taisor,S+,Petrol,MT
+Urban Cruiser Taisor,G Turbo,Petrol,MT
+Urban Cruiser Taisor,V Turbo,Petrol,MT
+Urban Cruiser Taisor,S+ AMT,Petrol,AMT
+Urban Cruiser Taisor,G Turbo AT,Petrol,AT
+Urban Cruiser Taisor,V Turbo AT,Petrol,AT
+Urban Cruiser Hyryder,E,Petrol,MT
+Urban Cruiser Hyryder,S,Petrol,MT
+Urban Cruiser Hyryder,S,CNG,MT
+Urban Cruiser Hyryder,G,Petrol,MT
+Urban Cruiser Hyryder,G,CNG,MT
+Urban Cruiser Hyryder,V,Petrol,MT
+Urban Cruiser Hyryder,V AWD,Petrol,MT
+Urban Cruiser Hyryder,S AT,Petrol,AT
+Urban Cruiser Hyryder,G AT,Petrol,AT
+Urban Cruiser Hyryder,V AT,Petrol,AT
+Urban Cruiser Hyryder,S Hybrid,Hybrid,e-CVT
+Urban Cruiser Hyryder,G Hybrid,Hybrid,e-CVT
+Urban Cruiser Hyryder,V Hybrid,Hybrid,e-CVT
+Innova Crysta,GX,Diesel,MT
+Innova Crysta,GX+,Diesel,MT
+Innova Crysta,VX,Diesel,MT
+Innova Crysta,ZX,Diesel,MT
+Innova Hycross,GX,Petrol,CVT
+Innova Hycross,GX (O),Petrol,CVT
+Innova Hycross,VX Hybrid,Hybrid,e-CVT
+Innova Hycross,VX (O) Hybrid,Hybrid,e-CVT
+Innova Hycross,ZX Hybrid,Hybrid,e-CVT
+Innova Hycross,ZX (O) Hybrid,Hybrid,e-CVT
+Fortuner,4x2 Petrol,Petrol,MT
+Fortuner,4x2 Petrol AT,Petrol,AT
+Fortuner,4x2 Diesel,Diesel,MT
+Fortuner,4x2 Diesel AT,Diesel,AT
+Fortuner,4x4 Diesel,Diesel,MT
+Fortuner,4x4 Diesel AT,Diesel,AT
+Fortuner Legender,4x2 Diesel AT,Diesel,AT
+Fortuner Legender,4x4 Diesel AT,Diesel,AT
+Hilux,STD,Diesel,MT
+Hilux,High,Diesel,MT
+Hilux,High AT,Diesel,AT
+Camry,2.5 Hybrid,Hybrid,e-CVT
+Vellfire,Hi,Hybrid,e-CVT
+Vellfire,VIP Executive Lounge,Hybrid,e-CVT
+Land Cruiser 300,ZX,Diesel,AT
+Virtus,Comfortline,Petrol,MT
+Virtus,Highline,Petrol,MT
+Virtus,Highline AT,Petrol,AT
+Virtus,Topline,Petrol,MT
+Virtus,Topline AT,Petrol,AT
+Virtus,GT Plus 1.5 TSI,Petrol,MT
+Virtus,GT Plus 1.5 TSI DSG,Petrol,DSG
+Virtus,GT Line 1.0 TSI,Petrol,MT
+Virtus,GT Line 1.0 TSI AT,Petrol,AT
+Taigun,Comfortline,Petrol,MT
+Taigun,Highline,Petrol,MT
+Taigun,Highline AT,Petrol,AT
+Taigun,Topline,Petrol,MT
+Taigun,Topline AT,Petrol,AT
+Taigun,GT Plus 1.5 TSI,Petrol,MT
+Taigun,GT Plus 1.5 TSI DSG,Petrol,DSG
+Taigun,GT Line 1.0 TSI,Petrol,MT
+Taigun,GT Line 1.0 TSI AT,Petrol,AT
+Tiguan,Elegance,Petrol,DSG
+Virtus,GT 1.5 TSI DSG,Petrol,DSG
+Taigun,GT 1.5 TSI DSG,Petrol,DSG
+Grand i10 Nios,Era,Petrol,MT
+Grand i10 Nios,Magna,Petrol,MT
+Grand i10 Nios,Magna,CNG,MT
+Grand i10 Nios,Corporate,Petrol,MT
+Grand i10 Nios,Sportz,Petrol,MT
+Grand i10 Nios,Sportz,CNG,MT
+Grand i10 Nios,Asta,Petrol,MT
+Grand i10 Nios,Magna AMT,Petrol,AMT
+Grand i10 Nios,Sportz AMT,Petrol,AMT
+Grand i10 Nios,Asta AMT,Petrol,AMT
+i20,Era,Petrol,MT
+i20,Magna,Petrol,MT
+i20,Sportz,Petrol,MT
+i20,Asta,Petrol,MT
+i20,Asta (O),Petrol,MT
+i20,Sportz IVT,Petrol,IVT
+i20,Asta (O) IVT,Petrol,IVT
+i20 N Line,N6,Petrol,MT
+i20 N Line,N8,Petrol,MT
+i20 N Line,N6 DCT,Petrol,DCT
+i20 N Line,N8 DCT,Petrol,DCT
+Aura,E,Petrol,MT
+Aura,S,Petrol,MT
+Aura,S,CNG,MT
+Aura,SX,Petrol,MT
+Aura,SX (+),Petrol,AMT
+Aura,SX (O),Petrol,MT
+Aura,SX CNG,CNG,MT
+Exter,EX,Petrol,MT
+Exter,EX (O),Petrol,MT
+Exter,S,Petrol,MT
+Exter,S,CNG,MT
+Exter,SX,Petrol,MT
+Exter,SX,CNG,MT
+Exter,SX (O),Petrol,MT
+Exter,SX (O) Connect,Petrol,MT
+Exter,S AMT,Petrol,AMT
+Exter,SX AMT,Petrol,AMT
+Exter,SX (O) Connect AMT,Petrol,AMT
+Venue,E,Petrol,MT
+Venue,S,Petrol,MT
+Venue,S+,Petrol,MT
+Venue,S (O),Petrol,MT
+Venue,S (O),Diesel,MT
+Venue,SX,Petrol,MT
+Venue,SX,Diesel,MT
+Venue,SX (O),Petrol Turbo,MT
+Venue,SX (O),Diesel,MT
+Venue,S (O) Turbo DCT,Petrol,DCT
+Venue,SX (O) Turbo DCT,Petrol,DCT
+Venue N Line,N6,Petrol Turbo,MT
+Venue N Line,N8,Petrol Turbo,MT
+Venue N Line,N6 DCT,Petrol Turbo,DCT
+Venue N Line,N8 DCT,Petrol Turbo,DCT
+Verna,EX,Petrol,MT
+Verna,S,Petrol,MT
+Verna,SX,Petrol,MT
+Verna,SX Turbo,Petrol,MT
+Verna,SX (O),Petrol,MT
+Verna,SX (O) Turbo,Petrol,MT
+Verna,SX IVT,Petrol,IVT
+Verna,SX (O) IVT,Petrol,IVT
+Verna,SX Turbo DCT,Petrol,DCT
+Verna,SX (O) Turbo DCT,Petrol,DCT
+Creta,E,Petrol,MT
+Creta,E,Diesel,MT
+Creta,EX,Petrol,MT
+Creta,EX,Diesel,MT
+Creta,S,Petrol,MT
+Creta,S,Diesel,MT
+Creta,S (O),Petrol,MT
+Creta,S (O),Diesel,MT
+Creta,SX,Petrol,MT
+Creta,SX Tech,Petrol,MT
+Creta,SX Tech,Diesel,MT
+Creta,SX (O),Petrol,MT
+Creta,SX (O),Diesel,MT
+Creta,S (O) IVT,Petrol,IVT
+Creta,SX Tech IVT,Petrol,IVT
+Creta,SX (O) IVT,Petrol,IVT
+Creta,S (O) AT,Diesel,AT
+Creta,SX (O) AT,Diesel,AT
+Creta,SX (O) Turbo DCT,Petrol,DCT
+Creta N Line,N8,Petrol Turbo,MT
+Creta N Line,N10,Petrol Turbo,MT
+Creta N Line,N8 DCT,Petrol Turbo,DCT
+Creta N Line,N10 DCT,Petrol Turbo,DCT
+Alcazar,Executive,Petrol,MT
+Alcazar,Prestige,Petrol,MT
+Alcazar,Prestige,Diesel,MT
+Alcazar,Platinum,Petrol,MT
+Alcazar,Platinum,Diesel,MT
+Alcazar,Signature,Petrol Turbo,DCT
+Alcazar,Signature,Diesel,AT
+Tucson,Platinum,Petrol,AT
+Tucson,Platinum,Diesel,AT
+Tucson,Signature,Petrol,AT
+Tucson,Signature,Diesel,AT
+Tucson,Signature AWD,Diesel,AT
+Ioniq 5,Standard RWD,Electric,AT
+Venue,Executive,Petrol,MT
+Creta,SX Tech AT,Diesel,AT
+Creta EV,Executive,Electric,AT
+Creta EV,Executive Tech,Electric,AT
+Creta EV,Smart (O),Electric,AT
+Creta EV,Excellence,Electric,AT
+Creta EV,Excellence LR,Electric,AT
+Sonet,HTE,Petrol,MT
+Sonet,HTE,Diesel,MT
+Sonet,HTK,Petrol,MT
+Sonet,HTK,Diesel,MT
+Sonet,HTK+,Petrol,MT
+Sonet,HTK+,Diesel,MT
+Sonet,HTK+ Turbo,Petrol,iMT
+Sonet,HTX,Petrol Turbo,iMT
+Sonet,HTX,Diesel,MT
+Sonet,HTX,Diesel,AT
+Sonet,HTX+,Petrol Turbo,iMT
+Sonet,HTX+,Diesel,MT
+Sonet,GTX+,Petrol Turbo,DCT
+Sonet,GTX+,Diesel,AT
+Sonet,X-Line,Petrol Turbo,DCT
+Sonet,X-Line,Diesel,AT
+Seltos,HTE,Petrol,MT
+Seltos,HTE,Diesel,MT
+Seltos,HTK,Petrol,MT
+Seltos,HTK,Diesel,MT
+Seltos,HTK+,Petrol,MT
+Seltos,HTK+,Diesel,MT
+Seltos,HTX,Petrol,MT
+Seltos,HTX,Petrol,IVT
+Seltos,HTX,Diesel,MT
+Seltos,HTX,Diesel,AT
+Seltos,HTX+,Petrol Turbo,iMT
+Seltos,HTX+,Petrol Turbo,DCT
+Seltos,HTX+,Diesel,MT
+Seltos,GTX+ Turbo,Petrol Turbo,DCT
+Seltos,GTX+,Diesel,AT
+Seltos,X-Line Turbo,Petrol Turbo,DCT
+Seltos,X-Line,Diesel,AT
+Carens,Premium,Petrol,MT
+Carens,Premium,Diesel,MT
+Carens,Prestige,Petrol,MT
+Carens,Prestige,Diesel,MT
+Carens,Prestige+,Petrol Turbo,iMT
+Carens,Prestige+,Diesel,MT
+Carens,Luxury,Petrol Turbo,iMT
+Carens,Luxury,Diesel,MT
+Carens,Luxury+,Petrol Turbo,iMT
+Carens,Luxury+,Petrol Turbo,DCT
+Carens,Luxury+,Diesel,MT
+Carens,Luxury+,Diesel,AT
+Carens,X-Line,Petrol Turbo,DCT
+Carens,X-Line,Diesel,AT
+EV6,GT-Line,Electric,AT
+EV6,GT-Line AWD,Electric,AT
+EV9,GT-Line AWD,Electric,AT
+Carnival,Limousine,Diesel,AT
+Carnival,Limousine Plus,Diesel,AT
+Sonet,HTK (O),Petrol,MT
+Sonet,HTK (O),Diesel,MT
+Sonet,HTK+ Turbo,Petrol Turbo,DCT
+Seltos,HTK+ Turbo,Petrol Turbo,iMT
+Seltos,GTX,Diesel,AT
+Seltos,GTX Turbo,Petrol Turbo,DCT
+Syros (Clavis),HTE,Petrol,MT
+Syros (Clavis),HTE,Diesel,MT
+Syros (Clavis),HTK,Petrol,MT
+Syros (Clavis),HTK,Diesel,MT
+Syros (Clavis),HTK+,Petrol,MT
+Syros (Clavis),HTK+ Turbo,Petrol Turbo,DCT
+Syros (Clavis),HTX,Petrol Turbo,DCT
+Syros (Clavis),HTX,Diesel,AT
+Syros (Clavis),HTX+,Petrol Turbo,DCT
+Syros (Clavis),HTX+,Diesel,AT
+Syros EV (Clavis EV),HTK,Electric,AT
+Syros EV (Clavis EV),HTX,Electric,AT
+Syros EV (Clavis EV),HTX+,Electric,AT
+Sorento,2.5 Petrol AWD,Petrol,AT
+Sorento,1.6 Turbo Hybrid,Hybrid,AT
+Sorento,1.6 Turbo Hybrid AWD,Hybrid,AT
+Scorpio N,Z2,Petrol,MT
+Scorpio N,Z2,Diesel,MT
+Scorpio N,Z4,Petrol,MT
+Scorpio N,Z4,Diesel,MT
+Scorpio N,Z4,Petrol,AT
+Scorpio N,Z4,Diesel,AT
+Scorpio N,Z4 4WD,Diesel,MT
+Scorpio N,Z6,Diesel,MT
+Scorpio N,Z6,Diesel,AT
+Scorpio N,Z8,Petrol,MT
+Scorpio N,Z8,Diesel,MT
+Scorpio N,Z8,Petrol,AT
+Scorpio N,Z8,Diesel,AT
+Scorpio N,Z8 4WD,Diesel,MT
+Scorpio N,Z8 4WD,Diesel,AT
+Scorpio N,Z8 L,Petrol,MT
+Scorpio N,Z8 L,Diesel,MT
+Scorpio N,Z8 L,Petrol,AT
+Scorpio N,Z8 L,Diesel,AT
+Scorpio N,Z8 L 4WD,Diesel,MT
+Scorpio N,Z8 L 4WD,Diesel,AT
+Scorpio Classic,S,Diesel,MT
+Scorpio Classic,S11,Diesel,MT
+Thar,AX(O) RWD,Diesel,MT
+Thar,LX RWD,Diesel,MT
+Thar,LX RWD,Petrol,AT
+Thar,LX 4WD,Petrol,MT
+Thar,LX 4WD,Diesel,MT
+Thar,LX 4WD,Petrol,AT
+Thar,LX 4WD,Diesel,AT
+Thar Roxx,MX1,Petrol,MT
+Thar Roxx,MX1,Diesel,MT
+Thar Roxx,MX3,Petrol,AT
+Thar Roxx,MX3,Diesel,MT
+Thar Roxx,AX3L,Diesel,MT
+Thar Roxx,MX5,Petrol,MT
+Thar Roxx,MX5,Diesel,MT
+Thar Roxx,MX5,Diesel,AT
+Thar Roxx,AX5L,Diesel,AT
+Thar Roxx,AX7L,Petrol,AT
+Thar Roxx,AX7L,Diesel,MT
+Thar Roxx,AX7L 4WD,Diesel,MT
+Thar Roxx,AX7L 4WD,Diesel,AT
+XUV 3XO,MX1,Petrol,MT
+XUV 3XO,MX2 Pro,Petrol,MT
+XUV 3XO,MX2 Pro,Diesel,MT
+XUV 3XO,MX3,Petrol,MT
+XUV 3XO,MX3,Petrol,AT
+XUV 3XO,MX3,Diesel,MT
+XUV 3XO,AX5,Petrol,MT
+XUV 3XO,AX5,Petrol,AT
+XUV 3XO,AX5,Diesel,MT
+XUV 3XO,AX5L,Petrol,AT
+XUV 3XO,AX7,Petrol,MT
+XUV 3XO,AX7,Diesel,MT
+XUV 3XO,AX7L,Petrol,AT
+XUV700,MX,Petrol,MT
+XUV700,MX,Diesel,MT
+XUV700,AX3,Petrol,MT
+XUV700,AX3,Diesel,MT
+XUV700,AX3,Diesel,AT
+XUV700,AX5,Petrol,MT
+XUV700,AX5,Diesel,MT
+XUV700,AX5,Diesel,AT
+XUV700,AX7,Petrol,MT
+XUV700,AX7,Diesel,MT
+XUV700,AX7,Petrol,AT
+XUV700,AX7,Diesel,AT
+XUV700,AX7 AWD,Diesel,AT
+XUV700,AX7 L,Petrol,AT
+XUV700,AX7 L,Diesel,AT
+XUV700,AX7 L AWD,Diesel,AT
+XUV400 EV,EC Pro,Electric,AT
+XUV400 EV,EL Pro,Electric,AT
+Bolero,B4,Diesel,MT
+Bolero,B6,Diesel,MT
+Bolero,B6(O),Diesel,MT
+Bolero Neo,N4,Diesel,MT
+Bolero Neo,N8,Diesel,MT
+Bolero Neo,N10,Diesel,MT
+Bolero Neo,N10(O),Diesel,MT
+XUV700,AX5 S,Petrol,MT
+XUV700,AX5 S,Diesel,MT
+XUV700,AX5 S,Diesel,AT
+XUV700,AX7 L,Petrol,MT
+XUV700,AX7 L,Diesel,MT
+XUV 3XO,AX5L,Petrol,MT
+XUV 3XO,AX7,Petrol,AT
+XUV 3XO,AX7,Diesel,AT
+XUV 3XO,AX7L,Petrol,MT
+XUV 3XO,AX7L,Diesel,AT
+Thar Roxx,MX5 4WD,Diesel,MT
+Thar Roxx,AX5L 4WD,Diesel,AT
+XUV 3XO EV,AX5,Electric,AT
+XUV 3XO EV,AX7,Electric,AT
+XUV 3XO EV,AX7L,Electric,AT
+XEV 9e,Pack One,Electric,AT
+XEV 9e,Pack Two,Electric,AT
+XEV 9e,Pack Three Select,Electric,AT
+XEV 9e,Pack Three,Electric,AT
+XEV 9s,Pack One Above,Electric,AT
+XEV 9s,Pack Two Above,Electric,AT
+XEV 9s,Pack Three,Electric,AT
+XEV 9s,Pack Three Above,Electric,AT

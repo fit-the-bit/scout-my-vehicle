@@ -1,0 +1,9 @@
+<svg viewBox="0 0 100 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Mahindra Twin Peaks Minimal Vector -->
+  <g fill="#0f172a">
+    <!-- Left Wing -->
+    <path d="M 9,2 C 12,11 18,27 33,60 L 41,60 C 44,48 48,34 50,33 C 45,24 33,12 9,2 Z" />
+    <!-- Right Wing (Mirrored across x=50) -->
+    <path d="M 91,2 C 88,11 82,27 67,60 L 59,60 C 56,48 52,34 50,33 C 55,24 67,12 91,2 Z" />
+  </g>
+</svg>

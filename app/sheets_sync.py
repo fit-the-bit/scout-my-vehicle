@@ -207,6 +207,10 @@ def sync_inventory_from_records(records: List[Dict[str, str]]) -> Dict[str, any]
     cursor.execute("SELECT id, make, model, slug FROM cars;")
     cars_rows = cursor.fetchall()
     cars_map = {c["model"].lower(): c["id"] for c in cars_rows}
+    for c in cars_rows:
+        cars_map[f"{c['make']} {c['model']}".lower()] = c["id"]
+        short_make = c["make"].replace(" Motors", "")
+        cars_map[f"{short_make} {c['model']}".lower()] = c["id"]
     cars_slug_map = {c["slug"]: c["id"] for c in cars_rows}
 
     # Load existing variants map: (car_id, variant_name.lower()) -> variant_id
@@ -226,16 +230,28 @@ def sync_inventory_from_records(records: List[Dict[str, str]]) -> Dict[str, any]
         # Determine brand/make
         model_name = rec["model"].strip()
         make = raw_brand if raw_brand else "Mahindra"
-        known_prefixes = [("tata motors", "Tata Motors"), ("tata", "Tata Motors"), ("mahindra", "Mahindra"), ("hyundai", "Hyundai"), ("kia", "Kia"), ("toyota", "Toyota"), ("maruti suzuki", "Maruti Suzuki"), ("maruti", "Maruti Suzuki")]
+        known_prefixes = [
+            ("tata motors", "Tata Motors"), ("tata", "Tata Motors"),
+            ("mahindra", "Mahindra"),
+            ("hyundai", "Hyundai"),
+            ("kia", "Kia"),
+            ("toyota", "Toyota"),
+            ("maruti suzuki", "Maruti Suzuki"), ("maruti", "Maruti Suzuki"),
+            ("nissan", "Nissan"),
+            ("skoda", "Skoda"),
+            ("volkswagen", "Volkswagen"), ("vw", "Volkswagen")
+        ]
         for pfx, official_brand in known_prefixes:
             if model_name.lower().startswith(pfx):
                 make = official_brand
                 break
 
-        if not any(model_name.lower().startswith(pfx[0]) for pfx in known_prefixes):
-            model_name = f"{make} {model_name}"
-
         car_id = cars_map.get(model_name.lower())
+        if not car_id and not any(model_name.lower().startswith(pfx[0]) for pfx in known_prefixes):
+            car_id = cars_map.get(f"{make} {model_name}".lower())
+
+        if not car_id:
+            car_id = cars_map.get(model_name.lower())
         if not car_id:
             # Create car
             slug = re.sub(r"[^a-z0-9]+", "-", model_name.lower()).strip("-")

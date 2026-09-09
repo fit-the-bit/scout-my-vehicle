@@ -1,0 +1,8 @@
+<svg viewBox="0 0 100 68" xmlns="http://www.w3.org/2000/svg">
+  <g fill="#0f172a">
+    <!-- Left Peak -->
+    <path d="M 8,4 C 12,14 20,32 32,64 L 42,64 C 44,52 46,38 47,35 C 41,26 29,13 8,4 Z" />
+    <!-- Right Peak (Mirrored across x=50) -->
+    <path d="M 92,4 C 88,14 80,32 68,64 L 58,64 C 56,52 54,38 53,35 C 59,26 71,13 92,4 Z" />
+  </g>
+</svg>
