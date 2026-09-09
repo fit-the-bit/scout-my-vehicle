@@ -85,24 +85,24 @@ class TestScoutMyVehicle(unittest.TestCase):
         self.assertIn("/admin/login", logout_res.headers.get("location", ""))
 
     def test_api_dealerships(self):
-        # All 12 dealerships across 6 brands
+        # All 18 dealerships across 9 brands
         res = self.client.get("/api/dealerships")
         self.assertEqual(res.status_code, 200)
         dealers = res.json()
-        self.assertEqual(len(dealers), 12)
+        self.assertEqual(len(dealers), 18)
 
-        # Haldwani only (6 dealers)
+        # Haldwani only (9 dealers)
         res_haldwani = self.client.get("/api/dealerships?city=Haldwani")
         self.assertEqual(res_haldwani.status_code, 200)
         haldwani_dealers = res_haldwani.json()
-        self.assertEqual(len(haldwani_dealers), 6)
+        self.assertEqual(len(haldwani_dealers), 9)
         self.assertTrue(all(d["city"] == "Haldwani" for d in haldwani_dealers))
 
-        # Rudrapur only (6 dealers)
+        # Rudrapur only (9 dealers)
         res_rudrapur = self.client.get("/api/dealerships?city=Rudrapur")
         self.assertEqual(res_rudrapur.status_code, 200)
         rudrapur_dealers = res_rudrapur.json()
-        self.assertEqual(len(rudrapur_dealers), 6)
+        self.assertEqual(len(rudrapur_dealers), 9)
         self.assertTrue(all(d["city"] == "Rudrapur" for d in rudrapur_dealers))
 
         # Brand filter (Tata Motors)
@@ -123,6 +123,24 @@ class TestScoutMyVehicle(unittest.TestCase):
         self.assertIn("Nanital Moters", m_dealer_names)
         self.assertIn("Akansha Automobiles", m_dealer_names)
 
+        # Brand filter (Nissan)
+        res_nissan = self.client.get("/api/dealerships?brand=Nissan")
+        self.assertEqual(res_nissan.status_code, 200)
+        nissan_dealers = res_nissan.json()
+        self.assertEqual(len(nissan_dealers), 2)
+
+        # Brand filter (Skoda)
+        res_skoda = self.client.get("/api/dealerships?brand=Skoda")
+        self.assertEqual(res_skoda.status_code, 200)
+        skoda_dealers = res_skoda.json()
+        self.assertEqual(len(skoda_dealers), 2)
+
+        # Brand filter (Volkswagen)
+        res_vw = self.client.get("/api/dealerships?brand=Volkswagen")
+        self.assertEqual(res_vw.status_code, 200)
+        vw_dealers = res_vw.json()
+        self.assertEqual(len(vw_dealers), 2)
+
     def test_api_brands(self):
         res = self.client.get("/api/brands")
         self.assertEqual(res.status_code, 200)
@@ -133,11 +151,15 @@ class TestScoutMyVehicle(unittest.TestCase):
         self.assertIn("Kia", brands)
         self.assertIn("Toyota", brands)
         self.assertIn("Maruti Suzuki", brands)
+        self.assertIn("Nissan", brands)
+        self.assertIn("Skoda", brands)
+        self.assertIn("Volkswagen", brands)
 
     def test_api_cars(self):
         res = self.client.get("/api/cars")
         self.assertEqual(res.status_code, 200)
         cars = res.json()
+        self.assertEqual(len(cars), 87)
         self.assertGreaterEqual(len(cars), 15)
         
         # Test brand filtering on cars
@@ -249,8 +271,8 @@ class TestScoutMyVehicle(unittest.TestCase):
         self.assertTrue(res.json()["success"])
 
     def test_all_brands_inventory_and_lead_options(self):
-        # 1. Verify stock exists for all 6 brands
-        brands = ["Tata Motors", "Mahindra", "Hyundai", "Kia", "Toyota", "Maruti Suzuki"]
+        # 1. Verify stock exists for all 9 brands
+        brands = ["Tata Motors", "Mahindra", "Hyundai", "Kia", "Toyota", "Maruti Suzuki", "Nissan", "Skoda", "Volkswagen"]
         for b in brands:
             res = self.client.get(f"/api/inventory?brand={b}")
             self.assertEqual(res.status_code, 200)
@@ -258,6 +280,18 @@ class TestScoutMyVehicle(unittest.TestCase):
             self.assertGreater(len(items), 0, f"Expected stock for brand {b}")
             for item in items:
                 self.assertTrue(b.lower() in item["car_brand"].lower() or b.lower() in item["dealer_brand"].lower())
+
+        # Test transmission filtering
+        for trans in ["Manual", "Automatic", "AMT", "DCT", "e-CVT", "iMT"]:
+            res_t = self.client.get(f"/api/inventory?transmission={trans}")
+            self.assertEqual(res_t.status_code, 200)
+            items_t = res_t.json()
+            self.assertGreater(len(items_t), 0, f"Expected stock for transmission {trans}")
+
+        # Test variant count endpoint
+        res_v = self.client.get("/api/variants")
+        self.assertEqual(res_v.status_code, 200)
+        self.assertGreaterEqual(len(res_v.json()), 100)
 
         # 2. Test timeline options (0-15 days, 15 - 30 days, 30 - 60 days, just enquiring)
         # and finance options (yes, no, not decided yet)
