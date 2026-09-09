@@ -8,20 +8,21 @@
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="stylesheet" href="/static/css/styles.css">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d9232e'><path d='M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z'/></svg>">
+  <link rel="icon" type="image/png" href="/static/images/logo_transparent.png">
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen antialiased flex flex-col" x-data="dealerPortalApp({{ current_dealer.id }})">
 
   <!-- Dealer Portal Header: Clean White Surface -->
   <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex flex-wrap items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <a href="/" class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 flex items-center justify-center text-slate-700 transition" title="Back to Customer Site">
-          <i data-lucide="arrow-left" class="w-5 h-5"></i>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-4">
+        <a href="/" class="flex items-center py-1" title="Back to Customer Site">
+          <img src="/static/images/logo_transparent.png" alt="ScoutMyVehicle" class="h-9 sm:h-10 w-auto object-contain">
         </a>
+        <div class="h-7 w-px bg-slate-200 hidden sm:block"></div>
         <div>
           <div class="flex items-center gap-2">
-            <span class="text-xl font-bold font-display text-slate-950">Dealership Stock Manager</span>
+            <span class="text-base sm:text-lg font-bold font-display text-slate-950">Dealership Stock Manager</span>
             <span class="bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Live Sync</span>
           </div>
           <p class="text-xs text-slate-500 font-medium">ScoutMyVehicle Authorized Multi-Brand Showroom Desk</p>

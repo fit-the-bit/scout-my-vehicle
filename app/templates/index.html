@@ -8,7 +8,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <link rel="stylesheet" href="/static/css/styles.css">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23c0262b'><path d='M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z'/></svg>">
+  <link rel="icon" type="image/png" href="/static/images/logo_transparent.png">
 </head>
 <body class="bg-white text-slate-900 min-h-screen antialiased flex flex-col justify-between" x-data="vehicleStockApp()">
 
@@ -17,14 +17,8 @@
     <header class="border-b border-gray-100 bg-white sticky top-0 z-40">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <!-- Logo -->
-        <div class="flex items-center gap-2.5 cursor-pointer" @click="activeView = 'stock'">
-          <div class="w-7 h-7 rounded-md bg-[#c0262b] flex items-center justify-center text-white shadow-xs">
-            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/></svg>
-          </div>
-          <div class="leading-tight">
-            <div class="font-bold text-slate-900 text-sm">Scout<span class="text-[#c0262b]">MyVehicle</span></div>
-            <div class="text-[11px] text-slate-500 font-normal">Real-Time Showroom Stock</div>
-          </div>
+        <div class="flex items-center cursor-pointer py-1" @click="activeView = 'stock'">
+          <img src="/static/images/logo_transparent.png" alt="ScoutMyVehicle - Find | Verify | Drive" class="h-9 sm:h-10 w-auto object-contain">
         </div>
 
         <!-- Navigation Links -->
@@ -806,8 +800,8 @@
       <!-- 3 Columns -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <!-- Col 1: About -->
-        <div class="space-y-2">
-          <div class="font-bold text-slate-900 text-sm">Scout<span class="text-[#c0262b]">MyVehicle</span></div>
+        <div class="space-y-3">
+          <img src="/static/images/logo_transparent.png" alt="ScoutMyVehicle" class="h-8 sm:h-9 w-auto object-contain">
           <p class="leading-relaxed text-slate-500 max-w-sm">
             An independent showroom vehicle tracker connecting buyers with authorized multi-brand dealership networks across Tata Motors, Mahindra, Hyundai, Kia, Toyota, and Maruti Suzuki.
           </p>
