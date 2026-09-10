@@ -31,29 +31,33 @@ ScoutMyVehicle covers **87+ models** and **670+ active variants** across 18 auth
 
 ## 🚀 Key Features
 
-1. **Multi-Attribute Showroom Stock Explorer**:
-   - Filter dynamically across **Brand**, **Model**, **Variant**, **Fuel Type** (Petrol, Diesel, CNG, Electric, Hybrid), **Transmission** (Manual, Automatic, AMT, DCT/DCA, Torque Converter, e-CVT), and **Exterior Color**.
-   - Dedicated **Submit** and **Clear All** controls for streamlined filtering.
-   - Comprehensive model database covering all genuine OEM variants, trims, and official exterior color options.
+1. **Model-Centric Catalog with In-Card Configuration Selectors**:
+   - Streamlined browsing by distinct car models (reducing catalog clutter from hundreds of duplicate variant cards).
+   - Interactive selectors directly inside each model card for **Car Variant**, **Fuel Type**, **Transmission**, and **Exterior Colour**.
+   - Dynamic real-time updates of vehicle specifications, ex-showroom pricing, and stock status right inside the card.
+   - Clean top-level filter controls for **Brand** and **Model** with dedicated **Submit** and **Clear all** buttons.
 
-2. **Dynamic Live Feeds**:
+2. **Authorized Bank & Auto Finance Partners**:
+   - Header integration featuring premier institutional automotive lending partners:
+     - **State Bank of India (SBI)**: Low public-sector interest rates, YONO instant approval, zero foreclosure penalty.
+     - **Punjab National Bank (PNB)**: Concessions for women applicants, EV/CNG discounts, flexible margins.
+     - **HDFC Bank**: Leading private lender with 30-minute fast-track approvals, 100% on-road funding, step-up EMIs.
+     - **Chola Mandalam (Murugappa Group)**: Premier vehicle NBFC with minimal income proof requirements and flexible seasonal repayment for self-employed/rural buyers.
+   - **Interactive Live Car Loan EMI Calculator**: Real-time slider-based monthly EMI estimates, total interest, and total payable calculations.
+   - Preferred bank partner selection seamlessly attached to customer inquiries.
+
+3. **Dynamic Live Feeds**:
    - **Randomized Discovery**: Vehicle cards are randomized upon every page refresh to ensure fair, diverse vehicle visibility across all manufacturers.
    - **Live Stock Indicator**: Cards display dynamic morning live verification timestamps (*e.g., "Stock live at 10:45 AM"*).
 
-3. **Privacy-First Customer Experience**:
+4. **Privacy-First Customer Experience**:
    - **No Hidden Markups**: *"Don't pay extra/premium for the car you are looking for."*
    - **Confidential Dealer Relations**: Specific dealership branch names and internal locations are kept confidential on customer-facing cards to protect showroom partner networks while verifying authentic live inventory.
    - **Flexible Location Input**: Customers can specify any delivery location without rigid dropdowns or RTO restrictions.
 
-4. **1-Click Dealership Connect & Lead Management**:
-   - **Direct WhatsApp Chat**: Generates pre-formatted WhatsApp inquiries specifying exact vehicle model, variant, transmission, fuel, and color.
-   - **Test Drive Scheduling**: Book showroom or doorstep test drive sessions.
-   - **Instant Callback**: Submit customer contact details (Name & Mobile required; Email and Location optional).
-
-5. **Showroom Staff & Dealer Management Portal (`/dealer` & `/admin/login`)**:
-   - Showroom sales executives and inventory managers can update stock counts, toggle status (`Ready`, `In Transit`, `Allocated`), and adjust estimated waiting periods.
-   - Customer inquiry pipeline with status tracking (`New`, `Contacted`, `Test Drive Scheduled`, `Delivered`).
-   - Quick WhatsApp response trigger directly from the dealer leads desk.
+5. **1-Click Dealership Connect & Lead Management**:
+   - **Inquiry & Availability Check**: Submit inquiries capturing exact vehicle model, selected variant, fuel, transmission, color, and financing preferences.
+   - **Showroom Staff & Dealer Management Portal (`/dealer` & `/admin/login`)**: Real-time leads dashboard tracking customer timelines, finance requirements, preferred bank partners, and exchange details.
 
 ---
 

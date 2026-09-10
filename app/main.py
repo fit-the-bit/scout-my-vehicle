@@ -219,7 +219,7 @@ async def get_cars(brand: Optional[str] = None):
     cursor.execute(query, params)
     cars = dict_rows(cursor)
     
-    # Attach variant and stock stats to each car
+    # Attach variant, stock stats, fuel types, transmissions, colors, and dealership info to each car
     for car in cars:
         cursor.execute("""
             SELECT 
@@ -233,6 +233,42 @@ async def get_cars(brand: Optional[str] = None):
         """, (car["id"],))
         stats = dict(cursor.fetchone())
         car["stats"] = stats
+
+        cursor.execute("""
+            SELECT id, name, fuel_type, transmission, ex_showroom_price, drivetrain, seating, engine_spec, key_features
+            FROM variants
+            WHERE car_id = ?
+            ORDER BY ex_showroom_price ASC, id ASC;
+        """, (car["id"],))
+        variants = dict_rows(cursor)
+        car["variants"] = variants
+        car["fuel_types_list"] = sorted(list(set(v["fuel_type"] for v in variants if v.get("fuel_type"))))
+        car["transmissions_list"] = sorted(list(set(v["transmission"] for v in variants if v.get("transmission"))))
+
+        cursor.execute("""
+            SELECT DISTINCT i.colors_available
+            FROM inventory i
+            JOIN variants v ON i.variant_id = v.id
+            WHERE v.car_id = ?;
+        """, (car["id"],))
+        color_set = set()
+        for row in cursor.fetchall():
+            if row[0]:
+                for c in row[0].split(","):
+                    c_clean = c.strip()
+                    if c_clean:
+                        color_set.add(c_clean)
+        if not color_set:
+            color_set = {"Pearl White", "Silver", "Metallic Grey", "Black", "Red"}
+        car["colors"] = sorted(list(color_set))
+
+        cursor.execute("""
+            SELECT d.id FROM dealerships d
+            WHERE LOWER(d.brand) = LOWER(?) OR LOWER(d.name) LIKE '%' || LOWER(?) || '%'
+            LIMIT 1;
+        """, (car["make"], car["make"]))
+        dealer_row = cursor.fetchone()
+        car["dealership_id"] = dealer_row[0] if dealer_row else 1
 
     conn.close()
     return cars
