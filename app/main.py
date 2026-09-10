@@ -1,11 +1,12 @@
 from fastapi import FastAPI, Request, HTTPException, Query, Response
-from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
 from typing import Optional, List
 import sqlite3
 import json
+import os
 
 from app.database import get_db_connection, DB_PATH, get_setting, set_setting
 from app.models import (
@@ -18,6 +19,9 @@ from app.auth import (
 )
 from app.sheets_sync import (
     sync_from_google_sheet_url, generate_sample_csv
+)
+from app.google_sheets_service import (
+    store_inquiry_in_google_sheet, CSV_FILE_PATH, get_google_apps_script_template
 )
 
 app = FastAPI(title="ScoutMyVehicle - Multi-Brand Showroom Stock Network", version="1.0.0")
@@ -557,14 +561,132 @@ async def create_inquiry(inquiry: InquiryCreate):
     dealer_row = cursor.fetchone()
     dealer = dict(dealer_row) if dealer_row else {"name": "Authorized Showroom", "phone": "+91 5946 220 188", "whatsapp": "919837012345", "city": "Uttarakhand"}
 
+    # Fetch vehicle & variant details for WhatsApp & Google Sheet
+    car_name = "Selected Model"
+    variant_name = "Standard"
+    fuel_name = "N/A"
+    transmission_name = "N/A"
+    price_val = "N/A"
+    if inquiry.car_id:
+        cursor.execute("SELECT make, model FROM cars WHERE id = ?;", (inquiry.car_id,))
+        c_row = cursor.fetchone()
+        if c_row:
+            car_name = f"{c_row[0]} {c_row[1]}"
+    if inquiry.variant_id:
+        cursor.execute("SELECT name, fuel_type, transmission, ex_showroom_price FROM variants WHERE id = ?;", (inquiry.variant_id,))
+        v_row = cursor.fetchone()
+        if v_row:
+            variant_name = v_row[0]
+            fuel_name = v_row[1]
+            transmission_name = v_row[2]
+            price_val = f"₹ {v_row[3]:,}" if v_row[3] else "N/A"
+
+    # Extract preferred bank if specified in notes
+    preferred_bank = "N/A"
+    if inquiry.notes:
+        if "Preferred Bank:" in inquiry.notes:
+            try:
+                preferred_bank = inquiry.notes.split("Preferred Bank:")[1].split(")")[0].split("|")[0].strip()
+            except Exception:
+                pass
+        elif "Finance:" in inquiry.notes and "(" in inquiry.notes:
+            try:
+                candidate = inquiry.notes.split("(")[1].split(")")[0].strip()
+                if any(b in candidate for b in ["SBI", "PNB", "HDFC", "Chola"]):
+                    preferred_bank = candidate
+            except Exception:
+                pass
+
+    # WhatsApp Direct Message to +919275251003
+    whatsapp_target_number = "+919275251003"
+    wa_digits = "919275251003"
+    whatsapp_msg = (
+        f"🚗 *New Vehicle Enquiry - ScoutMyVehicle*\n"
+        f"----------------------------------------\n"
+        f"*Customer Information:*\n"
+        f"• Name: {inquiry.customer_name}\n"
+        f"• Phone: {inquiry.customer_phone}\n"
+        f"• Email: {inquiry.customer_email or 'N/A'}\n"
+        f"• Location: {inquiry.customer_city or 'Not Specified'}\n\n"
+        f"*Vehicle Selected:*\n"
+        f"• Model: {car_name}\n"
+        f"• Variant: {variant_name}\n"
+        f"• Fuel: {fuel_name}\n"
+        f"• Transmission: {transmission_name}\n\n"
+        f"*Purchase Preferences:*\n"
+        f"• Timeline: {inquiry.buying_timeline or 'N/A'}\n"
+        f"• Finance: {inquiry.finance_required or 'No'}\n"
+        f"• Preferred Bank: {preferred_bank}\n"
+        f"• Exchange: {'Yes - ' + str(inquiry.exchange_car_details) if inquiry.exchange_required else 'No'}\n"
+        f"----------------------------------------"
+    )
+    import urllib.parse
+    whatsapp_url = f"https://api.whatsapp.com/send?phone={wa_digits}&text={urllib.parse.quote(whatsapp_msg)}"
+
+    # Store inquiry in Google Sheet (Local CSV & Webhook if configured)
+    inquiry_record = {
+        "inquiry_id": inquiry_id,
+        "customer_name": inquiry.customer_name,
+        "customer_phone": inquiry.customer_phone,
+        "customer_email": inquiry.customer_email,
+        "customer_city": inquiry.customer_city,
+        "car_model": car_name,
+        "variant_name": variant_name,
+        "fuel_type": fuel_name,
+        "transmission": transmission_name,
+        "price": price_val,
+        "buying_timeline": inquiry.buying_timeline,
+        "finance_required": inquiry.finance_required,
+        "preferred_bank": preferred_bank,
+        "exchange_required": inquiry.exchange_required,
+        "exchange_car_details": inquiry.exchange_car_details,
+        "notes": inquiry.notes
+    }
+    webhook_url = get_setting("google_sheet_inquiries_webhook", "") or os.getenv("GOOGLE_SHEET_INQUIRIES_WEBHOOK", "")
+    sheet_result = store_inquiry_in_google_sheet(inquiry_record, webhook_url=webhook_url)
+
     conn.close()
 
     return {
         "success": True,
         "inquiry_id": inquiry_id,
         "message": f"Inquiry registered with {dealer['name']} ({dealer['city']})!",
-        "dealer": dealer
+        "dealer": dealer,
+        "whatsapp_number": whatsapp_target_number,
+        "whatsapp_url": whatsapp_url,
+        "google_sheet_stored": sheet_result.get("stored_in_csv", True)
     }
+
+@app.get("/api/inquiries/export.csv")
+async def export_inquiries_csv():
+    """Exports all stored customer inquiries in Google Sheets compatible CSV format."""
+    if os.path.exists(CSV_FILE_PATH):
+        return FileResponse(
+            path=CSV_FILE_PATH,
+            filename="scoutmyvehicle_inquiries.csv",
+            media_type="text/csv"
+        )
+    return Response(content="Timestamp,Inquiry ID,Customer Name,Customer Phone\n", media_type="text/csv")
+
+@app.get("/api/admin/sheets/inquiries-config")
+async def get_inquiries_sheets_config(request: Request):
+    current_user = get_authenticated_user(request)
+    if not current_user:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    return {
+        "webhook_url": get_setting("google_sheet_inquiries_webhook", ""),
+        "csv_export_url": "/api/inquiries/export.csv",
+        "script_template": get_google_apps_script_template()
+    }
+
+@app.post("/api/admin/sheets/inquiries-config")
+async def save_inquiries_sheets_config(data: dict, request: Request):
+    current_user = get_authenticated_user(request)
+    if not current_user:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    url = data.get("webhook_url", "").strip()
+    set_setting("google_sheet_inquiries_webhook", url)
+    return {"success": True, "message": "Google Sheet inquiry webhook URL saved"}
 
 @app.post("/api/stock-alerts")
 async def create_stock_alert(alert: StockAlertCreate):

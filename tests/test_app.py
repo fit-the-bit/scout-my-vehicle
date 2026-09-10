@@ -380,5 +380,59 @@ Toyota,Trust Toyota,Rudrapur,Toyota Urban Cruiser Hyryder,G Strong Hybrid,Hybrid
         self.assertEqual(len(items), 2)
         self.assertTrue(any(i["variant_name"] == "Creative Plus" and i["units_available"] == 4 for i in items))
 
+    def test_hamburger_rates_whatsapp_and_google_sheets_inquiry(self):
+        # 1. Verify Home Page contains Hamburger navigation items & Centered Branding
+        home_res = self.client.get("/")
+        self.assertEqual(home_res.status_code, 200)
+        
+        # Hamburger menu items
+        self.assertIn("openNav", home_res.text)
+        self.assertIn("Brands", home_res.text)
+        self.assertIn("Banks & Finance", home_res.text)
+        self.assertIn("How it works", home_res.text)
+        
+        # Centered brand title & tagline
+        self.assertIn("ScoutMyVehicle", home_res.text)
+        self.assertIn("FIND", home_res.text)
+        self.assertIn("VERIFY", home_res.text)
+        self.assertIn("DRIVE", home_res.text)
+        
+        # Bank interest rates formatted as 'starting from <interest rate %>'
+        self.assertIn("starting from 8.85%", home_res.text) # SBI
+        self.assertIn("starting from 8.75%", home_res.text) # PNB / HDFC
+        self.assertIn("starting from 9.50%", home_res.text) # Chola Mandlam
+
+        # 2. Test Inquiry Submission sends WhatsApp to +919275251003 and stores to Google Sheet
+        inquiry_payload = {
+            "dealership_id": 1,
+            "car_id": 1,
+            "variant_id": 1,
+            "customer_name": "Virender Singh",
+            "customer_phone": "+91 94120 99887",
+            "customer_email": "virender.singh@example.com",
+            "customer_city": "Haldwani",
+            "inquiry_type": "availability_check",
+            "buying_timeline": "0-15 days",
+            "finance_required": "yes",
+            "exchange_required": 1,
+            "exchange_car_details": "2020 Hyundai i20",
+            "notes": "Timeline: 0-15 days | Finance: yes (Preferred Bank: SBI)"
+        }
+        res = self.client.post("/api/inquiries", json=inquiry_payload)
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertTrue(data["success"])
+        self.assertEqual(data["whatsapp_number"], "+919275251003")
+        self.assertIn("919275251003", data["whatsapp_url"])
+        self.assertIn("Virender%20Singh", data["whatsapp_url"])
+        self.assertTrue(data["google_sheet_stored"])
+
+        # 3. Verify inquiry CSV export contains the submitted inquiry
+        csv_res = self.client.get("/api/inquiries/export.csv")
+        self.assertEqual(csv_res.status_code, 200)
+        self.assertIn("Virender Singh", csv_res.text)
+        self.assertIn("94120 99887", csv_res.text)
+        self.assertIn("Haldwani", csv_res.text)
+
 if __name__ == "__main__":
     unittest.main()
