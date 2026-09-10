@@ -23,14 +23,20 @@
           </div>
         </div>
 
-        <!-- Center: ScoutMyVehicle & Tagline (Both having same font size & center alignment) -->
+        <!-- Center: ScoutMyVehicle & Tagline (Tagline margins match the text above) -->
         <div class="flex-1 flex flex-col items-center justify-center text-center cursor-pointer select-none px-2" @click="activeView = 'stock'" aria-label="ScoutMyVehicle">
-          <span class="sr-only">ScoutMyVehicle</span>
-          <div class="text-sm sm:text-base md:text-lg font-black tracking-wider leading-tight text-slate-900">
-            <span class="text-[#c0262b]">S</span>cout<span class="text-[#c0262b]">M</span>y<span class="text-[#c0262b]">V</span>ehicle
-          </div>
-          <div class="text-sm sm:text-base md:text-lg font-black tracking-widest leading-tight text-slate-900 mt-0.5">
-            <span>FIND</span> <span class="text-[#c0262b] font-black px-1">|</span> <span>VERIFY</span> <span class="text-[#c0262b] font-black px-1">|</span> <span>DRIVE</span>
+          <div class="inline-flex flex-col items-center">
+            <span class="sr-only">ScoutMyVehicle</span>
+            <div class="text-base sm:text-lg md:text-xl font-black tracking-normal leading-tight text-slate-900 whitespace-nowrap">
+              <span class="text-[#c0262b]">S</span>cout<span class="text-[#c0262b]">M</span>y<span class="text-[#c0262b]">V</span>ehicle
+            </div>
+            <div class="w-full flex items-center justify-between text-[8px] sm:text-[9.5px] md:text-[11px] font-bold uppercase text-slate-800 leading-tight mt-0.5">
+              <span>FIND</span>
+              <span class="text-[#c0262b] font-black">|</span>
+              <span>VERIFY</span>
+              <span class="text-[#c0262b] font-black">|</span>
+              <span>DRIVE</span>
+            </div>
           </div>
         </div>
 
