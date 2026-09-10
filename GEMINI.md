@@ -12,8 +12,7 @@ This repository contains **ScoutMyCar**, a web application designed to connect c
   - Dee Kay Motors (Mahindra Rudrapur)
   - Ananya Mahindra (Rudrapur)
 - **Frontend**:
-  - `app/templates/index.html`: Customer portal with live stock explorer, Haldwani vs Rudrapur cross-city comparison, on-road price calculator, WhatsApp connect, test drive scheduling, and stock alerts.
-  - `app/templates/dealer_portal.html`: Showroom staff management portal for stock updates, status toggling, and customer leads review.
+  - `app/templates/index.html`: Customer portal with live stock explorer, bank & finance partners, WhatsApp connect, and Google Sheet inquiries.
   - `app/static/css/styles.css`: Styling with Tailwind CSS and Lucide icons.
 - **Tests**: `tests/test_app.py` contains automated test cases.
 

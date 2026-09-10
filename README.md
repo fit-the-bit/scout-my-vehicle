@@ -54,7 +54,6 @@ ScoutMyVehicle covers **87+ models** and **670+ active variants** across 18 auth
 4. **1-Click WhatsApp Dispatch & Google Sheets Lead Recording**:
    - **WhatsApp Instant Dispatch**: Upon inquiry submission, full vehicle configuration and customer details are automatically formatted and forwarded to WhatsApp number **`+919275251003`**.
    - **Google Sheets Integration**: Every submitted customer inquiry is automatically logged to Google Sheet format (`data/inquiries_google_sheet.csv`), available via live export (`/api/inquiries/export.csv`) or direct Google Apps Script Web App webhook.
-   - **Showroom Staff & Dealer Management Portal (`/dealer` & `/admin/login`)**: Real-time leads dashboard tracking customer timelines, finance requirements, preferred bank partners, and exchange details.
 
 5. **Dynamic Live Feeds & Privacy-First Buying**:
    - **Randomized Discovery**: Vehicle cards are randomized upon every page refresh to ensure fair, diverse vehicle visibility across all manufacturers.
@@ -100,6 +99,5 @@ python -m unittest tests/test_app.py
 ## 🌐 Application Endpoints
 
 - **Customer Portal**: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-- **Showroom Staff & Admin Login**: [http://127.0.0.1:8000/admin/login](http://127.0.0.1:8000/admin/login)
-- **Dealer Management Portal**: [http://127.0.0.1:8000/dealer](http://127.0.0.1:8000/dealer)
+- **Inquiries Google Sheets Export**: [http://127.0.0.1:8000/api/inquiries/export.csv](http://127.0.0.1:8000/api/inquiries/export.csv)
 - **Interactive API Documentation (Swagger)**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)

@@ -11,11 +11,7 @@ import os
 from app.database import get_db_connection, DB_PATH, get_setting, set_setting
 from app.models import (
     InquiryCreate, StockAlertCreate, InventoryUpdate, InquiryStatusUpdate, 
-    AdminLoginRequest, SheetsConfigRequest, SheetsSyncRequest
-)
-from app.auth import (
-    authenticate_user, create_session, get_user_from_session,
-    delete_session, SESSION_COOKIE_NAME
+    SheetsConfigRequest, SheetsSyncRequest
 )
 from app.sheets_sync import (
     sync_from_google_sheet_url, generate_sample_csv
@@ -40,10 +36,6 @@ templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 def dict_rows(cursor):
     columns = [col[0] for col in cursor.description]
     return [dict(zip(columns, row)) for row in cursor.fetchall()]
-
-def get_authenticated_user(request: Request) -> Optional[dict]:
-    token = request.cookies.get(SESSION_COOKIE_NAME)
-    return get_user_from_session(token)
 
 # ----------------- PAGE ROUTES -----------------
 
@@ -86,98 +78,6 @@ async def home_page(request: Request):
             "brands": brands,
             "cars": cars,
             "stats": stats
-        }
-    )
-
-@app.get("/admin")
-async def admin_redirect(request: Request):
-    return RedirectResponse(url="/dealer", status_code=302)
-
-@app.get("/admin/login", response_class=HTMLResponse)
-async def admin_login_page(request: Request, next: Optional[str] = "/dealer"):
-    current_user = get_authenticated_user(request)
-    if current_user:
-        return RedirectResponse(url=next or "/dealer", status_code=302)
-    return templates.TemplateResponse(
-        request=request,
-        name="login.html",
-        context={"next_url": next or "/dealer"}
-    )
-
-@app.post("/api/admin/login")
-async def api_admin_login(data: AdminLoginRequest):
-    user = authenticate_user(data.username, data.password)
-    if not user:
-        raise HTTPException(status_code=401, detail="Invalid username or password. Please try again.")
-
-    token = create_session(user["id"])
-
-    target_url = data.next_url or "/dealer"
-    if user["dealership_id"] and "/dealer" in target_url and "dealership_id" not in target_url:
-        target_url = f"/dealer?dealership_id={user['dealership_id']}"
-
-    response = JSONResponse(content={
-        "success": True,
-        "message": f"Welcome back, {user['name']}!",
-        "user": {
-            "id": user["id"],
-            "username": user["username"],
-            "name": user["name"],
-            "role": user["role"]
-        },
-        "redirect_url": target_url
-    })
-
-    response.set_cookie(
-        key=SESSION_COOKIE_NAME,
-        value=token,
-        httponly=True,
-        samesite="lax",
-        max_age=7 * 24 * 3600
-    )
-    return response
-
-@app.get("/admin/logout")
-async def admin_logout(request: Request):
-    token = request.cookies.get(SESSION_COOKIE_NAME)
-    if token:
-        delete_session(token)
-    response = RedirectResponse(url="/admin/login", status_code=302)
-    response.delete_cookie(SESSION_COOKIE_NAME)
-    return response
-
-@app.get("/dealer", response_class=HTMLResponse)
-async def dealer_portal(request: Request, dealership_id: Optional[int] = None):
-    current_user = get_authenticated_user(request)
-    if not current_user:
-        return RedirectResponse(url="/admin/login?next=/dealer", status_code=302)
-
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
-    # Fetch all dealerships
-    cursor.execute("SELECT * FROM dealerships ORDER BY city ASC, name ASC;")
-    dealerships = dict_rows(cursor)
-
-    # Default to user's assigned branch if not explicitly specified
-    if not dealership_id and current_user.get("dealership_id"):
-        current_dealer_id = current_user["dealership_id"]
-    else:
-        current_dealer_id = dealership_id if dealership_id else (dealerships[0]["id"] if dealerships else 1)
-
-    # Fetch selected dealer info
-    cursor.execute("SELECT * FROM dealerships WHERE id = ?;", (current_dealer_id,))
-    current_dealer = dict(cursor.fetchone()) if cursor.rowcount != 0 else dealerships[0]
-
-    conn.close()
-
-    return templates.TemplateResponse(
-        request=request,
-        name="dealer_portal.html",
-        context={
-            "dealerships": dealerships,
-            "current_dealer": current_dealer,
-            "current_user": current_user
         }
     )
 
@@ -669,10 +569,7 @@ async def export_inquiries_csv():
     return Response(content="Timestamp,Inquiry ID,Customer Name,Customer Phone\n", media_type="text/csv")
 
 @app.get("/api/admin/sheets/inquiries-config")
-async def get_inquiries_sheets_config(request: Request):
-    current_user = get_authenticated_user(request)
-    if not current_user:
-        raise HTTPException(status_code=401, detail="Authentication required")
+async def get_inquiries_sheets_config():
     return {
         "webhook_url": get_setting("google_sheet_inquiries_webhook", ""),
         "csv_export_url": "/api/inquiries/export.csv",
@@ -680,10 +577,7 @@ async def get_inquiries_sheets_config(request: Request):
     }
 
 @app.post("/api/admin/sheets/inquiries-config")
-async def save_inquiries_sheets_config(data: dict, request: Request):
-    current_user = get_authenticated_user(request)
-    if not current_user:
-        raise HTTPException(status_code=401, detail="Authentication required")
+async def save_inquiries_sheets_config(data: dict):
     url = data.get("webhook_url", "").strip()
     set_setting("google_sheet_inquiries_webhook", url)
     return {"success": True, "message": "Google Sheet inquiry webhook URL saved"}
@@ -856,10 +750,7 @@ async def get_price_estimate(variant_id: int, rto_city: str = "Haldwani"):
 # ----------------- GOOGLE SHEETS SYNC ROUTES -----------------
 
 @app.get("/api/admin/sheets/config")
-async def get_sheets_config(request: Request):
-    user = get_authenticated_user(request)
-    if not user:
-        raise HTTPException(status_code=401, detail="Authentication required")
+async def get_sheets_config():
     return {
         "google_sheet_url": get_setting("google_sheet_url", ""),
         "last_sync_time": get_setting("last_sync_time", "Never"),
@@ -868,19 +759,12 @@ async def get_sheets_config(request: Request):
     }
 
 @app.post("/api/admin/sheets/config")
-async def save_sheets_config(config: SheetsConfigRequest, request: Request):
-    user = get_authenticated_user(request)
-    if not user:
-        raise HTTPException(status_code=401, detail="Authentication required")
+async def save_sheets_config(config: SheetsConfigRequest):
     set_setting("google_sheet_url", config.google_sheet_url.strip())
     return {"success": True, "message": "Google Sheet URL saved successfully"}
 
 @app.post("/api/admin/sheets/sync")
-async def sync_google_sheets(request: Request, sync_req: Optional[SheetsSyncRequest] = None):
-    user = get_authenticated_user(request)
-    if not user:
-        raise HTTPException(status_code=401, detail="Authentication required")
-
+async def sync_google_sheets(sync_req: Optional[SheetsSyncRequest] = None):
     url = (sync_req.google_sheet_url if sync_req and sync_req.google_sheet_url else None) or get_setting("google_sheet_url")
     if not url or not url.strip():
         raise HTTPException(status_code=400, detail="No Google Sheet URL provided or saved. Please enter your Google Sheet sharing link.")

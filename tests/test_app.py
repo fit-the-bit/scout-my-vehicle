@@ -42,47 +42,29 @@ class TestScoutMyVehicle(unittest.TestCase):
         self.assertNotIn("(UK-04)", response.text)
         self.assertNotIn("(UK-06)", response.text)
 
-    def test_dealer_portal_redirects_when_unauthenticated(self):
-        response = self.client.get("/dealer", follow_redirects=False)
-        self.assertEqual(response.status_code, 302)
-        self.assertIn("/admin/login", response.headers.get("location", ""))
+    def test_showroom_staff_and_admin_login_completely_removed(self):
+        # 1. Verify /admin/login is completely removed (returns 404)
+        login_res = self.client.get("/admin/login")
+        self.assertEqual(login_res.status_code, 404)
 
-    def test_admin_login_workflow(self):
-        # 1. Login page renders
-        login_page = self.client.get("/admin/login")
-        self.assertEqual(login_page.status_code, 200)
-        self.assertIn("Admin & Staff Login", login_page.text)
-        self.assertIn("ScoutMyVehicle", login_page.text)
+        # 2. Verify /dealer is completely removed (returns 404)
+        dealer_res = self.client.get("/dealer")
+        self.assertEqual(dealer_res.status_code, 404)
 
-        # 2. Invalid login returns 401
-        bad_login = self.client.post("/api/admin/login", json={
-            "username": "admin",
-            "password": "wrongpassword"
-        })
-        self.assertEqual(bad_login.status_code, 401)
+        # 3. Verify /admin is completely removed (returns 404)
+        admin_res = self.client.get("/admin")
+        self.assertEqual(admin_res.status_code, 404)
 
-        # 3. Valid login succeeds
-        good_login = self.client.post("/api/admin/login", json={
-            "username": "admin",
-            "password": "scoutmycar2026",
-            "next_url": "/dealer"
-        })
-        self.assertEqual(good_login.status_code, 200)
-        data = good_login.json()
-        self.assertTrue(data["success"])
-        self.assertIn("scout_admin_session", good_login.cookies)
+        # 4. Verify /api/admin/login is completely removed (returns 404)
+        api_login_res = self.client.post("/api/admin/login", json={"username": "admin", "password": "password"})
+        self.assertEqual(api_login_res.status_code, 404)
 
-        # 4. Authenticated request to /dealer renders portal
-        portal_res = self.client.get("/dealer", cookies=good_login.cookies)
-        self.assertEqual(portal_res.status_code, 200)
-        self.assertIn("Dealership Stock Manager", portal_res.text)
-        self.assertIn("System Administrator", portal_res.text)
-        self.assertIn("Sign out", portal_res.text)
-
-        # 5. Logout redirects to login and clears cookie
-        logout_res = self.client.get("/admin/logout", cookies=good_login.cookies, follow_redirects=False)
-        self.assertEqual(logout_res.status_code, 302)
-        self.assertIn("/admin/login", logout_res.headers.get("location", ""))
+        # 5. Verify customer portal has no link or text for showroom staff & admin login
+        home = self.client.get("/")
+        self.assertEqual(home.status_code, 200)
+        self.assertNotIn("Showroom staff & admin login", home.text)
+        self.assertNotIn("/admin/login", home.text)
+        self.assertNotIn("/dealer", home.text)
 
     def test_api_dealerships(self):
         # All 18 dealerships across 9 brands
@@ -337,25 +319,14 @@ class TestScoutMyVehicle(unittest.TestCase):
         self.assertEqual(template_res.status_code, 200)
         self.assertIn("Brand,Dealership,City,Model,Variant", template_res.text)
 
-        # 3. Test Config endpoint (Auth required)
-        unauth_config = self.client.get("/api/admin/sheets/config")
-        self.assertEqual(unauth_config.status_code, 401)
-
-        # Authenticate
-        login_res = self.client.post("/api/admin/login", json={
-            "username": "admin",
-            "password": "scoutmycar2026"
-        })
-        cookies = login_res.cookies
-
-        # Save config
+        # 3. Test Config endpoint
         save_res = self.client.post("/api/admin/sheets/config", json={
             "google_sheet_url": test_url
-        }, cookies=cookies)
+        })
         self.assertEqual(save_res.status_code, 200)
 
         # Read config
-        config_res = self.client.get("/api/admin/sheets/config", cookies=cookies)
+        config_res = self.client.get("/api/admin/sheets/config")
         self.assertEqual(config_res.status_code, 200)
         self.assertEqual(config_res.json()["google_sheet_url"], test_url)
 
