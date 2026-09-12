@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 import sys
 import os
 
@@ -15,9 +16,13 @@ class TestScoutMyVehicle(unittest.TestCase):
         # Ensure fresh seed
         seed()
         cls.client = TestClient(app)
+        # Mock Google Sheets webhook forwarding during tests so live sheet is not polluted
+        cls.webhook_patcher = patch("app.google_sheets_service.forward_to_google_sheet_webhook", return_value=True)
+        cls.mock_webhook = cls.webhook_patcher.start()
 
     @classmethod
     def tearDownClass(cls):
+        cls.webhook_patcher.stop()
         # Restore full seed
         seed()
 
