@@ -1572,6 +1572,37 @@
               const data = await res.json();
               this.submittedWhatsappUrl = data.whatsapp_url || 'https://api.whatsapp.com/send?phone=919275251003';
               this.inquirySubmitted = true;
+
+              // Direct client-side fail-safe dispatch to Google Sheets webhook if backend did not confirm sync
+              if (!data.google_sheet_forwarded) {
+                try {
+                  const gasPayload = {
+                    timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19),
+                    inquiry_id: data.inquiry_id || Date.now().toString().slice(-6),
+                    customer_name: this.inquiryForm.name.trim(),
+                    customer_phone: "'" + this.inquiryForm.phone.trim(),
+                    customer_email: this.inquiryForm.email ? this.inquiryForm.email.trim() : 'N/A',
+                    customer_city: finalCity,
+                    car_model: this.selectedInquiryItem.car_model || 'Any Model',
+                    variant_name: this.selectedInquiryItem.variant_name || 'Standard',
+                    fuel_type: this.selectedInquiryItem.fuel_type || 'N/A',
+                    transmission: this.selectedInquiryItem.transmission || 'N/A',
+                    color: this.selectedInquiryItem.colors_available || 'Any',
+                    buying_timeline: this.inquiryForm.timeline || 'N/A',
+                    finance_required: this.inquiryForm.finance || 'no',
+                    preferred_bank: this.inquiryForm.preferredBank || 'N/A',
+                    exchange_car_details: this.inquiryForm.exchange ? this.inquiryForm.exchangeDetails : 'N/A',
+                    notes: notesList.length > 0 ? notesList.join(' | ') : ''
+                  };
+                  fetch('https://script.google.com/macros/s/AKfycbyGjbZe4owqaBoY_m76pQOSxlisjHFbfqxMKhS7FFCbaBr0G3wa3XBNq1h14uyn5nMD/exec', {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(gasPayload)
+                  }).catch(() => {});
+                } catch (err) {}
+              }
+
               if (this.submittedWhatsappUrl) {
                 try {
                   window.open(this.submittedWhatsappUrl, '_blank');
@@ -1584,6 +1615,35 @@
             }
           } catch (e) {
             console.error(e);
+            // Fallback: If backend server is down, directly dispatch to Google Apps Script Web App
+            try {
+              const gasPayload = {
+                timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19),
+                inquiry_id: Date.now().toString().slice(-6),
+                customer_name: this.inquiryForm.name.trim(),
+                customer_phone: "'" + this.inquiryForm.phone.trim(),
+                customer_email: this.inquiryForm.email ? this.inquiryForm.email.trim() : 'N/A',
+                customer_city: finalCity,
+                car_model: this.selectedInquiryItem.car_model || 'Any Model',
+                variant_name: this.selectedInquiryItem.variant_name || 'Standard',
+                fuel_type: this.selectedInquiryItem.fuel_type || 'N/A',
+                transmission: this.selectedInquiryItem.transmission || 'N/A',
+                color: this.selectedInquiryItem.colors_available || 'Any',
+                buying_timeline: this.inquiryForm.timeline || 'N/A',
+                finance_required: this.inquiryForm.finance || 'no',
+                preferred_bank: this.inquiryForm.preferredBank || 'N/A',
+                exchange_car_details: this.inquiryForm.exchange ? this.inquiryForm.exchangeDetails : 'N/A',
+                notes: notesList.length > 0 ? notesList.join(' | ') : ''
+              };
+              await fetch('https://script.google.com/macros/s/AKfycbyGjbZe4owqaBoY_m76pQOSxlisjHFbfqxMKhS7FFCbaBr0G3wa3XBNq1h14uyn5nMD/exec', {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(gasPayload)
+              });
+              this.inquirySubmitted = true;
+              return;
+            } catch (fallbackErr) {}
             alert('Network error. Please try again.');
           } finally {
             this.submitting = false;

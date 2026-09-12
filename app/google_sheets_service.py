@@ -125,15 +125,21 @@ def forward_to_google_sheet_webhook(webhook_url: str, inquiry_data: Dict[str, An
         print(f"[GoogleSheetsSync] Webhook forwarding notice: {e}")
         return False
 
+DEFAULT_INQUIRIES_WEBHOOK_URL = os.getenv(
+    "GOOGLE_SHEET_INQUIRIES_WEBHOOK",
+    "https://script.google.com/macros/s/AKfycbyGjbZe4owqaBoY_m76pQOSxlisjHFbfqxMKhS7FFCbaBr0G3wa3XBNq1h14uyn5nMD/exec"
+)
+
 def store_inquiry_in_google_sheet(inquiry_data: Dict[str, Any], webhook_url: Optional[str] = None) -> Dict[str, Any]:
     """
     Primary interface: records inquiry in local Google Sheet CSV file
     and forwards to Google Apps Script Web App if webhook_url is configured.
     """
     csv_path = append_inquiry_to_csv(inquiry_data)
+    target_webhook = webhook_url or os.getenv("GOOGLE_SHEET_INQUIRIES_WEBHOOK") or DEFAULT_INQUIRIES_WEBHOOK_URL
     webhook_success = False
-    if webhook_url:
-        webhook_success = forward_to_google_sheet_webhook(webhook_url, inquiry_data)
+    if target_webhook:
+        webhook_success = forward_to_google_sheet_webhook(target_webhook, inquiry_data)
         
     return {
         "stored_in_csv": True,
@@ -146,7 +152,8 @@ def get_google_apps_script_template() -> str:
     return """// Google Apps Script to auto-append ScoutMyVehicle enquiries to Google Sheets
 function doPost(e) {
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName("Inquiries") || ss.getSheets()[0];
     
     if (sheet.getLastRow() === 0) {
       sheet.appendRow([
@@ -186,11 +193,27 @@ function doPost(e) {
     var lastRow = sheet.getLastRow();
     sheet.getRange(lastRow, 4).setNumberFormat("@");
     
-    return ContentService.createTextOutput(JSON.stringify({status: "success"}))
-      .setMimeType(ContentService.MimeType.JSON);
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "success", 
+      message: "Inquiry appended successfully", 
+      sheet_name: sheet.getName(),
+      row: lastRow
+    })).setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
     return ContentService.createTextOutput(JSON.stringify({status: "error", message: err.toString()}))
       .setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+function doGet(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName("Inquiries") || ss.getSheets()[0];
+  return ContentService.createTextOutput(JSON.stringify({
+    status: "online",
+    service: "ScoutMyVehicle Google Sheets Webhook",
+    active_sheet: sheet.getName(),
+    total_rows: sheet.getLastRow(),
+    timestamp: new Date()
+  })).setMimeType(ContentService.MimeType.JSON);
 }
 """

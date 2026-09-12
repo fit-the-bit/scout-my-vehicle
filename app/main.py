@@ -17,8 +17,25 @@ from app.sheets_sync import (
     sync_from_google_sheet_url, generate_sample_csv
 )
 from app.google_sheets_service import (
-    store_inquiry_in_google_sheet, CSV_FILE_PATH, get_google_apps_script_template
+    store_inquiry_in_google_sheet, CSV_FILE_PATH, get_google_apps_script_template,
+    DEFAULT_INQUIRIES_WEBHOOK_URL
 )
+
+# Auto-load .env file if present
+_env_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".env"))
+if os.path.exists(_env_path):
+    try:
+        with open(_env_path, "r", encoding="utf-8") as _ef:
+            for _line in _ef:
+                _line = _line.strip()
+                if _line and not _line.startswith("#") and "=" in _line:
+                    _k, _v = _line.split("=", 1)
+                    _k = _k.strip()
+                    _v = _v.strip().strip("'").strip('"')
+                    if _k and _k not in os.environ:
+                        os.environ[_k] = _v
+    except Exception:
+        pass
 
 app = FastAPI(title="ScoutMyVehicle - Multi-Brand Showroom Stock Network", version="1.0.0")
 
@@ -554,7 +571,8 @@ async def create_inquiry(inquiry: InquiryCreate):
         "dealer": dealer,
         "whatsapp_number": whatsapp_target_number,
         "whatsapp_url": whatsapp_url,
-        "google_sheet_stored": sheet_result.get("stored_in_csv", True)
+        "google_sheet_stored": sheet_result.get("stored_in_csv", True),
+        "google_sheet_forwarded": sheet_result.get("webhook_forwarded", False)
     }
 
 @app.get("/api/inquiries/export.csv")

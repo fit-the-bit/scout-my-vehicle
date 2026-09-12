@@ -16,7 +16,8 @@
 
 function doPost(e) {
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName('Inquiries') || ss.getSheets()[0];
     
     // Auto-create bold header row if new sheet
     if (sheet.getLastRow() === 0) {
@@ -57,10 +58,26 @@ function doPost(e) {
     var lastRow = sheet.getLastRow();
     sheet.getRange(lastRow, 4).setNumberFormat('@');
     
-    return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return ContentService.createTextOutput(JSON.stringify({ 
+      status: 'success', 
+      message: 'Inquiry appended successfully',
+      sheet_name: sheet.getName(),
+      row: lastRow 
+    })).setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
     return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.toString() }))
       .setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+function doGet(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName('Inquiries') || ss.getSheets()[0];
+  return ContentService.createTextOutput(JSON.stringify({
+    status: 'online',
+    service: 'ScoutMyVehicle Google Sheets Webhook',
+    active_sheet: sheet.getName(),
+    total_rows: sheet.getLastRow(),
+    timestamp: new Date()
+  })).setMimeType(ContentService.MimeType.JSON);
 }
