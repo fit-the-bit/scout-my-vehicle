@@ -106,9 +106,12 @@ def forward_to_google_sheet_webhook(webhook_url: str, inquiry_data: Dict[str, An
         req = urllib.request.Request(
             webhook_url,
             data=req_data,
-            headers={"Content-Type": "application/json"}
+            headers={
+                "Content-Type": "application/json",
+                "User-Agent": "Mozilla/5.0"
+            }
         )
-        with urllib.request.urlopen(req, timeout=5) as response:
+        with urllib.request.urlopen(req, timeout=8) as response:
             return response.status in (200, 201, 302)
     except Exception as e:
         print(f"[GoogleSheetsSync] Webhook forwarding notice: {e}")
