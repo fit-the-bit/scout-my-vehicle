@@ -16,16 +16,9 @@
     <!-- Top Navbar -->
     <header class="border-b border-gray-100 bg-white sticky top-0 z-40">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between">
-        <!-- Top Left: Logo -->
-        <div class="w-24 sm:w-36 flex items-center justify-start">
-          <div class="cursor-pointer py-1" @click="activeView = 'stock'">
-            <img src="/static/images/logo_icon.png" alt="ScoutMyVehicle Logo" class="h-10 sm:h-12 w-auto object-contain">
-          </div>
-        </div>
-
-        <!-- Center: ScoutMyVehicle & Tagline (Tagline margins match the text above) -->
-        <div class="flex-1 flex flex-col items-center justify-center text-center cursor-pointer select-none px-2" @click="activeView = 'stock'" aria-label="ScoutMyVehicle">
-          <div class="inline-flex flex-col items-center">
+        <!-- Top Left: ScoutMyVehicle & Tagline -->
+        <div class="flex items-center justify-start">
+          <div class="flex flex-col items-start cursor-pointer select-none py-1" @click="activeView = 'stock'" aria-label="ScoutMyVehicle">
             <span class="sr-only">ScoutMyVehicle</span>
             <div class="text-base sm:text-lg md:text-xl font-black tracking-normal leading-tight text-slate-900 whitespace-nowrap">
               <span class="text-[#c0262b]">S</span>cout<span class="text-[#c0262b]">M</span>y<span class="text-[#c0262b]">V</span>ehicle
@@ -41,7 +34,7 @@
         </div>
 
         <!-- Top Right: Hamburger Button with Brands, Banks & Finance, How it works -->
-        <div class="w-24 sm:w-36 flex items-center justify-end relative" @click.away="openNav = false">
+        <div class="flex items-center justify-end relative" @click.away="openNav = false">
           <button 
             @click="openNav = !openNav" 
             type="button" 
