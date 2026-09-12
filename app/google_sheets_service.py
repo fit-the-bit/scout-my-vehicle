@@ -46,11 +46,14 @@ def append_inquiry_to_csv(inquiry_data: Dict[str, Any]) -> str:
     ensure_csv_initialized()
     
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    raw_phone = str(inquiry_data.get("customer_phone") or "").strip()
+    phone_display = f"'{raw_phone}" if (raw_phone.startswith("+") and not raw_phone.startswith("'")) else raw_phone
+
     row = [
         timestamp,
         inquiry_data.get("inquiry_id", ""),
         inquiry_data.get("customer_name", ""),
-        inquiry_data.get("customer_phone", ""),
+        phone_display,
         inquiry_data.get("customer_email", "") or "N/A",
         inquiry_data.get("customer_city", "") or "Not Specified",
         inquiry_data.get("car_model", "") or "Any Model",
@@ -82,11 +85,16 @@ def forward_to_google_sheet_webhook(webhook_url: str, inquiry_data: Dict[str, An
     if not webhook_url or not webhook_url.startswith("http"):
         return False
         
+    raw_phone = str(inquiry_data.get("customer_phone") or "").strip()
+    # In Google Sheets, a leading '+' is treated as a mathematical formula, causing a formula parse error (#ERROR!).
+    # Prepending a single apostrophe forces Google Sheets to treat the value as plain text and display '+91...' cleanly.
+    formatted_phone = f"'{raw_phone}" if (raw_phone and not raw_phone.startswith("'")) else raw_phone
+
     payload = {
         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "inquiry_id": inquiry_data.get("inquiry_id"),
         "customer_name": inquiry_data.get("customer_name"),
-        "customer_phone": inquiry_data.get("customer_phone"),
+        "customer_phone": formatted_phone,
         "customer_email": inquiry_data.get("customer_email") or "N/A",
         "customer_city": inquiry_data.get("customer_city") or "Not Specified",
         "car_model": inquiry_data.get("car_model") or "Any Model",
@@ -148,14 +156,19 @@ function doPost(e) {
         "Finance Required", "Preferred Bank", "Exchange Details", "Notes"
       ]);
       sheet.getRange(1, 1, 1, 16).setFontWeight("bold").setBackground("#f1f5f9");
+      sheet.getRange("D:D").setNumberFormat("@");
     }
     
     var data = JSON.parse(e.postData.contents);
+    var rawPhone = (data.customer_phone || "").toString().trim();
+    // Prepend single quote if not present to ensure Google Sheets treats it as plain text (prevents #ERROR! formula parse error on +91)
+    var phone = rawPhone ? (rawPhone.indexOf("'") === 0 ? rawPhone : "'" + rawPhone) : "";
+
     sheet.appendRow([
       data.timestamp || new Date(),
       data.inquiry_id || "",
       data.customer_name || "",
-      data.customer_phone || "",
+      phone,
       data.customer_email || "",
       data.customer_city || "",
       data.car_model || "",
@@ -169,6 +182,9 @@ function doPost(e) {
       data.exchange_car_details || "",
       data.notes || ""
     ]);
+
+    var lastRow = sheet.getLastRow();
+    sheet.getRange(lastRow, 4).setNumberFormat("@");
     
     return ContentService.createTextOutput(JSON.stringify({status: "success"}))
       .setMimeType(ContentService.MimeType.JSON);

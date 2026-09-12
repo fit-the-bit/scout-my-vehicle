@@ -27,14 +27,19 @@ function doPost(e) {
         'Finance Required', 'Preferred Bank', 'Exchange Details', 'Notes'
       ]);
       sheet.getRange(1, 1, 1, 16).setFontWeight('bold').setBackground('#f1f5f9');
+      sheet.getRange('D:D').setNumberFormat('@');
     }
     
     var data = JSON.parse(e.postData.contents);
+    var rawPhone = (data.customer_phone || '').toString().trim();
+    // Prepend single quote if not present to ensure Google Sheets treats it as plain text (prevents #ERROR! formula parse error on +91)
+    var phone = rawPhone ? (rawPhone.indexOf("'") === 0 ? rawPhone : "'" + rawPhone) : '';
+
     sheet.appendRow([
       data.timestamp || new Date(),
       data.inquiry_id || '',
       data.customer_name || '',
-      data.customer_phone || '',
+      phone,
       data.customer_email || '',
       data.customer_city || '',
       data.car_model || '',
@@ -48,6 +53,9 @@ function doPost(e) {
       data.exchange_car_details || '',
       data.notes || ''
     ]);
+
+    var lastRow = sheet.getLastRow();
+    sheet.getRange(lastRow, 4).setNumberFormat('@');
     
     return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
       .setMimeType(ContentService.MimeType.JSON);
