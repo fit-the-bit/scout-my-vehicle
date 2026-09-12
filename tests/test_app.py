@@ -405,5 +405,27 @@ Toyota,Trust Toyota,Rudrapur,Toyota Urban Cruiser Hyryder,G Strong Hybrid,Hybrid
         self.assertIn("94120 99887", csv_res.text)
         self.assertIn("Haldwani", csv_res.text)
 
+    def test_reviews_endpoint_and_reviews_section(self):
+        # 1. Test /api/reviews endpoint
+        res = self.client.get("/api/reviews")
+        self.assertEqual(res.status_code, 200)
+        reviews = res.json()
+        self.assertGreaterEqual(len(reviews), 8)
+        self.assertTrue(any(r["name"] == "Rohit Negi" for r in reviews))
+        self.assertTrue(any("Scorpio-N" in r["car"] for r in reviews))
+
+        # Test limit parameter
+        res_limit = self.client.get("/api/reviews?limit=3")
+        self.assertEqual(res_limit.status_code, 200)
+        self.assertEqual(len(res_limit.json()), 3)
+
+        # 2. Test Home Page contains Reviews section & Randomize button
+        home_res = self.client.get("/")
+        self.assertEqual(home_res.status_code, 200)
+        self.assertIn("What Uttarakhand Car Buyers Say", home_res.text)
+        self.assertIn("Verified Buyer Reviews", home_res.text)
+        self.assertIn("Randomize", home_res.text)
+        self.assertIn("shuffleReviews()", home_res.text)
+
 if __name__ == "__main__":
     unittest.main()

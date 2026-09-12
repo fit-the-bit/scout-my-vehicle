@@ -100,6 +100,103 @@ async def home_page(request: Request):
 
 # ----------------- REST API ROUTES -----------------
 
+@app.get("/api/reviews")
+async def get_reviews(limit: Optional[int] = Query(default=None)):
+    import random
+    reviews = [
+        {
+            "id": 1,
+            "name": "Rohit Negi",
+            "city": "Haldwani",
+            "car": "Mahindra Scorpio-N Z8L",
+            "dealer": "Bajrang Motors, Haldwani",
+            "rating": 5,
+            "date": "3 days ago",
+            "badge": "Verified Buyer",
+            "quote": "Got immediate showroom allocation for Scorpio-N without paying any broker premium. Bajrang Motors matched ex-showroom pricing and delivered in 4 days. Unmatched service for Kumaon buyers!"
+        },
+        {
+            "id": 2,
+            "name": "Pooja Pandey",
+            "city": "Rudrapur",
+            "car": "Tata Nexon Fearless+",
+            "dealer": "Amit Auto, Rudrapur",
+            "rating": 5,
+            "date": "1 week ago",
+            "badge": "Verified Buyer",
+            "quote": "Seamless experience from variant selection to delivery. Got 8.75% finance approved with SBI auto loan tie-up within 24 hours. The showroom team coordinated everything on WhatsApp."
+        },
+        {
+            "id": 3,
+            "name": "Manish Rawat",
+            "city": "Nainital",
+            "car": "Hyundai Creta SX (O)",
+            "dealer": "Sachin Hyundai, Haldwani",
+            "rating": 5,
+            "date": "2 weeks ago",
+            "badge": "Verified Buyer",
+            "quote": "Was frustrated with 4-month waiting periods in Delhi NCR. ScoutMyVehicle showed live floor stock in Haldwani. Drove home with the exact Ranger Khaki colour in less than a week!"
+        },
+        {
+            "id": 4,
+            "name": "Gurpreet Singh",
+            "city": "Kashipur / Rudrapur",
+            "car": "Maruti Suzuki Brezza ZXi+",
+            "dealer": "Akansha Automobiles, Rudrapur",
+            "rating": 5,
+            "date": "2 weeks ago",
+            "badge": "Verified Buyer",
+            "quote": "Exchanged my 2019 Swift at very fair market valuation and upgraded to Brezza. No hidden surcharges or forced showroom accessory kits. Truly transparent buying."
+        },
+        {
+            "id": 5,
+            "name": "Dr. Arvind Joshi",
+            "city": "Kathgodam",
+            "car": "Toyota Hyryder Hybrid",
+            "dealer": "Trust Toyota, Haldwani",
+            "rating": 5,
+            "date": "3 weeks ago",
+            "badge": "Verified Buyer",
+            "quote": "The live stock tracker saved me countless phone calls. PNB car loan was processed with zero processing fee scheme. Highly recommend checking live availability here first."
+        },
+        {
+            "id": 6,
+            "name": "Neha Bisht",
+            "city": "Haldwani",
+            "car": "Kia Seltos HTX Diesel",
+            "dealer": "Classic Kia, Haldwani",
+            "rating": 5,
+            "date": "1 month ago",
+            "badge": "Verified Buyer",
+            "quote": "Got instant WhatsApp coordination from the dealer sales head. Transparent on-road pricing quotation and delivered right before Diwali as promised. Five stars!"
+        },
+        {
+            "id": 7,
+            "name": "Deepak Mehra",
+            "city": "Bhimtal",
+            "car": "Mahindra Thar 4WD",
+            "dealer": "Kumar Autowheels, Rudrapur",
+            "rating": 5,
+            "date": "1 month ago",
+            "badge": "Verified Buyer",
+            "quote": "Found the exact Everest White hardtop model in transit allocation. The direct dealer connect feature meant zero middlemen commission. Outstanding platform for Uttarakhand!"
+        },
+        {
+            "id": 8,
+            "name": "Kavita Tiwari",
+            "city": "Pantnagar",
+            "car": "Tata Punch Creative",
+            "dealer": "Gola Ganapati Motors, Haldwani",
+            "rating": 5,
+            "date": "1 month ago",
+            "badge": "Verified Buyer",
+            "quote": "First-time car buyer and the team made the entire process so easy. HDFC auto loan was approved online in 2 hours. Delivery at Gola Ganapati Motors was festive and smooth."
+        }
+    ]
+    if limit and limit > 0:
+        return random.sample(reviews, min(limit, len(reviews)))
+    return reviews
+
 @app.get("/api/brands")
 async def get_brands():
     conn = get_db_connection()

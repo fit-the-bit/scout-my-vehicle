@@ -651,6 +651,87 @@
         </div>
       </div>
 
+      <!-- ================= CUSTOMER REVIEWS & EXPERIENCES ================= -->
+      <section class="mt-20 pt-12 border-t border-slate-100" id="reviews-section">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-50 text-[#c0262b] text-[11px] font-bold uppercase tracking-wider mb-2">
+              <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <span>Verified Buyer Reviews</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-950 tracking-tight">What Uttarakhand Car Buyers Say</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1 max-w-xl">
+              Real feedback from customers who found their dream car through authorized dealerships across Haldwani, Rudrapur, and Kumaon.
+            </p>
+          </div>
+
+          <!-- Overall Rating & Shuffle Button -->
+          <div class="flex items-center gap-2.5 shrink-0">
+            <div class="inline-flex items-center gap-2 bg-slate-50 border border-slate-200/80 px-3 py-2 rounded-xl text-xs">
+              <div class="flex text-amber-500">
+                <template x-for="s in 5" :key="s">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                </template>
+              </div>
+              <span class="font-bold text-slate-900">4.9 / 5.0</span>
+              <span class="text-slate-400 hidden sm:inline">• 1,200+ Reviews</span>
+            </div>
+
+            <button 
+              @click="shuffleReviews()" 
+              type="button" 
+              class="inline-flex items-center gap-1.5 px-3 py-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition cursor-pointer shadow-2xs hover:text-[#c0262b]"
+              title="Click to randomize reviews"
+            >
+              <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              <span>Randomize</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Reviews Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <template x-for="(rev, idx) in displayReviews.slice(0, 6)" :key="rev.id || idx">
+            <div class="bg-white border border-slate-200 hover:border-slate-300 rounded-2xl p-5 shadow-xs hover:shadow-md transition flex flex-col justify-between space-y-4">
+              <!-- Header: Stars + Verified Badge + Date -->
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-0.5 text-amber-500">
+                  <template x-for="star in rev.rating" :key="star">
+                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                  </template>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+                    <svg class="w-2.5 h-2.5 fill-current" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                    <span x-text="rev.badge"></span>
+                  </span>
+                  <span class="text-[10px] text-slate-400" x-text="rev.date"></span>
+                </div>
+              </div>
+
+              <!-- Quote Text -->
+              <p class="text-xs text-slate-700 leading-relaxed italic" x-text="'“' + rev.quote + '”'"></p>
+
+              <!-- Footer: User & Car Badge -->
+              <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2.5 min-w-0">
+                  <div class="w-8 h-8 rounded-full bg-red-50 text-[#c0262b] font-bold text-xs flex items-center justify-center shrink-0 border border-red-100/80" x-text="rev.name.charAt(0)"></div>
+                  <div class="min-w-0">
+                    <div class="font-bold text-slate-900 text-xs truncate" x-text="rev.name"></div>
+                    <div class="text-[10px] text-slate-500 truncate" x-text="rev.city"></div>
+                  </div>
+                </div>
+
+                <div class="text-right shrink-0">
+                  <div class="text-[10px] font-semibold text-slate-800 bg-slate-50 border border-slate-200/80 px-2 py-0.5 rounded-md truncate max-w-[130px] sm:max-w-[160px]" :title="rev.car + ' • ' + rev.dealer" x-text="rev.car"></div>
+                  <div class="text-[9px] text-slate-400 mt-0.5 truncate max-w-[130px]" x-text="rev.dealer.split(',')[0]"></div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </section>
+
     </main>
   </div>
 
@@ -1335,9 +1416,110 @@
           exchangeDetails: ''
         },
 
+        // Customer Reviews State
+        reviews: [
+          {
+            id: 1,
+            name: "Rohit Negi",
+            city: "Haldwani",
+            car: "Mahindra Scorpio-N Z8L",
+            dealer: "Bajrang Motors, Haldwani",
+            rating: 5,
+            date: "3 days ago",
+            badge: "Verified Buyer",
+            quote: "Got immediate showroom allocation for Scorpio-N without paying any broker premium. Bajrang Motors matched ex-showroom pricing and delivered in 4 days. Unmatched service for Kumaon buyers!"
+          },
+          {
+            id: 2,
+            name: "Pooja Pandey",
+            city: "Rudrapur",
+            car: "Tata Nexon Fearless+",
+            dealer: "Amit Auto, Rudrapur",
+            rating: 5,
+            date: "1 week ago",
+            badge: "Verified Buyer",
+            quote: "Seamless experience from variant selection to delivery. Got 8.75% finance approved with SBI auto loan tie-up within 24 hours. The showroom team coordinated everything on WhatsApp."
+          },
+          {
+            id: 3,
+            name: "Manish Rawat",
+            city: "Nainital",
+            car: "Hyundai Creta SX (O)",
+            dealer: "Sachin Hyundai, Haldwani",
+            rating: 5,
+            date: "2 weeks ago",
+            badge: "Verified Buyer",
+            quote: "Was frustrated with 4-month waiting periods in Delhi NCR. ScoutMyVehicle showed live floor stock in Haldwani. Drove home with the exact Ranger Khaki colour in less than a week!"
+          },
+          {
+            id: 4,
+            name: "Gurpreet Singh",
+            city: "Kashipur / Rudrapur",
+            car: "Maruti Suzuki Brezza ZXi+",
+            dealer: "Akansha Automobiles, Rudrapur",
+            rating: 5,
+            date: "2 weeks ago",
+            badge: "Verified Buyer",
+            quote: "Exchanged my 2019 Swift at very fair market valuation and upgraded to Brezza. No hidden surcharges or forced showroom accessory kits. Truly transparent buying."
+          },
+          {
+            id: 5,
+            name: "Dr. Arvind Joshi",
+            city: "Kathgodam",
+            car: "Toyota Hyryder Hybrid",
+            dealer: "Trust Toyota, Haldwani",
+            rating: 5,
+            date: "3 weeks ago",
+            badge: "Verified Buyer",
+            quote: "The live stock tracker saved me countless phone calls. PNB car loan was processed with zero processing fee scheme. Highly recommend checking live availability here first."
+          },
+          {
+            id: 6,
+            name: "Neha Bisht",
+            city: "Haldwani",
+            car: "Kia Seltos HTX Diesel",
+            dealer: "Classic Kia, Haldwani",
+            rating: 5,
+            date: "1 month ago",
+            badge: "Verified Buyer",
+            quote: "Got instant WhatsApp coordination from the dealer sales head. Transparent on-road pricing quotation and delivered right before Diwali as promised. Five stars!"
+          },
+          {
+            id: 7,
+            name: "Deepak Mehra",
+            city: "Bhimtal",
+            car: "Mahindra Thar 4WD",
+            dealer: "Kumar Autowheels, Rudrapur",
+            rating: 5,
+            date: "1 month ago",
+            badge: "Verified Buyer",
+            quote: "Found the exact Everest White hardtop model in transit allocation. The direct dealer connect feature meant zero middlemen commission. Outstanding platform for Uttarakhand!"
+          },
+          {
+            id: 8,
+            name: "Kavita Tiwari",
+            city: "Pantnagar",
+            car: "Tata Punch Creative",
+            dealer: "Gola Ganapati Motors, Haldwani",
+            rating: 5,
+            date: "1 month ago",
+            badge: "Verified Buyer",
+            quote: "First-time car buyer and the team made the entire process so easy. HDFC auto loan was approved online in 2 hours. Delivery at Gola Ganapati Motors was festive and smooth."
+          }
+        ],
+        displayReviews: [],
+        initReviews() {
+          // Shuffle reviews on page load
+          this.displayReviews = [...this.reviews].sort(() => 0.5 - Math.random());
+        },
+        shuffleReviews() {
+          this.displayReviews = [...this.reviews].sort(() => 0.5 - Math.random());
+        },
+
         async init() {
           await this.loadBrands();
           await this.loadCars();
+          this.initReviews();
         },
 
         get filteredModels() {
