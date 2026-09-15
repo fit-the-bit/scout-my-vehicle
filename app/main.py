@@ -11,7 +11,7 @@ import os
 from app.database import get_db_connection, DB_PATH, get_setting, set_setting
 from app.models import (
     InquiryCreate, StockAlertCreate, InventoryUpdate, InquiryStatusUpdate, 
-    SheetsConfigRequest, SheetsSyncRequest
+    SheetsConfigRequest, SheetsSyncRequest, ContactMessageCreate
 )
 from app.sheets_sync import (
     sync_from_google_sheet_url, generate_sample_csv
@@ -56,8 +56,7 @@ def dict_rows(cursor):
 
 # ----------------- PAGE ROUTES -----------------
 
-@app.get("/", response_class=HTMLResponse)
-async def home_page(request: Request):
+def get_portal_context(request: Request, initial_view: str = "stock") -> dict:
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -87,15 +86,52 @@ async def home_page(request: Request):
 
     conn.close()
 
+    return {
+        "dealerships": dealerships,
+        "brands": brands,
+        "cars": cars,
+        "stats": stats,
+        "initial_view": initial_view
+    }
+
+@app.get("/", response_class=HTMLResponse)
+async def home_page(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="index.html",
-        context={
-            "dealerships": dealerships,
-            "brands": brands,
-            "cars": cars,
-            "stats": stats
-        }
+        context=get_portal_context(request, "stock")
+    )
+
+@app.get("/about", response_class=HTMLResponse)
+async def about_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context=get_portal_context(request, "about")
+    )
+
+@app.get("/privacy", response_class=HTMLResponse)
+async def privacy_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context=get_portal_context(request, "privacy")
+    )
+
+@app.get("/terms", response_class=HTMLResponse)
+async def terms_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context=get_portal_context(request, "terms")
+    )
+
+@app.get("/contact", response_class=HTMLResponse)
+async def contact_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context=get_portal_context(request, "contact")
     )
 
 # ----------------- REST API ROUTES -----------------
@@ -670,6 +706,64 @@ async def create_inquiry(inquiry: InquiryCreate):
         "whatsapp_url": whatsapp_url,
         "google_sheet_stored": sheet_result.get("stored_in_csv", True),
         "google_sheet_forwarded": sheet_result.get("webhook_forwarded", False)
+    }
+
+@app.post("/api/contact")
+async def handle_contact_form(contact: ContactMessageCreate):
+    name = contact.name.strip()
+    phone = contact.phone.strip()
+    message = contact.message.strip()
+    email = (contact.email or "").strip()
+    city = (contact.city or "Haldwani").strip()
+    subject = (contact.subject or "General Inquiry").strip()
+
+    if not name:
+        raise HTTPException(status_code=400, detail="Name is required.")
+    if not phone:
+        raise HTTPException(status_code=400, detail="Phone number is required.")
+    if not message:
+        raise HTTPException(status_code=400, detail="Message is required.")
+
+    # Format WhatsApp Direct Chat URL
+    import urllib.parse
+    wa_digits = "919275251003"
+    whatsapp_msg = (
+        f"📩 *Contact Request - ScoutMyVehicle*\n"
+        f"----------------------------------------\n"
+        f"• Name: {name}\n"
+        f"• Phone: {phone}\n"
+        f"• Email: {email if email else 'N/A'}\n"
+        f"• Location: {city}\n"
+        f"• Subject: {subject}\n"
+        f"• Message:\n{message}\n"
+        f"----------------------------------------"
+    )
+    whatsapp_url = f"https://api.whatsapp.com/send?phone={wa_digits}&text={urllib.parse.quote(whatsapp_msg)}"
+
+    # Record contact inquiry in local DB
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO inquiries (
+                dealership_id, customer_name, customer_phone, customer_email,
+                customer_city, inquiry_type, notes, status
+            ) VALUES (1, ?, ?, ?, ?, 'contact_form', ?, 'NEW');
+        """, (
+            name, phone, email if email else None, city,
+            f"Subject: {subject} | {message}"
+        ))
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"[ContactForm] Database notice: {e}")
+
+    return {
+        "success": True,
+        "message": "Thank you! Your message has been received. Our team will get back to you shortly.",
+        "whatsapp_url": whatsapp_url,
+        "phone": "+91 92752 51003",
+        "email": "support@scoutmyvehicle.com"
     }
 
 @app.get("/api/inquiries/export.csv")

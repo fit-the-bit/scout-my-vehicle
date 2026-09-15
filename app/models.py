@@ -48,3 +48,11 @@ class SheetsConfigRequest(BaseModel):
 
 class SheetsSyncRequest(BaseModel):
     google_sheet_url: Optional[str] = None
+
+class ContactMessageCreate(BaseModel):
+    name: str
+    phone: str
+    email: Optional[str] = None
+    city: Optional[str] = "Haldwani"
+    subject: Optional[str] = "General Inquiry"
+    message: str

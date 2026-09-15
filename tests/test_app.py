@@ -432,5 +432,75 @@ Toyota,Trust Toyota,Rudrapur,Toyota Urban Cruiser Hyryder,G Strong Hybrid,Hybrid
         self.assertIn("Randomize", home_res.text)
         self.assertIn("shuffleReviews()", home_res.text)
 
+    def test_about_privacy_terms_contact_pages_and_contact_api(self):
+        # 1. Test GET /about page
+        about_res = self.client.get("/about")
+        self.assertEqual(about_res.status_code, 200)
+        self.assertIn("About ScoutMyVehicle", about_res.text)
+        self.assertIn("Why We Started It", about_res.text)
+        self.assertIn("The Problems We Solve", about_res.text)
+        self.assertIn("Our Mission", about_res.text)
+        self.assertIn("Our Vision", about_res.text)
+        self.assertIn("How We're Different from Traditional Car Platforms", about_res.text)
+        self.assertNotIn("(UK-04)", about_res.text)
+        self.assertNotIn("(UK-06)", about_res.text)
+
+        # 2. Test GET /privacy page
+        privacy_res = self.client.get("/privacy")
+        self.assertEqual(privacy_res.status_code, 200)
+        self.assertIn("Privacy Policy", privacy_res.text)
+        self.assertIn("What Customer Information We Collect", privacy_res.text)
+        self.assertIn("Why We Collect Phone Number, Name, Location", privacy_res.text)
+        self.assertIn("Information Sharing with Dealerships", privacy_res.text)
+        self.assertIn("Data Security & Protection", privacy_res.text)
+        self.assertNotIn("(UK-04)", privacy_res.text)
+        self.assertNotIn("(UK-06)", privacy_res.text)
+
+        # 3. Test GET /terms page
+        terms_res = self.client.get("/terms")
+        self.assertEqual(terms_res.status_code, 200)
+        self.assertIn("Terms & Conditions", terms_res.text)
+        self.assertIn("Platform Role & Lead-Generation Model", terms_res.text)
+        self.assertIn("Vehicle Availability Subject to Showroom Confirmation", terms_res.text)
+        self.assertIn("Prices, Taxes, and Offers Are Subject to Change", terms_res.text)
+        self.assertIn("ScoutMyVehicle Is Not the Seller", terms_res.text)
+        self.assertIn("Sole Responsibility of Authorized Dealerships", terms_res.text)
+        self.assertNotIn("(UK-04)", terms_res.text)
+        self.assertNotIn("(UK-06)", terms_res.text)
+
+        # 4. Test GET /contact page
+        contact_res = self.client.get("/contact")
+        self.assertEqual(contact_res.status_code, 200)
+        self.assertIn("Contact ScoutMyVehicle", contact_res.text)
+        self.assertIn("+91 92752 51003", contact_res.text)
+        self.assertIn("support@scoutmyvehicle.com", contact_res.text)
+        self.assertIn("Haldwani Showroom Corridor", contact_res.text)
+        self.assertIn("Rudrapur Regional Hub", contact_res.text)
+        self.assertIn("Send Us a Message", contact_res.text)
+        self.assertNotIn("(UK-04)", contact_res.text)
+        self.assertNotIn("(UK-06)", contact_res.text)
+
+        # 5. Test POST /api/contact validation failure
+        bad_res = self.client.post("/api/contact", json={"name": "", "phone": "", "message": ""})
+        self.assertEqual(bad_res.status_code, 400)
+
+        # 6. Test POST /api/contact valid submission
+        valid_payload = {
+            "name": "Kamal Bisht",
+            "phone": "+91 98370 12345",
+            "email": "kamal.bisht@example.com",
+            "city": "Haldwani",
+            "subject": "Vehicle Availability Question",
+            "message": "Looking for ready delivery of Mahindra Scorpio-N Z8 in Haldwani showroom."
+        }
+        post_res = self.client.post("/api/contact", json=valid_payload)
+        self.assertEqual(post_res.status_code, 200)
+        post_data = post_res.json()
+        self.assertTrue(post_data["success"])
+        self.assertIn("whatsapp_url", post_data)
+        self.assertIn("919275251003", post_data["whatsapp_url"])
+        self.assertEqual(post_data["phone"], "+91 92752 51003")
+        self.assertEqual(post_data["email"], "support@scoutmyvehicle.com")
+
 if __name__ == "__main__":
     unittest.main()
