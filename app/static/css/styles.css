@@ -164,194 +164,322 @@ body {
   display: none;             /* Chrome, Safari, Opera */
 }
 
-/* Dark Mode Support (Darker Shade of Grey, Close to Black) */
+/* ==========================================================================
+   CHARCOAL GREY DARK THEME (SCOUTMYVEHICLE)
+   Rich matte neutral charcoal grey palette covering every element across the app.
+   ========================================================================== */
+
 html.dark {
   color-scheme: dark;
 }
 
 html.dark body {
-  background-color: #0c0c0e !important;
-  color: #f4f4f6 !important;
+  background-color: #18181b !important; /* Pure Charcoal Canvas */
+  color: #e4e4e7 !important;
 }
 
+/* Header & Navigation */
 html.dark header {
-  background-color: #111114 !important;
-  border-color: #1e1e24 !important;
+  background-color: #222225 !important; /* Elevated Charcoal */
+  border-color: #323338 !important;
 }
 
+/* Footer & Sub-footer */
 html.dark footer {
-  background-color: #08080a !important;
-  border-color: #18181c !important;
+  background-color: #141416 !important; /* Deep Base Charcoal */
+  border-color: #28292e !important;
+  color: #a1a1aa !important;
 }
 
 html.dark footer .border-t {
-  border-color: #18181c !important;
+  border-color: #28292e !important;
 }
 
+html.dark footer a,
+html.dark footer button {
+  color: #a1a1aa !important;
+}
+
+html.dark footer a:hover,
+html.dark footer button:hover {
+  color: #ffffff !important;
+}
+
+html.dark footer .grayscale {
+  filter: grayscale(1) brightness(1.6) !important;
+}
+
+html.dark footer .grayscale:hover {
+  filter: none !important;
+}
+
+/* Surface Containers & Cards Across the Whole App */
+html.dark .bg-white {
+  background-color: #222225 !important;
+}
+
+html.dark .bg-slate-50,
+html.dark .bg-slate-50\/80,
+html.dark .bg-slate-50\/90,
+html.dark .bg-slate-50\/50,
+html.dark .bg-slate-50\/60,
+html.dark .bg-slate-50\/70 {
+  background-color: #28292e !important; /* Inset Secondary Charcoal Box */
+}
+
+html.dark .bg-slate-100 {
+  background-color: #2e2f35 !important;
+}
+
+html.dark .bg-slate-200,
+html.dark .bg-slate-200\/60 {
+  background-color: #383a42 !important;
+}
+
+/* All Borders Across the App */
+html.dark .border-slate-100,
+html.dark .border-slate-200,
+html.dark .border-slate-200\/80,
+html.dark .border-slate-200\/70,
+html.dark .border-slate-200\/60,
+html.dark .border-slate-300,
+html.dark .border-gray-100,
+html.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+html.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #383a40 !important; /* Crisp Charcoal Border */
+}
+
+/* Typography Hierarchy in Dark Mode */
+html.dark .text-slate-950,
+html.dark .text-slate-900,
+html.dark .text-slate-800 {
+  color: #f4f4f6 !important; /* Crisp High-Contrast White */
+}
+
+html.dark .text-slate-700 {
+  color: #e4e4e7 !important; /* Primary Readable Text */
+}
+
+html.dark .text-slate-600 {
+  color: #d4d4d8 !important; /* Secondary Body Text */
+}
+
+html.dark .text-slate-500 {
+  color: #a1a1aa !important; /* Muted Captions & Subtitles */
+}
+
+html.dark .text-slate-400 {
+  color: #82838c !important; /* Subtle Timestamps & Notes */
+}
+
+html.dark .text-slate-300 {
+  color: #585962 !important; /* Subtle Dividers */
+}
+
+/* Interactive Hover States */
+html.dark .hover\:bg-slate-50:hover,
+html.dark .hover\:bg-slate-100:hover {
+  background-color: #2e3036 !important;
+}
+
+html.dark .hover\:bg-slate-200\/60:hover {
+  background-color: #363840 !important;
+}
+
+html.dark .hover\:text-slate-900:hover,
+html.dark .hover\:text-slate-950:hover,
+html.dark .hover\:text-slate-800:hover {
+  color: #ffffff !important;
+}
+
+html.dark .hover\:border-slate-400:hover {
+  border-color: #636570 !important;
+}
+
+/* Car Inventory Stock Cards */
 html.dark .stock-card {
-  background: #131316 !important;
-  border-color: #202026 !important;
+  background: #222225 !important;
+  border-color: #323338 !important;
   color: #f4f4f6 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
 }
 
 html.dark .stock-card:hover {
-  border-color: #32323a !important;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6) !important;
+  border-color: #4a4c55 !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35) !important;
 }
 
+/* Form Inputs, Select Dropdowns, and Textareas */
 html.dark .filter-input,
+html.dark select,
 html.dark input[type="text"],
 html.dark input[type="tel"],
 html.dark input[type="email"],
-html.dark textarea,
-html.dark select {
-  background-color: #16161a !important;
-  border-color: #282830 !important;
+html.dark textarea {
+  background-color: #1c1c1f !important;
+  border: 1px solid #383a40 !important;
   color: #f4f4f6 !important;
+  border-radius: 0.75rem;
 }
 
 html.dark .filter-input:focus,
+html.dark select:focus,
 html.dark input[type="text"]:focus,
 html.dark input[type="tel"]:focus,
 html.dark input[type="email"]:focus,
-html.dark textarea:focus,
-html.dark select:focus {
-  border-color: #484854 !important;
+html.dark textarea:focus {
+  border-color: #c0262b !important;
   outline: none !important;
+  box-shadow: 0 0 0 2px rgba(192, 38, 43, 0.25) !important;
 }
 
 html.dark select option {
-  background-color: #131316 !important;
+  background-color: #222225 !important;
   color: #f4f4f6 !important;
 }
 
+/* Call Button Outlines */
 html.dark .btn-call-outline {
-  background-color: #16161a !important;
-  color: #f4f4f6 !important;
-  border-color: #282830 !important;
+  background-color: #222225 !important;
+  color: #e4e4e7 !important;
+  border-color: #383a40 !important;
 }
 
 html.dark .btn-call-outline:hover {
-  background-color: #202026 !important;
-  border-color: #383842 !important;
+  background-color: #2c2d33 !important;
+  border-color: #4f515a !important;
+  color: #ffffff !important;
 }
 
+/* Status Badges */
 html.dark .badge-in-stock {
-  background-color: rgba(34, 197, 94, 0.12) !important;
-  color: #4ade80 !important;
-  border-color: rgba(74, 222, 128, 0.25) !important;
+  background-color: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+  border-color: rgba(52, 211, 153, 0.25) !important;
 }
 
 html.dark .badge-arriving-soon {
-  background-color: rgba(245, 158, 11, 0.12) !important;
+  background-color: rgba(245, 158, 11, 0.15) !important;
   color: #fbbf24 !important;
   border-color: rgba(251, 191, 36, 0.25) !important;
 }
 
 html.dark .badge-sold-out {
-  background-color: #18181c !important;
-  color: #a1a1aa !important;
-  border-color: #26262e !important;
+  background-color: #28292e !important;
+  color: #9ca3af !important;
+  border-color: #383a40 !important;
 }
 
-/* Modals & Popups in Dark Mode */
+/* Soft Color Callouts & Highlight Boxes in Dark Mode */
+html.dark .bg-red-50,
+html.dark .bg-red-50\/50,
+html.dark .bg-red-50\/60,
+html.dark .bg-red-50\/70 {
+  background-color: #2a1b1d !important;
+  border-color: #4a2428 !important;
+}
+
+html.dark .bg-amber-50 {
+  background-color: #292419 !important;
+  border-color: #4d3d22 !important;
+}
+
+html.dark .text-amber-900,
+html.dark .text-amber-800,
+html.dark .text-amber-700 {
+  color: #fcd34d !important;
+}
+
+html.dark .bg-emerald-50 {
+  background-color: #17261e !important;
+  border-color: #214431 !important;
+}
+
+html.dark .text-emerald-900,
+html.dark .text-emerald-800,
+html.dark .text-emerald-700 {
+  color: #6ee7b7 !important;
+}
+
+html.dark .bg-blue-50 {
+  background-color: #172230 !important;
+  border-color: #223c58 !important;
+}
+
+html.dark .text-blue-700,
+html.dark .text-blue-800,
+html.dark .text-blue-900 {
+  color: #93c5fd !important;
+}
+
+/* Modals & Backdrop Containers */
 html.dark [x-show="inquiryModalOpen"] > div,
 html.dark [x-show="reviewModalOpen"] > div,
 html.dark [x-show="showHowItWorks"] > div,
 html.dark [x-show="showFinanceModal"] > div {
-  background-color: #111114 !important;
-  border-color: #222228 !important;
+  background-color: #222225 !important;
+  border: 1px solid #383a40 !important;
   color: #f4f4f6 !important;
-  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
 }
 
-/* Sub-containers & spec boxes */
-html.dark .bg-slate-50,
-html.dark .bg-slate-50\/80,
-html.dark .bg-slate-50\/90,
-html.dark .bg-slate-50\/50 {
-  background-color: #151518 !important;
-  border-color: #202026 !important;
+/* Bank Finance Cards Gradient Reset */
+html.dark .from-white.to-slate-50\/50 {
+  background-image: none !important;
+  background-color: #222225 !important;
 }
 
-html.dark .bg-slate-100 {
-  background-color: #1a1a1e !important;
-  border-color: #26262e !important;
+/* Trust Strip in Charcoal */
+html.dark .mt-8.bg-slate-950 {
+  background-color: #1c1c1f !important;
+  border: 1px solid #2f3036 !important;
 }
 
-html.dark .bg-white {
-  background-color: #131316 !important;
+/* Brand Pills in Quick Tag Strip */
+html.dark button.border-slate-200 {
+  background-color: #242529 !important;
+  border-color: #383a40 !important;
+  color: #e4e4e7 !important;
 }
 
-/* Trust cards & high-contrast dark sections */
-html.dark .bg-slate-950 {
-  background-color: #0e0e11 !important;
-  border: 1px solid #1c1c22 !important;
+html.dark button.border-slate-200:hover {
+  background-color: #2e3036 !important;
+  border-color: #52525b !important;
 }
 
-/* Active pills / tags */
-html.dark .bg-slate-900 {
-  background-color: #222227 !important;
-  border-color: #34343d !important;
-  color: #ffffff !important;
+/* Inactive Brand Pills Text */
+html.dark button.bg-white.text-slate-700,
+html.dark button.bg-white.text-slate-600 {
+  background-color: #242529 !important;
+  border-color: #383a40 !important;
+  color: #e4e4e7 !important;
 }
 
-/* Borders */
-html.dark .border-slate-100,
-html.dark .border-slate-200,
-html.dark .border-slate-200\/80,
-html.dark .border-slate-200\/60,
-html.dark .border-gray-100 {
-  border-color: #1f1f25 !important;
+/* Active Highlight Pills in Dark Mode (e.g. All Brands or Nexa) */
+html.dark button.bg-slate-900.text-white {
+  background-color: #f4f4f6 !important;
+  border-color: #f4f4f6 !important;
+  color: #18181b !important;
 }
 
-/* Typography Adaptation */
-html.dark .text-slate-950,
-html.dark .text-slate-900,
-html.dark .text-slate-800 {
-  color: #f4f4f6 !important;
+/* Logo contrast on dark charcoal */
+html.dark img[src*="kia.svg"],
+html.dark img[src*="volkswagen.svg"] {
+  filter: brightness(0) invert(1) !important;
 }
 
-html.dark .text-slate-700 {
-  color: #d4d4d8 !important;
+html.dark button:not(.bg-slate-900) img[src*="nexa.svg"] {
+  filter: brightness(0) invert(1) !important;
 }
 
-html.dark .text-slate-600 {
-  color: #a1a1aa !important;
+html.dark button.bg-slate-900 img[src*="nexa.svg"] {
+  filter: none !important;
 }
 
-html.dark .text-slate-500 {
-  color: #71717a !important;
+/* Sliders in EMI Calculator */
+html.dark input[type="range"] {
+  background-color: #2f3036 !important;
 }
 
-html.dark .text-slate-400 {
-  color: #63636e !important;
-}
 
-/* Hover States */
-html.dark .hover\:bg-slate-50:hover {
-  background-color: #18181c !important;
-}
-
-html.dark .hover\:bg-slate-100:hover {
-  background-color: #1e1e24 !important;
-}
-
-html.dark .hover\:text-slate-900:hover,
-html.dark .hover\:text-slate-950:hover {
-  color: #ffffff !important;
-}
-
-/* Dropdown Menu */
-html.dark div[x-show="openNav"] {
-  background-color: #111114 !important;
-  border-color: #202026 !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8) !important;
-}
-
-html.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
-html.dark .divide-slate-800 > :not([hidden]) ~ :not([hidden]) {
-  border-color: #1c1c22 !important;
-}
 

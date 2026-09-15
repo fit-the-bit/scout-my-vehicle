@@ -9,7 +9,28 @@
   <script>
     tailwind = {
       config: {
-        darkMode: 'class'
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              charcoal: {
+                950: '#141416',
+                900: '#18181b',
+                850: '#1e1f23',
+                800: '#222225',
+                750: '#28292e',
+                700: '#2e2f35',
+                600: '#383a40',
+                500: '#52525b',
+                400: '#71717a',
+                300: '#a1a1aa',
+                200: '#d4d4d8',
+                100: '#f4f4f6',
+                50: '#fafafa'
+              }
+            }
+          }
+        }
       }
     }
   </script>
@@ -24,11 +45,11 @@
   <link rel="stylesheet" href="/static/css/styles.css">
   <link rel="icon" type="image/png" href="/static/images/logo_transparent.png">
 </head>
-<body class="bg-white dark:bg-[#0c0c0e] text-slate-900 dark:text-[#f4f4f6] min-h-screen antialiased flex flex-col justify-between transition-colors duration-200" x-data="vehicleStockApp()">
+<body class="bg-white dark:bg-[#18181b] text-slate-900 dark:text-[#f4f4f6] min-h-screen antialiased flex flex-col justify-between transition-colors duration-200" x-data="vehicleStockApp()">
 
   <div>
     <!-- Top Navbar -->
-    <header class="border-b border-gray-100 dark:border-[#1e1e24] bg-white dark:bg-[#111114] sticky top-0 z-40 transition-colors duration-200">
+    <header class="border-b border-gray-100 dark:border-[#323338] bg-white dark:bg-[#222225] sticky top-0 z-40 transition-colors duration-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between">
         <!-- Top Left: ScoutMyVehicle & Tagline -->
         <div class="flex items-center justify-start">
@@ -37,7 +58,7 @@
             <div class="text-base sm:text-lg md:text-xl font-black tracking-normal leading-tight text-slate-900 dark:text-white whitespace-nowrap">
               <span class="text-[#c0262b]">S</span>cout<span class="text-[#c0262b]">M</span>y<span class="text-[#c0262b]">V</span>ehicle
             </div>
-            <div class="w-full flex items-center justify-between text-[8px] sm:text-[9.5px] md:text-[11px] font-bold uppercase text-slate-800 dark:text-zinc-400 leading-tight mt-0.5">
+            <div class="w-full flex items-center justify-between text-[8px] sm:text-[9.5px] md:text-[11px] font-bold uppercase text-slate-800 dark:text-[#a1a1aa] leading-tight mt-0.5">
               <span>FIND</span>
               <span class="text-[#c0262b] font-black">|</span>
               <span>VERIFY</span>
@@ -53,8 +74,8 @@
           <button 
             @click="toggleDarkMode()" 
             type="button" 
-            class="p-2 rounded-xl text-slate-600 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#18181c] transition cursor-pointer flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#c0262b]/20"
-            :title="darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
+            class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#2e3036] transition cursor-pointer flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#c0262b]/20"
+            :title="darkMode ? 'Switch to Light Mode' : 'Switch to Charcoal Dark Mode'"
             aria-label="Toggle Dark Mode"
           >
             <!-- Sun Icon (shown in dark mode) -->
@@ -62,7 +83,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
             <!-- Moon Icon (shown in light mode) -->
-            <svg x-show="!darkMode" class="w-5 h-5 text-slate-700 dark:text-zinc-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg x-show="!darkMode" class="w-5 h-5 text-slate-700 dark:text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
             </svg>
           </button>
@@ -72,16 +93,16 @@
             <button 
               @click="openNav = !openNav" 
               type="button" 
-              class="p-2 rounded-xl text-slate-700 dark:text-zinc-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#18181c] transition cursor-pointer flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#c0262b]/20"
+              class="p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#2e3036] transition cursor-pointer flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#c0262b]/20"
               aria-label="Navigation Menu"
               :aria-expanded="openNav"
             >
               <!-- Hamburger Icon (3 lines) -->
-              <svg x-show="!openNav" class="w-6 h-6 text-slate-800 dark:text-zinc-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg x-show="!openNav" class="w-6 h-6 text-slate-800 dark:text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
               <!-- Close Icon (X) -->
-              <svg x-show="openNav" class="w-6 h-6 text-slate-800 dark:text-zinc-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" x-cloak>
+              <svg x-show="openNav" class="w-6 h-6 text-slate-800 dark:text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" x-cloak>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -95,52 +116,52 @@
               x-transition:leave="transition ease-in duration-100"
               x-transition:leave-start="opacity-100 scale-100 translate-y-0"
               x-transition:leave-end="opacity-0 scale-95 -translate-y-2"
-              class="absolute right-0 top-12 sm:top-14 w-64 bg-white dark:bg-[#111114] border border-slate-200 dark:border-[#202026] rounded-2xl shadow-xl py-2 z-50 text-xs divide-y divide-slate-100 dark:divide-[#1c1c22]"
+              class="absolute right-0 top-12 sm:top-14 w-64 bg-white dark:bg-[#222225] border border-slate-200 dark:border-[#383a40] rounded-2xl shadow-2xl py-2 z-50 text-xs divide-y divide-slate-100 dark:divide-[#2e3036]"
               x-cloak
             >
             <div class="py-1">
               <button 
                 @click="navigateToView('stock')" 
-                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-[#18181c] transition cursor-pointer flex items-center gap-3 font-medium"
-                :class="activeView === 'stock' ? 'text-[#c0262b] font-bold bg-red-50/50 dark:bg-red-950/40' : 'text-slate-800 dark:text-zinc-200'"
+                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-[#2e3036] transition cursor-pointer flex items-center gap-3 font-medium"
+                :class="activeView === 'stock' ? 'text-[#c0262b] font-bold bg-red-50/50 dark:bg-red-900/30' : 'text-slate-800 dark:text-[#e4e4e7]'"
               >
-                <svg class="w-4 h-4 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                <svg class="w-4 h-4 text-slate-500 dark:text-[#a1a1aa] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 <div>
                   <div class="text-xs font-bold text-slate-900 dark:text-white">Browse Stock</div>
-                  <div class="text-[10px] text-slate-400 font-normal">Live floor inventory & transit units</div>
+                  <div class="text-[10px] text-slate-400 dark:text-[#a1a1aa] font-normal">Live floor inventory & transit units</div>
                 </div>
               </button>
 
               <button 
                 @click="navigateToView('stock'); resetFilters(); openNav = false" 
-                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-[#18181c] transition cursor-pointer flex items-center gap-3 font-medium text-slate-800 dark:text-zinc-200"
+                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-[#2e3036] transition cursor-pointer flex items-center gap-3 font-medium text-slate-800 dark:text-[#e4e4e7]"
               >
-                <svg class="w-4 h-4 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                <svg class="w-4 h-4 text-slate-500 dark:text-[#a1a1aa] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                 <div>
                   <div class="text-xs font-bold text-slate-900 dark:text-white">Brands</div>
-                  <div class="text-[10px] text-slate-400 font-normal">Explore 9 authorized manufacturers</div>
+                  <div class="text-[10px] text-slate-400 dark:text-[#a1a1aa] font-normal">Explore 9 authorized manufacturers</div>
                 </div>
               </button>
 
               <button 
                 @click="showFinanceModal = true; openNav = false" 
-                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-[#18181c] transition cursor-pointer flex items-center gap-3 font-medium text-slate-800 dark:text-zinc-200 hover:text-[#c0262b]"
+                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-[#2e3036] transition cursor-pointer flex items-center gap-3 font-medium text-slate-800 dark:text-[#e4e4e7] hover:text-[#c0262b]"
               >
                 <svg class="w-4 h-4 text-[#c0262b] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 <div>
                   <div class="text-xs font-bold text-slate-900 dark:text-white">Banks & Finance</div>
-                  <div class="text-[10px] text-slate-400 font-normal">SBI, PNB, HDFC & Chola Mandlam</div>
+                  <div class="text-[10px] text-slate-400 dark:text-[#a1a1aa] font-normal">SBI, PNB, HDFC & Chola Mandlam</div>
                 </div>
               </button>
 
               <button 
                 @click="showHowItWorks = true; openNav = false" 
-                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-[#18181c] transition cursor-pointer flex items-center gap-3 font-medium text-slate-800 dark:text-zinc-200 hover:text-slate-950 dark:hover:text-white"
+                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-[#2e3036] transition cursor-pointer flex items-center gap-3 font-medium text-slate-800 dark:text-[#e4e4e7] hover:text-slate-950 dark:hover:text-white"
               >
-                <svg class="w-4 h-4 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <svg class="w-4 h-4 text-slate-500 dark:text-[#a1a1aa] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 <div>
                   <div class="text-xs font-bold text-slate-900 dark:text-white">How it works</div>
-                  <div class="text-[10px] text-slate-400 font-normal">Zero surcharge transparent buying</div>
+                  <div class="text-[10px] text-slate-400 dark:text-[#a1a1aa] font-normal">Zero surcharge transparent buying</div>
                 </div>
               </button>
             </div>
@@ -148,25 +169,25 @@
             <div class="py-1">
               <button 
                 @click="navigateToView('about')" 
-                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-[#18181c] transition cursor-pointer flex items-center gap-3 font-medium"
-                :class="activeView === 'about' ? 'text-[#c0262b] font-bold bg-red-50/50 dark:bg-red-950/40' : 'text-slate-800 dark:text-zinc-200'"
+                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-[#2e3036] transition cursor-pointer flex items-center gap-3 font-medium"
+                :class="activeView === 'about' ? 'text-[#c0262b] font-bold bg-red-50/50 dark:bg-red-900/30' : 'text-slate-800 dark:text-[#e4e4e7]'"
               >
-                <svg class="w-4 h-4 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <svg class="w-4 h-4 text-slate-500 dark:text-[#a1a1aa] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 <div>
                   <div class="text-xs font-bold text-slate-900 dark:text-white">About Us</div>
-                  <div class="text-[10px] text-slate-400 font-normal">Our mission & why we started</div>
+                  <div class="text-[10px] text-slate-400 dark:text-[#a1a1aa] font-normal">Our mission & why we started</div>
                 </div>
               </button>
 
               <button 
                 @click="navigateToView('contact')" 
-                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-[#18181c] transition cursor-pointer flex items-center gap-3 font-medium"
-                :class="activeView === 'contact' ? 'text-[#c0262b] font-bold bg-red-50/50 dark:bg-red-950/40' : 'text-slate-800 dark:text-zinc-200'"
+                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-[#2e3036] transition cursor-pointer flex items-center gap-3 font-medium"
+                :class="activeView === 'contact' ? 'text-[#c0262b] font-bold bg-red-50/50 dark:bg-red-900/30' : 'text-slate-800 dark:text-[#e4e4e7]'"
               >
-                <svg class="w-4 h-4 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                <svg class="w-4 h-4 text-slate-500 dark:text-[#a1a1aa] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                 <div>
                   <div class="text-xs font-bold text-slate-900 dark:text-white">Contact Us</div>
-                  <div class="text-[10px] text-slate-400 font-normal">Phone, WhatsApp & Inquiries</div>
+                  <div class="text-[10px] text-slate-400 dark:text-[#a1a1aa] font-normal">Phone, WhatsApp & Inquiries</div>
                 </div>
               </button>
             </div>
@@ -175,7 +196,7 @@
             <div class="py-1">
               <button 
                 @click="toggleDarkMode()" 
-                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-[#18181c] transition cursor-pointer flex items-center justify-between font-medium text-slate-800 dark:text-zinc-200"
+                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-[#2e3036] transition cursor-pointer flex items-center justify-between font-medium text-slate-800 dark:text-[#e4e4e7]"
               >
                 <div class="flex items-center gap-3">
                   <svg x-show="darkMode" class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -185,11 +206,11 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                   </svg>
                   <div>
-                    <div class="text-xs font-bold text-slate-900 dark:text-white" x-text="darkMode ? 'Light Theme' : 'Dark Theme'"></div>
-                    <div class="text-[10px] text-slate-400 font-normal" x-text="darkMode ? 'Switch to daylight interface' : 'Switch to dark theme'"></div>
+                    <div class="text-xs font-bold text-slate-900 dark:text-white" x-text="darkMode ? 'Light Theme' : 'Charcoal Theme'"></div>
+                    <div class="text-[10px] text-slate-400 dark:text-[#a1a1aa] font-normal" x-text="darkMode ? 'Switch to daylight interface' : 'Switch to charcoal dark theme'"></div>
                   </div>
                 </div>
-                <div class="w-8 h-4 bg-slate-200 dark:bg-[#282830] rounded-full p-0.5 transition-colors duration-200 flex items-center">
+                <div class="w-8 h-4 bg-slate-200 dark:bg-[#383a40] rounded-full p-0.5 transition-colors duration-200 flex items-center">
                   <div class="bg-white dark:bg-[#c0262b] w-3 h-3 rounded-full shadow-md transform transition-transform duration-200" :class="darkMode ? 'translate-x-4' : 'translate-x-0'"></div>
                 </div>
               </button>
