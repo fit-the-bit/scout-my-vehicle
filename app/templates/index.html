@@ -1328,8 +1328,8 @@
             </p>
           </div>
 
-          <!-- Action Buttons (Add Review & Randomize) -->
-          <div class="flex items-center gap-2.5 shrink-0 flex-wrap">
+          <!-- Action Button: Write a Review -->
+          <div class="flex items-center gap-2.5 shrink-0">
             <button 
               @click="openReviewModal()" 
               type="button" 
@@ -1338,17 +1338,8 @@
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
               <span>Write a Review</span>
             </button>
-
-            <button 
-              @click="shuffleReviews()" 
-              type="button" 
-              class="inline-flex items-center gap-1.5 px-3 py-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition cursor-pointer shadow-2xs hover:text-[#c0262b]"
-              title="Click to randomize reviews"
-            >
-              <svg :class="reviewsLoading ? 'animate-spin' : ''" class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-              <span>Randomize</span>
-            </button>
           </div>
+
         </div>
 
         <!-- Reviews Cards Grid: 3 review cards in randomly refreshing order -->
@@ -2178,20 +2169,20 @@
     </div>
   </footer>
 
-  <!-- Floating WhatsApp Quick Connect Button at Bottom of Page -->
+  <!-- Floating WhatsApp Quick Connect Button at Bottom of Page (Translucent with Blur Effect) -->
   <aside aria-label="WhatsApp Quick Connect" class="fixed bottom-6 right-6 z-40">
     <a 
       href="https://api.whatsapp.com/send?phone=919275251003" 
       target="_blank" 
       rel="noopener noreferrer"
-      class="group flex items-center gap-2.5 bg-[#25D366] hover:bg-[#20ba5a] text-white pl-3.5 pr-4 py-2.5 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer ring-4 ring-white/90"
+      class="group flex items-center gap-2.5 whatsapp-floating-glass backdrop-blur-md text-white pl-3.5 pr-4 py-2.5 rounded-full transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
       title="Chat directly on WhatsApp (+91 92752 51003)"
     >
-      <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none">
+      <svg class="w-6 h-6 shrink-0 drop-shadow-xs" viewBox="0 0 24 24" fill="none">
         <path fill="#FFFFFF" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.04 14.69 2 12.04 2Z"/>
         <path fill="#25D366" fill-rule="evenodd" clip-rule="evenodd" d="M12.05 3.67C7.5 3.67 3.8 7.37 3.8 11.91C3.8 13.48 4.24 14.99 5.08 16.31L4.27 19.32L7.38 18.51C8.66 19.28 10.12 19.68 12.05 19.68C16.6 19.68 20.29 15.98 20.29 11.92C20.29 7.37 16.6 3.67 12.05 3.67ZM16.94 14.39C16.73 14.28 15.7 13.78 15.51 13.71C15.32 13.64 15.18 13.6 15.04 13.81C14.9 14.02 14.51 14.48 14.39 14.62C14.27 14.76 14.15 14.78 13.94 14.67C13.73 14.56 13.06 14.34 12.26 13.63C11.64 13.08 11.22 12.39 11.1 12.18C10.98 11.97 11.09 11.86 11.2 11.75C11.29 11.65 11.41 11.49 11.52 11.37C11.63 11.25 11.67 11.16 11.74 11.02C11.81 10.88 11.78 10.76 11.73 10.65C11.68 10.54 11.26 9.5 11.08 9.08C10.91 8.67 10.74 8.73 10.61 8.72C10.49 8.71 10.35 8.71 10.21 8.71C10.07 8.71 9.85 8.76 9.66 8.97C9.47 9.18 8.94 9.68 8.94 10.7C8.94 11.72 9.68 12.7 9.78 12.84C9.88 12.98 11.23 15.06 13.31 15.95C13.8 16.16 14.19 16.29 14.49 16.38C15 16.54 15.45 16.52 15.82 16.47C16.23 16.41 17.07 15.96 17.25 15.45C17.43 14.94 17.43 14.5 17.37 14.41C17.31 14.32 17.15 14.28 16.94 14.39Z"/>
       </svg>
-      <span class="text-xs font-bold hidden sm:inline-block tracking-tight">Chat on WhatsApp</span>
+      <span class="text-xs font-bold hidden sm:inline-block tracking-tight text-white drop-shadow-xs">Chat on WhatsApp</span>
     </a>
   </aside>
 

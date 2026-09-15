@@ -135,3 +135,18 @@ body {
   opacity: 0.8;
   cursor: default;
 }
+
+/* Floating Translucent WhatsApp Button with Blur Effect */
+.whatsapp-floating-glass {
+  background-color: rgba(37, 211, 102, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.25), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.whatsapp-floating-glass:hover {
+  background-color: rgba(37, 211, 102, 0.88);
+  border-color: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 20px 30px -10px rgba(16, 185, 129, 0.35), 0 10px 15px -3px rgba(0, 0, 0, 0.12);
+}
