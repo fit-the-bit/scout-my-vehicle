@@ -414,26 +414,82 @@ Toyota,Trust Toyota,Rudrapur,Toyota Urban Cruiser Hyryder,G Strong Hybrid,Hybrid
         self.assertIn("Haldwani", csv_res.text)
 
     def test_reviews_endpoint_and_reviews_section(self):
-        # 1. Test /api/reviews endpoint
+        # 1. Test POST /api/reviews validation failure
+        bad_res = self.client.post("/api/reviews", json={"name": "", "city": "", "car": "", "review": ""})
+        self.assertEqual(bad_res.status_code, 400)
+
+        # 2. Test POST /api/reviews valid submissions
+        rev1 = {
+            "name": "Amit Sharma",
+            "city": "Dehradun",
+            "car": "Mahindra Scorpio-N Z8L",
+            "dealer": "Authorized Dealership",
+            "rating": 5,
+            "review": "Checked ready stock and got my delivery scheduled within 3 days. Super transparent process!"
+        }
+        res1 = self.client.post("/api/reviews", json=rev1)
+        self.assertEqual(res1.status_code, 200)
+        data1 = res1.json()
+        self.assertTrue(data1["success"])
+        self.assertIn("review_id", data1)
+
+        rev2 = {
+            "name": "Priya Verma",
+            "city": "Haridwar",
+            "car": "Tata Nexon Fearless+",
+            "dealer": "Central Motors",
+            "rating": 5,
+            "review": "Found the exact color variant I wanted. Connected directly on WhatsApp without broker markups."
+        }
+        res2 = self.client.post("/api/reviews", json=rev2)
+        self.assertEqual(res2.status_code, 200)
+
+        rev3 = {
+            "name": "Vikas Chauhan",
+            "city": "Rishikesh",
+            "car": "Hyundai Creta SX (O)",
+            "dealer": "Prime Showroom",
+            "rating": 4,
+            "review": "Great platform to check real on-road pricing and bank financing options."
+        }
+        res3 = self.client.post("/api/reviews", json=rev3)
+        self.assertEqual(res3.status_code, 200)
+
+        rev4 = {
+            "name": "Sanjay Singh",
+            "city": "Roorkee",
+            "car": "Kia Seltos HTX",
+            "dealer": "Apex Kia",
+            "rating": 5,
+            "review": "Fast response on WhatsApp. Got delivery confirmation without any extra accessory charges."
+        }
+        res4 = self.client.post("/api/reviews", json=rev4)
+        self.assertEqual(res4.status_code, 200)
+
+        # 3. Test GET /api/reviews endpoint (default limit 3)
         res = self.client.get("/api/reviews")
         self.assertEqual(res.status_code, 200)
         reviews = res.json()
-        self.assertGreaterEqual(len(reviews), 8)
-        self.assertTrue(any(r["name"] == "Rohit Negi" for r in reviews))
-        self.assertTrue(any("Scorpio-N" in r["car"] for r in reviews))
+        self.assertLessEqual(len(reviews), 3)
+        self.assertGreater(len(reviews), 0)
+        self.assertTrue(all("name" in r and "quote" in r and "rating" in r for r in reviews))
 
         # Test limit parameter
-        res_limit = self.client.get("/api/reviews?limit=3")
+        res_limit = self.client.get("/api/reviews?limit=2")
         self.assertEqual(res_limit.status_code, 200)
-        self.assertEqual(len(res_limit.json()), 3)
+        self.assertEqual(len(res_limit.json()), 2)
 
-        # 2. Test Home Page contains Reviews section & Randomize button
+        # 4. Test Home Page contains Reviews section, Write a Review, Randomize button, and WhatsApp button
         home_res = self.client.get("/")
         self.assertEqual(home_res.status_code, 200)
         self.assertIn("What Car Buyers Say", home_res.text)
         self.assertIn("Verified Buyer Reviews", home_res.text)
+        self.assertIn("Write a Review", home_res.text)
         self.assertIn("Randomize", home_res.text)
         self.assertIn("shuffleReviews()", home_res.text)
+        self.assertIn("reviewModalOpen", home_res.text)
+        self.assertIn("Add Your Review", home_res.text)
+        self.assertIn("Chat on WhatsApp", home_res.text)
         self.assertNotIn("Uttarakhand", home_res.text)
         self.assertNotIn("Haldwani", home_res.text)
         self.assertNotIn("Rudrapur", home_res.text)

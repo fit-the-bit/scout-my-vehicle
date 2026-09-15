@@ -1328,17 +1328,16 @@
             </p>
           </div>
 
-          <!-- Overall Rating & Shuffle Button -->
-          <div class="flex items-center gap-2.5 shrink-0">
-            <div class="inline-flex items-center gap-2 bg-slate-50 border border-slate-200/80 px-3 py-2 rounded-xl text-xs">
-              <div class="flex text-amber-500">
-                <template x-for="s in 5" :key="s">
-                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                </template>
-              </div>
-              <span class="font-bold text-slate-900">4.9 / 5.0</span>
-              <span class="text-slate-400 hidden sm:inline">• 1,200+ Reviews</span>
-            </div>
+          <!-- Action Buttons (Add Review & Randomize) -->
+          <div class="flex items-center gap-2.5 shrink-0 flex-wrap">
+            <button 
+              @click="openReviewModal()" 
+              type="button" 
+              class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#c0262b] hover:bg-[#a51d22] text-white rounded-xl text-xs font-bold transition cursor-pointer shadow-xs"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+              <span>Write a Review</span>
+            </button>
 
             <button 
               @click="shuffleReviews()" 
@@ -1346,15 +1345,15 @@
               class="inline-flex items-center gap-1.5 px-3 py-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition cursor-pointer shadow-2xs hover:text-[#c0262b]"
               title="Click to randomize reviews"
             >
-              <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              <svg :class="reviewsLoading ? 'animate-spin' : ''" class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
               <span>Randomize</span>
             </button>
           </div>
         </div>
 
-        <!-- Reviews Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <template x-for="(rev, idx) in displayReviews.slice(0, 6)" :key="rev.id || idx">
+        <!-- Reviews Cards Grid: 3 review cards in randomly refreshing order -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5" x-show="displayReviews.length > 0">
+          <template x-for="(rev, idx) in displayReviews.slice(0, 3)" :key="rev.id || idx">
             <div class="bg-white border border-slate-200 hover:border-slate-300 rounded-2xl p-5 shadow-xs hover:shadow-md transition flex flex-col justify-between space-y-4">
               <!-- Header: Stars + Verified Badge + Date -->
               <div class="flex items-center justify-between">
@@ -1366,9 +1365,9 @@
                 <div class="flex items-center gap-1.5">
                   <span class="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
                     <svg class="w-2.5 h-2.5 fill-current" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                    <span x-text="rev.badge"></span>
+                    <span x-text="rev.badge || 'Verified Review'"></span>
                   </span>
-                  <span class="text-[10px] text-slate-400" x-text="rev.date"></span>
+                  <span class="text-[10px] text-slate-400" x-text="rev.date || 'Verified Buyer'"></span>
                 </div>
               </div>
 
@@ -1378,7 +1377,7 @@
               <!-- Footer: User & Car Badge -->
               <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
                 <div class="flex items-center gap-2.5 min-w-0">
-                  <div class="w-8 h-8 rounded-full bg-red-50 text-[#c0262b] font-bold text-xs flex items-center justify-center shrink-0 border border-red-100/80" x-text="rev.name.charAt(0)"></div>
+                  <div class="w-8 h-8 rounded-full bg-red-50 text-[#c0262b] font-bold text-xs flex items-center justify-center shrink-0 border border-red-100/80" x-text="rev.name ? rev.name.charAt(0).toUpperCase() : 'U'"></div>
                   <div class="min-w-0">
                     <div class="font-bold text-slate-900 text-xs truncate" x-text="rev.name"></div>
                     <div class="text-[10px] text-slate-500 truncate" x-text="rev.city"></div>
@@ -1386,14 +1385,155 @@
                 </div>
 
                 <div class="text-right shrink-0">
-                  <div class="text-[10px] font-semibold text-slate-800 bg-slate-50 border border-slate-200/80 px-2 py-0.5 rounded-md truncate max-w-[130px] sm:max-w-[160px]" :title="rev.car + ' • ' + rev.dealer" x-text="rev.car"></div>
-                  <div class="text-[9px] text-slate-400 mt-0.5 truncate max-w-[130px]" x-text="rev.dealer.split(',')[0]"></div>
+                  <div class="text-[10px] font-semibold text-slate-800 bg-slate-50 border border-slate-200/80 px-2 py-0.5 rounded-md truncate max-w-[130px] sm:max-w-[160px]" :title="rev.car + ' • ' + (rev.dealer || 'Authorized Showroom')" x-text="rev.car"></div>
+                  <div class="text-[9px] text-slate-400 mt-0.5 truncate max-w-[130px]" x-text="rev.dealer"></div>
                 </div>
               </div>
             </div>
           </template>
         </div>
+
+        <!-- Empty State if no reviews yet -->
+        <div x-show="displayReviews.length === 0" class="bg-white border border-slate-200/80 rounded-2xl p-8 text-center space-y-3 max-w-xl mx-auto shadow-2xs">
+          <div class="w-12 h-12 rounded-full bg-red-50 text-[#c0262b] flex items-center justify-center mx-auto">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+          </div>
+          <h3 class="text-base font-bold text-slate-900">Be the First to Share Your Experience</h3>
+          <p class="text-xs text-slate-500 max-w-md mx-auto">
+            Have you used ScoutMyVehicle to scout showroom inventory or compare car variants? Share your feedback with other car buyers.
+          </p>
+          <div class="pt-2">
+            <button 
+              @click="openReviewModal()" 
+              type="button" 
+              class="inline-flex items-center gap-1.5 px-4 py-2 bg-[#c0262b] hover:bg-[#a51d22] text-white rounded-xl text-xs font-bold transition cursor-pointer shadow-xs"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+              <span>Write a Review</span>
+            </button>
+          </div>
+        </div>
       </section>
+
+      <!-- ================= ADD REVIEW MODAL ================= -->
+      <div x-show="reviewModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs" x-cloak>
+        <div class="bg-white border border-slate-200 max-w-md w-full rounded-2xl p-6 space-y-4 shadow-2xl relative" @click.away="closeReviewModal()">
+          
+          <!-- Close Button -->
+          <button @click="closeReviewModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition p-1 cursor-pointer">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-50 text-[#c0262b] text-[10px] font-bold uppercase tracking-wider mb-1.5">
+              <span>Buyer Feedback</span>
+            </div>
+            <h3 class="font-bold text-lg text-slate-950">Add Your Review</h3>
+            <p class="text-xs text-slate-500">Share your experience with showroom inventory, pricing, and delivery.</p>
+          </div>
+
+          <!-- Success Notice -->
+          <div x-show="reviewSuccessMsg" class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800 flex items-center gap-2">
+            <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <span x-text="reviewSuccessMsg"></span>
+          </div>
+
+          <!-- Error Notice -->
+          <div x-show="reviewErrorMsg" class="p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-800 flex items-center gap-2">
+            <svg class="w-4 h-4 text-red-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span x-text="reviewErrorMsg"></span>
+          </div>
+
+          <!-- Review Form -->
+          <form @submit.prevent="submitReview()" class="space-y-3 text-xs" x-show="!reviewSuccessMsg">
+            <!-- Rating Stars Selection -->
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Your Rating</label>
+              <div class="flex items-center gap-1 text-amber-400">
+                <template x-for="star in 5" :key="star">
+                  <button 
+                    type="button" 
+                    @click="newReview.rating = star" 
+                    class="p-1 hover:scale-110 transition cursor-pointer focus:outline-none"
+                  >
+                    <svg class="w-6 h-6" :class="star <= newReview.rating ? 'text-amber-400 fill-current' : 'text-slate-200 fill-current'" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                  </button>
+                </template>
+                <span class="text-xs font-bold text-slate-700 ml-2" x-text="newReview.rating + ' Star' + (newReview.rating > 1 ? 's' : '')"></span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Your Name <span class="text-red-500">*</span></label>
+                <input 
+                  type="text" 
+                  x-model="newReview.name" 
+                  placeholder="e.g. Rahul Sharma" 
+                  class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500" 
+                  required
+                >
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Your City <span class="text-red-500">*</span></label>
+                <input 
+                  type="text" 
+                  x-model="newReview.city" 
+                  placeholder="e.g. City / Town" 
+                  class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500" 
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Car Model <span class="text-red-500">*</span></label>
+                <input 
+                  type="text" 
+                  x-model="newReview.car" 
+                  placeholder="e.g. Tata Nexon / Scorpio-N" 
+                  class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500" 
+                  required
+                >
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Showroom / Dealer <span class="text-slate-400 font-normal">(Optional)</span></label>
+                <input 
+                  type="text" 
+                  x-model="newReview.dealer" 
+                  placeholder="e.g. Authorized Dealer" 
+                  class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Your Review / Feedback <span class="text-red-500">*</span></label>
+              <textarea 
+                x-model="newReview.review" 
+                rows="3" 
+                placeholder="How was the floor stock availability, pricing, or showroom delivery experience?" 
+                class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 resize-none" 
+                required
+              ></textarea>
+            </div>
+
+            <div class="pt-2">
+              <button 
+                type="submit" 
+                :disabled="reviewSubmitting" 
+                class="w-full py-2.5 bg-[#c0262b] hover:bg-[#a51d22] disabled:opacity-50 text-white font-bold rounded-xl text-xs shadow-xs transition flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span x-show="!reviewSubmitting">Publish Review</span>
+                <span x-show="reviewSubmitting" x-cloak>Submitting...</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
 
     </main>
   </div>
@@ -1997,9 +2137,18 @@
               <svg class="w-3.5 h-3.5 text-[#c0262b] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
               <a href="tel:+919275251003" class="hover:text-slate-950 font-medium">+91 92752 51003</a>
             </div>
-            <div class="flex items-center gap-2">
-              <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.698.077-2.263-.563-1.879-.769-3.08-2.695-3.174-.82-.095-.125-.758-1.009-.758-1.923 0-.914.478-1.362.648-1.549.17-.188.371-.235.495-.235.124 0 .248.001.356.006.113.006.265-.043.414.316.154.373.525 1.282.571 1.376.046.094.077.204.015.328-.061.125-.093.203-.186.312-.093.109-.197.243-.281.327-.094.093-.192.195-.083.382.109.187.483.796 1.037 1.289.712.634 1.312.83 1.498.924.186.093.295.078.404-.047.11-.125.467-.544.591-.732.124-.187.248-.156.417-.094.17.062 1.077.508 1.263.601.186.094.31.14.356.218.046.079.046.453-.098.858z"/></svg>
-              <a href="https://api.whatsapp.com/send?phone=919275251003" target="_blank" class="hover:text-emerald-700 font-medium">WhatsApp Chat</a>
+            <div>
+              <a 
+                href="https://api.whatsapp.com/send?phone=919275251003" 
+                target="_blank" 
+                class="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 transition font-semibold text-xs shadow-2xs group"
+              >
+                <svg class="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" viewBox="0 0 24 24" fill="none">
+                  <path fill="#25D366" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.04 14.69 2 12.04 2Z"/>
+                  <path fill="#FFFFFF" fill-rule="evenodd" clip-rule="evenodd" d="M12.05 3.67C7.5 3.67 3.8 7.37 3.8 11.91C3.8 13.48 4.24 14.99 5.08 16.31L4.27 19.32L7.38 18.51C8.66 19.28 10.12 19.68 12.05 19.68C16.6 19.68 20.29 15.98 20.29 11.92C20.29 7.37 16.6 3.67 12.05 3.67ZM16.94 14.39C16.73 14.28 15.7 13.78 15.51 13.71C15.32 13.64 15.18 13.6 15.04 13.81C14.9 14.02 14.51 14.48 14.39 14.62C14.27 14.76 14.15 14.78 13.94 14.67C13.73 14.56 13.06 14.34 12.26 13.63C11.64 13.08 11.22 12.39 11.1 12.18C10.98 11.97 11.09 11.86 11.2 11.75C11.29 11.65 11.41 11.49 11.52 11.37C11.63 11.25 11.67 11.16 11.74 11.02C11.81 10.88 11.78 10.76 11.73 10.65C11.68 10.54 11.26 9.5 11.08 9.08C10.91 8.67 10.74 8.73 10.61 8.72C10.49 8.71 10.35 8.71 10.21 8.71C10.07 8.71 9.85 8.76 9.66 8.97C9.47 9.18 8.94 9.68 8.94 10.7C8.94 11.72 9.68 12.7 9.78 12.84C9.88 12.98 11.23 15.06 13.31 15.95C13.8 16.16 14.19 16.29 14.49 16.38C15 16.54 15.45 16.52 15.82 16.47C16.23 16.41 17.07 15.96 17.25 15.45C17.43 14.94 17.43 14.5 17.37 14.41C17.31 14.32 17.15 14.28 16.94 14.39Z"/>
+                </svg>
+                <span>WhatsApp Chat</span>
+              </a>
             </div>
             <div class="flex items-center gap-2">
               <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
@@ -2028,6 +2177,23 @@
       </div>
     </div>
   </footer>
+
+  <!-- Floating WhatsApp Quick Connect Button at Bottom of Page -->
+  <aside aria-label="WhatsApp Quick Connect" class="fixed bottom-6 right-6 z-40">
+    <a 
+      href="https://api.whatsapp.com/send?phone=919275251003" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      class="group flex items-center gap-2.5 bg-[#25D366] hover:bg-[#20ba5a] text-white pl-3.5 pr-4 py-2.5 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer ring-4 ring-white/90"
+      title="Chat directly on WhatsApp (+91 92752 51003)"
+    >
+      <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none">
+        <path fill="#FFFFFF" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.04 14.69 2 12.04 2Z"/>
+        <path fill="#25D366" fill-rule="evenodd" clip-rule="evenodd" d="M12.05 3.67C7.5 3.67 3.8 7.37 3.8 11.91C3.8 13.48 4.24 14.99 5.08 16.31L4.27 19.32L7.38 18.51C8.66 19.28 10.12 19.68 12.05 19.68C16.6 19.68 20.29 15.98 20.29 11.92C20.29 7.37 16.6 3.67 12.05 3.67ZM16.94 14.39C16.73 14.28 15.7 13.78 15.51 13.71C15.32 13.64 15.18 13.6 15.04 13.81C14.9 14.02 14.51 14.48 14.39 14.62C14.27 14.76 14.15 14.78 13.94 14.67C13.73 14.56 13.06 14.34 12.26 13.63C11.64 13.08 11.22 12.39 11.1 12.18C10.98 11.97 11.09 11.86 11.2 11.75C11.29 11.65 11.41 11.49 11.52 11.37C11.63 11.25 11.67 11.16 11.74 11.02C11.81 10.88 11.78 10.76 11.73 10.65C11.68 10.54 11.26 9.5 11.08 9.08C10.91 8.67 10.74 8.73 10.61 8.72C10.49 8.71 10.35 8.71 10.21 8.71C10.07 8.71 9.85 8.76 9.66 8.97C9.47 9.18 8.94 9.68 8.94 10.7C8.94 11.72 9.68 12.7 9.78 12.84C9.88 12.98 11.23 15.06 13.31 15.95C13.8 16.16 14.19 16.29 14.49 16.38C15 16.54 15.45 16.52 15.82 16.47C16.23 16.41 17.07 15.96 17.25 15.45C17.43 14.94 17.43 14.5 17.37 14.41C17.31 14.32 17.15 14.28 16.94 14.39Z"/>
+      </svg>
+      <span class="text-xs font-bold hidden sm:inline-block tracking-tight">Chat on WhatsApp</span>
+    </a>
+  </aside>
 
   <!-- Alpine Application Logic -->
   <script>
@@ -2134,103 +2300,98 @@
         },
 
         // Customer Reviews State
-        reviews: [
-          {
-            id: 1,
-            name: "Rohit Negi",
-            city: "City Center",
-            car: "Mahindra Scorpio-N Z8L",
-            dealer: "Bajrang Motors",
-            rating: 5,
-            date: "3 days ago",
-            badge: "Verified Buyer",
-            quote: "Got immediate showroom allocation for Scorpio-N without paying any broker premium. Bajrang Motors matched ex-showroom pricing and delivered in 4 days. Unmatched service!"
-          },
-          {
-            id: 2,
-            name: "Pooja Pandey",
-            city: "Civil Lines",
-            car: "Tata Nexon Fearless+",
-            dealer: "Amit Auto",
-            rating: 5,
-            date: "1 week ago",
-            badge: "Verified Buyer",
-            quote: "Seamless experience from variant selection to delivery. Got 8.75% finance approved with SBI auto loan tie-up within 24 hours. The showroom team coordinated everything on WhatsApp."
-          },
-          {
-            id: 3,
-            name: "Manish Rawat",
-            city: "Green Park",
-            car: "Hyundai Creta SX (O)",
-            dealer: "Sachin Hyundai",
-            rating: 5,
-            date: "2 weeks ago",
-            badge: "Verified Buyer",
-            quote: "Was frustrated with 4-month waiting periods. ScoutMyVehicle showed live floor stock. Drove home with the exact Ranger Khaki colour in less than a week!"
-          },
-          {
-            id: 4,
-            name: "Gurpreet Singh",
-            city: "Park Avenue",
-            car: "Maruti Suzuki Brezza ZXi+",
-            dealer: "Akansha Automobiles",
-            rating: 5,
-            date: "2 weeks ago",
-            badge: "Verified Buyer",
-            quote: "Exchanged my 2019 Swift at very fair market valuation and upgraded to Brezza. No hidden surcharges or forced showroom accessory kits. Truly transparent buying."
-          },
-          {
-            id: 5,
-            name: "Dr. Arvind Joshi",
-            city: "Hill View",
-            car: "Toyota Hyryder Hybrid",
-            dealer: "Trust Toyota",
-            rating: 5,
-            date: "3 weeks ago",
-            badge: "Verified Buyer",
-            quote: "The live stock tracker saved me countless phone calls. PNB car loan was processed with zero processing fee scheme. Highly recommend checking live availability here first."
-          },
-          {
-            id: 6,
-            name: "Neha Bisht",
-            city: "Lake View",
-            car: "Kia Seltos HTX Diesel",
-            dealer: "Classic Kia",
-            rating: 5,
-            date: "1 month ago",
-            badge: "Verified Buyer",
-            quote: "Got instant WhatsApp coordination from the dealer sales head. Transparent on-road pricing quotation and delivered right before Diwali as promised. Five stars!"
-          },
-          {
-            id: 7,
-            name: "Deepak Mehra",
-            city: "Valley Ridge",
-            car: "Mahindra Thar 4WD",
-            dealer: "Kumar Autowheels",
-            rating: 5,
-            date: "1 month ago",
-            badge: "Verified Buyer",
-            quote: "Found the exact Everest White hardtop model in transit allocation. The direct dealer connect feature meant zero middlemen commission. Outstanding platform for car buyers!"
-          },
-          {
-            id: 8,
-            name: "Kavita Tiwari",
-            city: "Station Road",
-            car: "Tata Punch Creative",
-            dealer: "Gola Ganapati Motors",
-            rating: 5,
-            date: "1 month ago",
-            badge: "Verified Buyer",
-            quote: "First-time car buyer and the team made the entire process so easy. HDFC auto loan was approved online in 2 hours. Delivery at Gola Ganapati Motors was festive and smooth."
-          }
-        ],
+        reviews: [],
         displayReviews: [],
-        initReviews() {
-          // Shuffle reviews on page load
-          this.displayReviews = [...this.reviews].sort(() => 0.5 - Math.random());
+        reviewsLoading: false,
+        reviewModalOpen: false,
+        reviewSubmitting: false,
+        reviewSuccessMsg: '',
+        reviewErrorMsg: '',
+        newReview: {
+          name: '',
+          city: '',
+          car: '',
+          dealer: '',
+          rating: 5,
+          review: ''
         },
-        shuffleReviews() {
-          this.displayReviews = [...this.reviews].sort(() => 0.5 - Math.random());
+
+        async loadReviews() {
+          this.reviewsLoading = true;
+          try {
+            const res = await fetch('/api/reviews?limit=3');
+            if (res.ok) {
+              const data = await res.json();
+              this.displayReviews = Array.isArray(data) ? data : [];
+            }
+          } catch (e) {
+            console.error("Failed to load reviews", e);
+          } finally {
+            this.reviewsLoading = false;
+          }
+        },
+
+        async shuffleReviews() {
+          await this.loadReviews();
+        },
+
+        openReviewModal() {
+          this.newReview = {
+            name: '',
+            city: '',
+            car: '',
+            dealer: '',
+            rating: 5,
+            review: ''
+          };
+          this.reviewSuccessMsg = '';
+          this.reviewErrorMsg = '';
+          this.reviewModalOpen = true;
+        },
+
+        closeReviewModal() {
+          this.reviewModalOpen = false;
+        },
+
+        async submitReview() {
+          if (!this.newReview.name.trim() || !this.newReview.city.trim() || !this.newReview.car.trim() || !this.newReview.review.trim()) {
+            this.reviewErrorMsg = 'Please provide your name, city, car model, and review text.';
+            return;
+          }
+          if (this.newReview.review.trim().length < 10) {
+            this.reviewErrorMsg = 'Review text should be at least 10 characters.';
+            return;
+          }
+          this.reviewSubmitting = true;
+          this.reviewErrorMsg = '';
+          try {
+            const res = await fetch('/api/reviews', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name: this.newReview.name.trim(),
+                city: this.newReview.city.trim(),
+                car: this.newReview.car.trim(),
+                dealer: this.newReview.dealer ? this.newReview.dealer.trim() : null,
+                rating: parseInt(this.newReview.rating) || 5,
+                review: this.newReview.review.trim()
+              })
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+              this.reviewSuccessMsg = data.message || 'Review added successfully!';
+              await this.loadReviews();
+              setTimeout(() => {
+                this.closeReviewModal();
+              }, 1800);
+            } else {
+              this.reviewErrorMsg = data.detail || 'Could not submit review. Please try again.';
+            }
+          } catch (e) {
+            this.reviewErrorMsg = 'Network error. Please try again.';
+          } finally {
+            this.reviewSubmitting = false;
+          }
         },
 
         navigateToView(view) {
@@ -2301,7 +2462,7 @@
           }
           await this.loadBrands();
           await this.loadCars();
-          this.initReviews();
+          await this.loadReviews();
         },
 
         get filteredModels() {

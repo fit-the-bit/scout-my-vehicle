@@ -11,7 +11,7 @@ import os
 from app.database import get_db_connection, DB_PATH, get_setting, set_setting
 from app.models import (
     InquiryCreate, StockAlertCreate, InventoryUpdate, InquiryStatusUpdate, 
-    SheetsConfigRequest, SheetsSyncRequest, ContactMessageCreate
+    SheetsConfigRequest, SheetsSyncRequest, ContactMessageCreate, ReviewCreate
 )
 from app.sheets_sync import (
     sync_from_google_sheet_url, generate_sample_csv
@@ -137,101 +137,68 @@ async def contact_page(request: Request):
 # ----------------- REST API ROUTES -----------------
 
 @app.get("/api/reviews")
-async def get_reviews(limit: Optional[int] = Query(default=None)):
-    import random
-    reviews = [
-        {
-            "id": 1,
-            "name": "Rohit Negi",
-            "city": "City Center",
-            "car": "Mahindra Scorpio-N Z8L",
-            "dealer": "Bajrang Motors",
-            "rating": 5,
-            "date": "3 days ago",
-            "badge": "Verified Buyer",
-            "quote": "Got immediate showroom allocation for Scorpio-N without paying any broker premium. Bajrang Motors matched ex-showroom pricing and delivered in 4 days. Unmatched service!"
-        },
-        {
-            "id": 2,
-            "name": "Pooja Pandey",
-            "city": "Civil Lines",
-            "car": "Tata Nexon Fearless+",
-            "dealer": "Amit Auto",
-            "rating": 5,
-            "date": "1 week ago",
-            "badge": "Verified Buyer",
-            "quote": "Seamless experience from variant selection to delivery. Got 8.75% finance approved with SBI auto loan tie-up within 24 hours. The showroom team coordinated everything on WhatsApp."
-        },
-        {
-            "id": 3,
-            "name": "Manish Rawat",
-            "city": "Green Park",
-            "car": "Hyundai Creta SX (O)",
-            "dealer": "Sachin Hyundai",
-            "rating": 5,
-            "date": "2 weeks ago",
-            "badge": "Verified Buyer",
-            "quote": "Was frustrated with 4-month waiting periods. ScoutMyVehicle showed live floor stock. Drove home with the exact Ranger Khaki colour in less than a week!"
-        },
-        {
-            "id": 4,
-            "name": "Gurpreet Singh",
-            "city": "Park Avenue",
-            "car": "Maruti Suzuki Brezza ZXi+",
-            "dealer": "Akansha Automobiles",
-            "rating": 5,
-            "date": "2 weeks ago",
-            "badge": "Verified Buyer",
-            "quote": "Exchanged my 2019 Swift at very fair market valuation and upgraded to Brezza. No hidden surcharges or forced showroom accessory kits. Truly transparent buying."
-        },
-        {
-            "id": 5,
-            "name": "Dr. Arvind Joshi",
-            "city": "Hill View",
-            "car": "Toyota Hyryder Hybrid",
-            "dealer": "Trust Toyota",
-            "rating": 5,
-            "date": "3 weeks ago",
-            "badge": "Verified Buyer",
-            "quote": "The live stock tracker saved me countless phone calls. PNB car loan was processed with zero processing fee scheme. Highly recommend checking live availability here first."
-        },
-        {
-            "id": 6,
-            "name": "Neha Bisht",
-            "city": "Lake View",
-            "car": "Kia Seltos HTX Diesel",
-            "dealer": "Classic Kia",
-            "rating": 5,
-            "date": "1 month ago",
-            "badge": "Verified Buyer",
-            "quote": "Got instant WhatsApp coordination from the dealer sales head. Transparent on-road pricing quotation and delivered right before Diwali as promised. Five stars!"
-        },
-        {
-            "id": 7,
-            "name": "Deepak Mehra",
-            "city": "Valley Ridge",
-            "car": "Mahindra Thar 4WD",
-            "dealer": "Kumar Autowheels",
-            "rating": 5,
-            "date": "1 month ago",
-            "badge": "Verified Buyer",
-            "quote": "Found the exact Everest White hardtop model in transit allocation. The direct dealer connect feature meant zero middlemen commission. Outstanding platform for car buyers!"
-        },
-        {
-            "id": 8,
-            "name": "Kavita Tiwari",
-            "city": "Station Road",
-            "car": "Tata Punch Creative",
-            "dealer": "Gola Ganapati Motors",
-            "rating": 5,
-            "date": "1 month ago",
-            "badge": "Verified Buyer",
-            "quote": "First-time car buyer and the team made the entire process so easy. HDFC auto loan was approved online in 2 hours. Delivery at Gola Ganapati Motors was festive and smooth."
-        }
-    ]
-    if limit and limit > 0:
-        return random.sample(reviews, min(limit, len(reviews)))
+async def get_reviews(limit: Optional[int] = Query(default=3)):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    query_limit = limit if (limit and limit > 0) else 3
+    cursor.execute("""
+        SELECT id, customer_name, customer_city, car_model, dealership_name, rating, review_text, created_at
+        FROM reviews
+        WHERE status = 'APPROVED'
+        ORDER BY RANDOM()
+        LIMIT ?;
+    """, (query_limit,))
+    rows = cursor.fetchall()
+    conn.close()
+
+    reviews = []
+    for r in rows:
+        reviews.append({
+            "id": r["id"],
+            "name": r["customer_name"],
+            "city": r["customer_city"],
+            "car": r["car_model"],
+            "dealer": r["dealership_name"] or "Authorized Showroom",
+            "rating": r["rating"],
+            "date": "Verified Buyer",
+            "badge": "Verified Review",
+            "quote": r["review_text"]
+        })
     return reviews
+
+@app.post("/api/reviews")
+async def create_review(review_data: ReviewCreate):
+    name = review_data.name.strip()
+    city = review_data.city.strip()
+    car = review_data.car.strip()
+    review_text = review_data.review.strip()
+
+    if not name or not city or not car or not review_text:
+        raise HTTPException(status_code=400, detail="Name, city, car model, and review text are required.")
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO reviews (customer_name, customer_city, car_model, dealership_name, rating, review_text, status)
+        VALUES (?, ?, ?, ?, ?, ?, 'APPROVED');
+    """, (
+        name,
+        city,
+        car,
+        review_data.dealer.strip() if review_data.dealer else None,
+        review_data.rating,
+        review_text
+    ))
+    review_id = cursor.lastrowid
+    conn.commit()
+    conn.close()
+
+    return {
+        "success": True,
+        "message": "Thank you! Your review has been added successfully.",
+        "review_id": review_id
+    }
+
 
 @app.get("/api/brands")
 async def get_brands():

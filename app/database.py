@@ -165,6 +165,21 @@ def init_db():
     );
     """)
 
+    # Customer Reviews table
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS reviews (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        customer_name TEXT NOT NULL,
+        customer_city TEXT NOT NULL,
+        car_model TEXT NOT NULL,
+        dealership_name TEXT,
+        rating INTEGER NOT NULL DEFAULT 5,
+        review_text TEXT NOT NULL,
+        status TEXT DEFAULT 'APPROVED',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    """)
+
     # Migrations for existing databases
     cursor.execute("PRAGMA table_info(dealerships);")
     d_cols = [c[1] for c in cursor.fetchall()]

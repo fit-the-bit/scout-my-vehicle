@@ -56,3 +56,11 @@ class ContactMessageCreate(BaseModel):
     city: Optional[str] = None
     subject: Optional[str] = "General Inquiry"
     message: str
+
+class ReviewCreate(BaseModel):
+    name: str
+    city: str
+    car: str
+    dealer: Optional[str] = None
+    rating: int = 5
+    review: str
