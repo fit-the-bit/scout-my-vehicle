@@ -8,7 +8,7 @@ class InquiryCreate(BaseModel):
     customer_name: str
     customer_phone: str
     customer_email: Optional[str] = None
-    customer_city: Optional[str] = "Haldwani"
+    customer_city: Optional[str] = None
     inquiry_type: Optional[str] = "availability_check" # 'availability_check', 'test_drive', 'price_quote', 'instant_booking'
     preferred_date: Optional[str] = None
     preferred_time: Optional[str] = None
@@ -22,7 +22,7 @@ class StockAlertCreate(BaseModel):
     customer_name: str
     customer_phone: str
     car_id: int
-    preferred_city: str = "Haldwani"
+    preferred_city: Optional[str] = None
     preferred_color: Optional[str] = None
 
 class InventoryUpdate(BaseModel):
@@ -53,6 +53,6 @@ class ContactMessageCreate(BaseModel):
     name: str
     phone: str
     email: Optional[str] = None
-    city: Optional[str] = "Haldwani"
+    city: Optional[str] = None
     subject: Optional[str] = "General Inquiry"
     message: str

@@ -133,7 +133,7 @@
                 <svg class="w-4 h-4 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                 <div>
                   <div class="text-xs font-bold text-slate-900">Contact Us</div>
-                  <div class="text-[10px] text-slate-400 font-normal">Phone, WhatsApp, Haldwani & Rudrapur</div>
+                  <div class="text-[10px] text-slate-400 font-normal">Phone, WhatsApp & Inquiries</div>
                 </div>
               </button>
             </div>
@@ -179,24 +179,16 @@
               </select>
             </div>
 
-            <!-- Action Buttons (Submit & Clear all) -->
+            <!-- Action Buttons (Clear all) -->
             <div class="sm:col-span-2 lg:col-span-1 flex items-end">
               <div class="w-full flex items-center justify-between sm:justify-end gap-3">
                 <button 
                   type="button" 
                   @click="resetFilters()" 
-                  class="flex-1 sm:flex-initial px-4 py-2.5 text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl border border-slate-200 transition cursor-pointer flex items-center justify-center gap-1.5"
+                  class="w-full sm:w-auto px-4 py-2.5 text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl border border-slate-200 transition cursor-pointer flex items-center justify-center gap-1.5"
                 >
                   <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                   <span>Clear all</span>
-                </button>
-                <button 
-                  type="button" 
-                  @click="applyFilters()" 
-                  class="flex-1 sm:flex-initial px-5 py-2.5 text-xs font-bold text-white bg-[#c0262b] hover:bg-[#a51d22] rounded-xl shadow-xs transition cursor-pointer flex items-center justify-center gap-1.5"
-                >
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                  <span>Submit</span>
                 </button>
               </div>
             </div>
@@ -706,10 +698,10 @@
             <span>About ScoutMyVehicle</span>
           </div>
           <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-950 tracking-tight leading-tight">
-            The Smarter, Honest Way to Buy a Car in Uttarakhand
+            The Smarter, Honest Way to Buy a Car
           </h1>
           <p class="text-sm sm:text-base text-slate-600 max-w-3xl leading-relaxed">
-            We are Uttarakhand's premier independent vehicle discovery and live showroom allocation platform, built exclusively to connect car buyers across Kumaon with authorized multi-brand dealerships.
+            We are an independent vehicle discovery and live showroom allocation platform, built exclusively to connect car buyers with authorized multi-brand dealerships.
           </p>
         </div>
 
@@ -721,14 +713,14 @@
             </div>
             <div>
               <h2 class="text-lg font-bold text-slate-900">What ScoutMyVehicle Is</h2>
-              <p class="text-xs text-slate-500">Your independent regional automotive intelligence partner</p>
+              <p class="text-xs text-slate-500">Your independent automotive intelligence partner</p>
             </div>
           </div>
           <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
-            <strong>ScoutMyVehicle</strong> is an independent showroom inventory tracker and buyer-advocacy platform designed specifically for the car-buying community in Uttarakhand. We track verified floor availability, in-transit allocations, and ready stock across 18+ authorized dealership locations spanning 9 major manufacturers—including Tata Motors, Mahindra, Hyundai, Kia, Toyota, Maruti Suzuki (Arena & Nexa), Honda, Volkswagen, and Nissan.
+            <strong>ScoutMyVehicle</strong> is an independent showroom inventory tracker and buyer-advocacy platform designed specifically for smart car buyers. We track verified floor availability, in-transit allocations, and ready stock across authorized dealership networks spanning 9 major manufacturers—including Tata Motors, Mahindra, Hyundai, Kia, Toyota, Maruti Suzuki (Arena & Nexa), Honda, Volkswagen, and Nissan.
           </p>
           <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
-            Rather than relying on outdated dealer lists or driving across districts, buyers in Haldwani, Rudrapur, Nainital, Almora, Kashipur, and neighbouring towns can check live stock availability, calculate accurate regional on-road pricing, and connect directly with showroom decision-makers on WhatsApp with zero middlemen markup.
+            Rather than relying on outdated dealer lists or driving across distant showrooms, buyers can check live stock availability, calculate accurate on-road pricing, and connect directly with showroom decision-makers on WhatsApp with zero middlemen markup.
           </p>
         </div>
 
@@ -743,10 +735,10 @@
               <h3 class="text-base font-bold text-slate-900">Why We Started It</h3>
             </div>
             <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              Buying a car in Uttarakhand has traditionally been a stressful, fragmented ordeal. Buyers often spent whole weekends shuttling back and forth along the Rampur Road corridor in Haldwani and the Kichha Road belt in Rudrapur just to find out whether their preferred variant and colour was physically available.
+              Buying a car has traditionally been a stressful, fragmented ordeal. Buyers often spent whole weekends shuttling back and forth between showrooms just to find out whether their preferred variant and colour was physically available.
             </p>
             <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              Showrooms frequently quoted arbitrary 4-to-6-month waiting periods, pushed unwanted accessories worth tens of thousands of rupees, or urged buyers to travel down to Delhi NCR. We started ScoutMyVehicle to end the guesswork and give local buyers transparent, verified information right from their phone.
+              Showrooms frequently quoted arbitrary 4-to-6-month waiting periods, pushed unwanted accessories worth tens of thousands of rupees, or urged buyers to travel long distances. We started ScoutMyVehicle to end the guesswork and give buyers transparent, verified information right from their phone.
             </p>
           </div>
 
@@ -769,11 +761,11 @@
               </li>
               <li class="flex items-start gap-2">
                 <span class="text-emerald-600 font-bold mt-0.5">✓</span>
-                <span><strong>Endless Phone Calls:</strong> One streamlined request verifies stock across all authorized local showrooms instantly.</span>
+                <span><strong>Endless Phone Calls:</strong> One streamlined request verifies stock across authorized local showrooms instantly.</span>
               </li>
               <li class="flex items-start gap-2">
                 <span class="text-emerald-600 font-bold mt-0.5">✓</span>
-                <span><strong>Hidden Charges:</strong> Complete transparency on regional RTO taxes, insurance slabs, and bank interest tie-ups.</span>
+                <span><strong>Hidden Charges:</strong> Complete transparency on RTO taxes, insurance slabs, and bank interest tie-ups.</span>
               </li>
             </ul>
           </div>
@@ -783,7 +775,7 @@
         <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 sm:p-8 space-y-6">
           <div class="text-center max-w-xl mx-auto space-y-2">
             <h3 class="text-lg sm:text-xl font-bold text-slate-950">How We're Different from Traditional Car Platforms</h3>
-            <p class="text-xs text-slate-500">Why ScoutMyVehicle is the preferred choice for Uttarakhand car buyers</p>
+            <p class="text-xs text-slate-500">Why ScoutMyVehicle is the preferred choice for car buyers</p>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
@@ -795,8 +787,8 @@
               <ul class="space-y-1.5 text-slate-600 pt-1">
                 <li>• Broadcast generic national brochure data with no local inventory knowledge.</li>
                 <li>• Sell customer phone numbers to dozens of third-party telemarketers and call centers.</li>
-                <li>• Disconnected from local Uttarakhand dealership floor allocations.</li>
-                <li>• Promote inflated waiting times and generic pan-India price estimates.</li>
+                <li>• Disconnected from local showroom dealership floor allocations.</li>
+                <li>• Promote inflated waiting times and generic brochure estimates.</li>
               </ul>
             </div>
 
@@ -806,7 +798,7 @@
                 <span>ScoutMyVehicle</span>
               </div>
               <ul class="space-y-1.5 text-slate-700 font-medium pt-1">
-                <li>• Real, hyper-local showroom stock tracking across Haldwani and Rudrapur.</li>
+                <li>• Real showroom floor stock tracking across authorized dealer networks.</li>
                 <li>• Strict privacy: your details are never sold to external call centers or third parties.</li>
                 <li>• Direct WhatsApp connection to authorized dealership sales managers.</li>
                 <li>• 100% zero broker fee, zero surcharge, and transparent on-road estimates.</li>
@@ -821,9 +813,9 @@
             <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-50 text-[#c0262b] text-[10px] font-bold uppercase">
               Our Mission
             </div>
-            <h4 class="text-base font-bold text-slate-900">Democratizing Local Showroom Transparency</h4>
+            <h4 class="text-base font-bold text-slate-900">Democratizing Showroom Transparency</h4>
             <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              To empower every car buyer in Uttarakhand with honest floor stock visibility, verified delivery timelines, and direct authorized dealer access—eliminating unnecessary broker premiums and unfair markups.
+              To empower every car buyer with honest floor stock visibility, verified delivery timelines, and direct authorized dealer access—eliminating unnecessary broker premiums and unfair markups.
             </p>
           </div>
 
@@ -831,9 +823,9 @@
             <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 text-[10px] font-bold uppercase">
               Our Vision
             </div>
-            <h4 class="text-base font-bold text-slate-900">The Gold Standard for Regional Automotive Discovery</h4>
+            <h4 class="text-base font-bold text-slate-900">The Gold Standard for Automotive Discovery</h4>
             <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              To become the most trusted automotive discovery and showroom allocation ecosystem across Uttarakhand and the North Indian hill region, turning vehicle purchasing into a transparent, stress-free experience.
+              To become the most trusted automotive discovery and showroom allocation ecosystem across authorized dealership networks, turning vehicle purchasing into a transparent, stress-free experience.
             </p>
           </div>
         </div>
@@ -885,7 +877,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
               <div class="bg-slate-50 border border-slate-200/70 p-3.5 rounded-xl space-y-1">
                 <div class="font-bold text-slate-900 text-xs">Personal Contact Details</div>
-                <div class="text-slate-600 text-xs">Full Name, Mobile / WhatsApp Phone Number, Email Address (optional), and Resident City or District (e.g. Haldwani, Rudrapur, Nainital).</div>
+                <div class="text-slate-600 text-xs">Full Name, Mobile / WhatsApp Phone Number, Email Address (optional), and Resident City or District.</div>
               </div>
               <div class="bg-slate-50 border border-slate-200/70 p-3.5 rounded-xl space-y-1">
                 <div class="font-bold text-slate-900 text-xs">Vehicle Preferences</div>
@@ -911,7 +903,7 @@
             <ul class="space-y-2 list-disc list-inside text-slate-600">
               <li><strong>Verify Genuine Inquiries:</strong> Collecting verified phone numbers prevents automated bots, fake leads, and spam requests from disrupting dealership inventory allocations.</li>
               <li><strong>Showroom Stock Matching:</strong> Dealership inventory managers require exact vehicle, variant, fuel, and colour specifications to cross-reference their DMS (Dealer Management System) for chassis numbers and factory dispatch slots.</li>
-              <li><strong>Regional Routing:</strong> Your location allows us to match you with the authorized showroom in your immediate locality (e.g. Haldwani vs. Rudrapur) so you receive accurate regional RTO tax calculations and prompt local service.</li>
+              <li><strong>Regional Routing:</strong> Your location allows us to match you with the nearest authorized showroom in your locality so you receive accurate RTO tax calculations and prompt local service.</li>
               <li><strong>Instant Direct Communication:</strong> Having your WhatsApp and phone number enables a seamless one-click bridge between you and the dealership sales manager.</li>
             </ul>
           </section>
@@ -943,7 +935,7 @@
             <div class="bg-amber-50 border border-amber-200/80 p-4 rounded-xl text-amber-900 space-y-1.5">
               <div class="font-bold">Strictly Limited Dealership Sharing:</div>
               <p class="text-xs text-amber-800">
-                We share your inquiry details <strong>only with the authorized dealership</strong> in your selected region that represents the specific car brand you enquired about (e.g., if you inquire about a Tata Nexon in Haldwani, details are forwarded exclusively to Gola Ganapati Motors Tata in Haldwani).
+                We share your inquiry details <strong>only with the authorized dealership</strong> that represents the specific car brand you enquired about (e.g., if you inquire about a Tata Nexon, details are forwarded exclusively to the authorized Tata dealership).
               </p>
             </div>
             <p class="font-semibold text-slate-900">
@@ -975,7 +967,7 @@
               <div><strong>Data Privacy Officer:</strong> ScoutMyVehicle Support Team</div>
               <div><strong>Email:</strong> <a href="mailto:privacy@scoutmyvehicle.com" class="text-[#c0262b] font-semibold underline">privacy@scoutmyvehicle.com</a></div>
               <div><strong>Phone / WhatsApp:</strong> <a href="tel:+919275251003" class="text-slate-800 font-semibold">+91 92752 51003</a></div>
-              <div><strong>Regional Office:</strong> Rampur Road Corridor, Haldwani, Nainital, Uttarakhand 263139</div>
+              <div><strong>Support Operations:</strong> ScoutMyVehicle Operations & Dealer Coordination Center</div>
             </div>
           </section>
         </div>
@@ -1093,7 +1085,7 @@
               <li><strong>Truthful Information:</strong> Users agree to provide accurate, genuine, and current contact details. Submitting frivolous, malicious, or fraudulent inquiries is strictly prohibited.</li>
               <li><strong>No Automated Scraping:</strong> Automated scraping, crawling, bots, reverse engineering, or data extraction of vehicle inventory feeds, prices, or dealer lists is expressly forbidden without written consent.</li>
               <li><strong>Intellectual Property:</strong> Brand logos, model trademarks, vehicle badges, and imagery displayed on ScoutMyVehicle are the intellectual property of their respective manufacturer OEMs and are used under fair nominative use for identification.</li>
-              <li><strong>Jurisdiction:</strong> Any disputes arising from the use of this website shall be governed by the laws of India and subject to the exclusive jurisdiction of the competent courts in Uttarakhand.</li>
+              <li><strong>Jurisdiction:</strong> Any disputes arising from the use of this website shall be governed by the laws of India and subject to the exclusive jurisdiction of competent courts.</li>
             </ul>
           </section>
         </div>
@@ -1116,7 +1108,7 @@
           </div>
           <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-950 tracking-tight">Contact ScoutMyVehicle</h1>
           <p class="text-xs sm:text-sm text-slate-500 max-w-2xl">
-            Have questions about ready stock, showroom waitlists, dealer partnerships, or need assistance? Our local Uttarakhand team is here to help.
+            Have questions about ready stock, showroom waitlists, dealer partnerships, or need assistance? Our dedicated support team is here to help.
           </p>
         </div>
 
@@ -1169,29 +1161,29 @@
             <div class="bg-white border border-slate-200 rounded-2xl p-6 space-y-4 shadow-xs">
               <div class="flex items-center gap-2 text-slate-900 font-bold text-sm">
                 <svg class="w-4 h-4 text-[#c0262b]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                <span>Regional Showroom Hubs</span>
+                <span>Authorized Showroom Hubs</span>
               </div>
 
-              <!-- Haldwani -->
+              <!-- Central Showroom Corridor -->
               <div class="border-l-2 border-[#c0262b] pl-3 py-0.5 space-y-0.5">
-                <div class="font-bold text-xs text-slate-900">Haldwani Showroom Corridor</div>
+                <div class="font-bold text-xs text-slate-900">Central Showroom Corridor</div>
                 <div class="text-xs text-slate-600 leading-relaxed">
-                  Rampur Road / Nainital Road Showroom Belt, Haldwani, District Nainital, Uttarakhand 263139
+                  Main Highway Auto Showroom Strip & Dealer Network Zone
                 </div>
                 <div class="text-[10px] text-slate-400">Hub for Mahindra, Tata Motors, Hyundai, Kia & Maruti Suzuki</div>
               </div>
 
-              <!-- Rudrapur -->
+              <!-- Regional Network Hub -->
               <div class="border-l-2 border-slate-300 pl-3 py-0.5 space-y-0.5">
-                <div class="font-bold text-xs text-slate-900">Rudrapur Regional Hub</div>
+                <div class="font-bold text-xs text-slate-900">Regional Network Hub</div>
                 <div class="text-xs text-slate-600 leading-relaxed">
-                  Kichha Road / Awas Vikas Corridor, Rudrapur, District Udham Singh Nagar, Uttarakhand 263153
+                  Commercial Auto Belt & Authorized Showroom Center
                 </div>
                 <div class="text-[10px] text-slate-400">Hub for Toyota, Mahindra, Tata Motors, Nexa & Arena</div>
               </div>
 
               <div class="pt-2 border-t border-slate-100 text-[11px] text-slate-500">
-                <strong>Regional Coverage:</strong> Haldwani, Rudrapur, Nainital, Almora, Kashipur, Pantnagar, Kichha, Bhimtal, and across Uttarakhand.
+                <strong>Network Coverage:</strong> Authorized showroom floor stock across partner multi-brand dealerships.
               </div>
             </div>
           </div>
@@ -1266,18 +1258,12 @@
 
                   <div>
                     <label class="block font-semibold text-slate-700 mb-1">Your City / Location</label>
-                    <select 
+                    <input 
+                      type="text" 
                       x-model="contactForm.city" 
-                      class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl bg-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
+                      placeholder="Enter your city / location" 
+                      class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
                     >
-                      <option value="Haldwani">Haldwani</option>
-                      <option value="Rudrapur">Rudrapur</option>
-                      <option value="Nainital">Nainital</option>
-                      <option value="Kashipur">Kashipur</option>
-                      <option value="Almora">Almora</option>
-                      <option value="Pantnagar">Pantnagar</option>
-                      <option value="Other Uttarakhand">Other Uttarakhand</option>
-                    </select>
                   </div>
                 </div>
 
@@ -1336,9 +1322,9 @@
               <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
               <span>Verified Buyer Reviews</span>
             </div>
-            <h2 class="text-xl sm:text-2xl font-bold text-slate-950 tracking-tight">What Uttarakhand Car Buyers Say</h2>
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-950 tracking-tight">What Car Buyers Say</h2>
             <p class="text-xs sm:text-sm text-slate-500 mt-1 max-w-xl">
-              Real feedback from customers who found their dream car through authorized dealerships across Haldwani, Rudrapur, and Kumaon.
+              Real feedback from customers who found their dream car through authorized multi-brand dealerships.
             </p>
           </div>
 
@@ -1487,7 +1473,7 @@
               <input 
                 type="text" 
                 x-model="inquiryForm.location" 
-                placeholder="Enter your city / town (e.g. Haldwani, Rudrapur, Almora, or Others)" 
+                placeholder="Enter your city / town" 
                 class="filter-input"
               >
             </div>
@@ -1694,7 +1680,7 @@
         </div>
         <h2 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Car Loan & Financing Options</h2>
         <p class="text-xs sm:text-sm text-slate-500">
-          ScoutMyVehicle connects you with authorized lending partners across Haldwani & Rudrapur for verified competitive interest rates, low processing charges, and fast showroom sanction.
+          ScoutMyVehicle connects you with authorized lending partners for verified competitive interest rates, low processing charges, and fast showroom sanction.
         </p>
       </div>
 
@@ -1973,7 +1959,7 @@
             <img src="/static/images/logo_transparent.png" alt="ScoutMyVehicle" class="h-8 sm:h-9 w-auto object-contain">
           </div>
           <p class="leading-relaxed text-slate-500">
-            Uttarakhand's independent showroom vehicle discovery platform connecting buyers with authorized multi-brand dealership networks across Haldwani, Rudrapur, and Kumaon.
+            Independent showroom vehicle discovery platform connecting buyers with authorized multi-brand dealership networks.
           </p>
           <div class="flex items-center gap-2 pt-1 text-[11px] text-slate-600">
             <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
@@ -2022,7 +2008,7 @@
           </div>
           <div class="pt-2 border-t border-slate-100 text-[11px] text-slate-400 leading-relaxed">
             Authorized Network Across 9 Brands<br>
-            Regional Hubs: Haldwani & Rudrapur
+            Multi-Brand Showroom Floor Inventory
           </div>
         </div>
       </div>
@@ -2056,7 +2042,7 @@
           name: '',
           phone: '',
           email: '',
-          city: 'Haldwani',
+          city: '',
           subject: 'General Inquiry',
           message: '',
           submitting: false,
@@ -2152,20 +2138,20 @@
           {
             id: 1,
             name: "Rohit Negi",
-            city: "Haldwani",
+            city: "City Center",
             car: "Mahindra Scorpio-N Z8L",
-            dealer: "Bajrang Motors, Haldwani",
+            dealer: "Bajrang Motors",
             rating: 5,
             date: "3 days ago",
             badge: "Verified Buyer",
-            quote: "Got immediate showroom allocation for Scorpio-N without paying any broker premium. Bajrang Motors matched ex-showroom pricing and delivered in 4 days. Unmatched service for Kumaon buyers!"
+            quote: "Got immediate showroom allocation for Scorpio-N without paying any broker premium. Bajrang Motors matched ex-showroom pricing and delivered in 4 days. Unmatched service!"
           },
           {
             id: 2,
             name: "Pooja Pandey",
-            city: "Rudrapur",
+            city: "Civil Lines",
             car: "Tata Nexon Fearless+",
-            dealer: "Amit Auto, Rudrapur",
+            dealer: "Amit Auto",
             rating: 5,
             date: "1 week ago",
             badge: "Verified Buyer",
@@ -2174,20 +2160,20 @@
           {
             id: 3,
             name: "Manish Rawat",
-            city: "Nainital",
+            city: "Green Park",
             car: "Hyundai Creta SX (O)",
-            dealer: "Sachin Hyundai, Haldwani",
+            dealer: "Sachin Hyundai",
             rating: 5,
             date: "2 weeks ago",
             badge: "Verified Buyer",
-            quote: "Was frustrated with 4-month waiting periods in Delhi NCR. ScoutMyVehicle showed live floor stock in Haldwani. Drove home with the exact Ranger Khaki colour in less than a week!"
+            quote: "Was frustrated with 4-month waiting periods. ScoutMyVehicle showed live floor stock. Drove home with the exact Ranger Khaki colour in less than a week!"
           },
           {
             id: 4,
             name: "Gurpreet Singh",
-            city: "Kashipur / Rudrapur",
+            city: "Park Avenue",
             car: "Maruti Suzuki Brezza ZXi+",
-            dealer: "Akansha Automobiles, Rudrapur",
+            dealer: "Akansha Automobiles",
             rating: 5,
             date: "2 weeks ago",
             badge: "Verified Buyer",
@@ -2196,9 +2182,9 @@
           {
             id: 5,
             name: "Dr. Arvind Joshi",
-            city: "Kathgodam",
+            city: "Hill View",
             car: "Toyota Hyryder Hybrid",
-            dealer: "Trust Toyota, Haldwani",
+            dealer: "Trust Toyota",
             rating: 5,
             date: "3 weeks ago",
             badge: "Verified Buyer",
@@ -2207,9 +2193,9 @@
           {
             id: 6,
             name: "Neha Bisht",
-            city: "Haldwani",
+            city: "Lake View",
             car: "Kia Seltos HTX Diesel",
-            dealer: "Classic Kia, Haldwani",
+            dealer: "Classic Kia",
             rating: 5,
             date: "1 month ago",
             badge: "Verified Buyer",
@@ -2218,20 +2204,20 @@
           {
             id: 7,
             name: "Deepak Mehra",
-            city: "Bhimtal",
+            city: "Valley Ridge",
             car: "Mahindra Thar 4WD",
-            dealer: "Kumar Autowheels, Rudrapur",
+            dealer: "Kumar Autowheels",
             rating: 5,
             date: "1 month ago",
             badge: "Verified Buyer",
-            quote: "Found the exact Everest White hardtop model in transit allocation. The direct dealer connect feature meant zero middlemen commission. Outstanding platform for Uttarakhand!"
+            quote: "Found the exact Everest White hardtop model in transit allocation. The direct dealer connect feature meant zero middlemen commission. Outstanding platform for car buyers!"
           },
           {
             id: 8,
             name: "Kavita Tiwari",
-            city: "Pantnagar",
+            city: "Station Road",
             car: "Tata Punch Creative",
-            dealer: "Gola Ganapati Motors, Haldwani",
+            dealer: "Gola Ganapati Motors",
             rating: 5,
             date: "1 month ago",
             badge: "Verified Buyer",
@@ -2297,7 +2283,7 @@
           this.contactForm.name = '';
           this.contactForm.phone = '';
           this.contactForm.email = '';
-          this.contactForm.city = 'Haldwani';
+          this.contactForm.city = '';
           this.contactForm.subject = 'General Inquiry';
           this.contactForm.message = '';
           this.contactForm.submitting = false;

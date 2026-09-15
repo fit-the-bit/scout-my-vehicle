@@ -35,7 +35,6 @@ class TestScoutMyVehicle(unittest.TestCase):
         self.assertIn("Others", response.text)
         self.assertIn("Car Variant", response.text)
         self.assertIn("Colour", response.text)
-        self.assertIn("Submit", response.text)
         self.assertIn("Clear all", response.text)
         self.assertIn("Don't pay extra /premium for the car you are looking for", response.text)
         self.assertIn("Check Availability & Connect", response.text)
@@ -43,9 +42,13 @@ class TestScoutMyVehicle(unittest.TestCase):
         self.assertIn("Purchase Timeline", response.text)
         self.assertIn("0-15 days", response.text)
         self.assertIn("Do you need a finance", response.text)
-        # Ensure no RTO codes exposed in customer view
+        # Ensure no RTO codes or regional terms exposed in customer view
         self.assertNotIn("(UK-04)", response.text)
         self.assertNotIn("(UK-06)", response.text)
+        self.assertNotIn("Uttarakhand", response.text)
+        self.assertNotIn("Haldwani", response.text)
+        self.assertNotIn("Rudrapur", response.text)
+        self.assertNotIn("Kumaon", response.text)
 
     def test_showroom_staff_and_admin_login_completely_removed(self):
         # 1. Verify /admin/login is completely removed (returns 404)
@@ -427,10 +430,13 @@ Toyota,Trust Toyota,Rudrapur,Toyota Urban Cruiser Hyryder,G Strong Hybrid,Hybrid
         # 2. Test Home Page contains Reviews section & Randomize button
         home_res = self.client.get("/")
         self.assertEqual(home_res.status_code, 200)
-        self.assertIn("What Uttarakhand Car Buyers Say", home_res.text)
+        self.assertIn("What Car Buyers Say", home_res.text)
         self.assertIn("Verified Buyer Reviews", home_res.text)
         self.assertIn("Randomize", home_res.text)
         self.assertIn("shuffleReviews()", home_res.text)
+        self.assertNotIn("Uttarakhand", home_res.text)
+        self.assertNotIn("Haldwani", home_res.text)
+        self.assertNotIn("Rudrapur", home_res.text)
 
     def test_about_privacy_terms_contact_pages_and_contact_api(self):
         # 1. Test GET /about page
@@ -444,6 +450,9 @@ Toyota,Trust Toyota,Rudrapur,Toyota Urban Cruiser Hyryder,G Strong Hybrid,Hybrid
         self.assertIn("How We're Different from Traditional Car Platforms", about_res.text)
         self.assertNotIn("(UK-04)", about_res.text)
         self.assertNotIn("(UK-06)", about_res.text)
+        self.assertNotIn("Uttarakhand", about_res.text)
+        self.assertNotIn("Haldwani", about_res.text)
+        self.assertNotIn("Rudrapur", about_res.text)
 
         # 2. Test GET /privacy page
         privacy_res = self.client.get("/privacy")
@@ -455,6 +464,9 @@ Toyota,Trust Toyota,Rudrapur,Toyota Urban Cruiser Hyryder,G Strong Hybrid,Hybrid
         self.assertIn("Data Security & Protection", privacy_res.text)
         self.assertNotIn("(UK-04)", privacy_res.text)
         self.assertNotIn("(UK-06)", privacy_res.text)
+        self.assertNotIn("Uttarakhand", privacy_res.text)
+        self.assertNotIn("Haldwani", privacy_res.text)
+        self.assertNotIn("Rudrapur", privacy_res.text)
 
         # 3. Test GET /terms page
         terms_res = self.client.get("/terms")
@@ -467,6 +479,9 @@ Toyota,Trust Toyota,Rudrapur,Toyota Urban Cruiser Hyryder,G Strong Hybrid,Hybrid
         self.assertIn("Sole Responsibility of Authorized Dealerships", terms_res.text)
         self.assertNotIn("(UK-04)", terms_res.text)
         self.assertNotIn("(UK-06)", terms_res.text)
+        self.assertNotIn("Uttarakhand", terms_res.text)
+        self.assertNotIn("Haldwani", terms_res.text)
+        self.assertNotIn("Rudrapur", terms_res.text)
 
         # 4. Test GET /contact page
         contact_res = self.client.get("/contact")
@@ -474,11 +489,14 @@ Toyota,Trust Toyota,Rudrapur,Toyota Urban Cruiser Hyryder,G Strong Hybrid,Hybrid
         self.assertIn("Contact ScoutMyVehicle", contact_res.text)
         self.assertIn("+91 92752 51003", contact_res.text)
         self.assertIn("support@scoutmyvehicle.com", contact_res.text)
-        self.assertIn("Haldwani Showroom Corridor", contact_res.text)
-        self.assertIn("Rudrapur Regional Hub", contact_res.text)
+        self.assertIn("Central Showroom Corridor", contact_res.text)
+        self.assertIn("Regional Network Hub", contact_res.text)
         self.assertIn("Send Us a Message", contact_res.text)
         self.assertNotIn("(UK-04)", contact_res.text)
         self.assertNotIn("(UK-06)", contact_res.text)
+        self.assertNotIn("Uttarakhand", contact_res.text)
+        self.assertNotIn("Haldwani", contact_res.text)
+        self.assertNotIn("Rudrapur", contact_res.text)
 
         # 5. Test POST /api/contact validation failure
         bad_res = self.client.post("/api/contact", json={"name": "", "phone": "", "message": ""})
@@ -489,9 +507,9 @@ Toyota,Trust Toyota,Rudrapur,Toyota Urban Cruiser Hyryder,G Strong Hybrid,Hybrid
             "name": "Kamal Bisht",
             "phone": "+91 98370 12345",
             "email": "kamal.bisht@example.com",
-            "city": "Haldwani",
+            "city": "Dehradun",
             "subject": "Vehicle Availability Question",
-            "message": "Looking for ready delivery of Mahindra Scorpio-N Z8 in Haldwani showroom."
+            "message": "Looking for ready delivery of Mahindra Scorpio-N Z8 in showroom."
         }
         post_res = self.client.post("/api/contact", json=valid_payload)
         self.assertEqual(post_res.status_code, 200)

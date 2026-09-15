@@ -143,20 +143,20 @@ async def get_reviews(limit: Optional[int] = Query(default=None)):
         {
             "id": 1,
             "name": "Rohit Negi",
-            "city": "Haldwani",
+            "city": "City Center",
             "car": "Mahindra Scorpio-N Z8L",
-            "dealer": "Bajrang Motors, Haldwani",
+            "dealer": "Bajrang Motors",
             "rating": 5,
             "date": "3 days ago",
             "badge": "Verified Buyer",
-            "quote": "Got immediate showroom allocation for Scorpio-N without paying any broker premium. Bajrang Motors matched ex-showroom pricing and delivered in 4 days. Unmatched service for Kumaon buyers!"
+            "quote": "Got immediate showroom allocation for Scorpio-N without paying any broker premium. Bajrang Motors matched ex-showroom pricing and delivered in 4 days. Unmatched service!"
         },
         {
             "id": 2,
             "name": "Pooja Pandey",
-            "city": "Rudrapur",
+            "city": "Civil Lines",
             "car": "Tata Nexon Fearless+",
-            "dealer": "Amit Auto, Rudrapur",
+            "dealer": "Amit Auto",
             "rating": 5,
             "date": "1 week ago",
             "badge": "Verified Buyer",
@@ -165,20 +165,20 @@ async def get_reviews(limit: Optional[int] = Query(default=None)):
         {
             "id": 3,
             "name": "Manish Rawat",
-            "city": "Nainital",
+            "city": "Green Park",
             "car": "Hyundai Creta SX (O)",
-            "dealer": "Sachin Hyundai, Haldwani",
+            "dealer": "Sachin Hyundai",
             "rating": 5,
             "date": "2 weeks ago",
             "badge": "Verified Buyer",
-            "quote": "Was frustrated with 4-month waiting periods in Delhi NCR. ScoutMyVehicle showed live floor stock in Haldwani. Drove home with the exact Ranger Khaki colour in less than a week!"
+            "quote": "Was frustrated with 4-month waiting periods. ScoutMyVehicle showed live floor stock. Drove home with the exact Ranger Khaki colour in less than a week!"
         },
         {
             "id": 4,
             "name": "Gurpreet Singh",
-            "city": "Kashipur / Rudrapur",
+            "city": "Park Avenue",
             "car": "Maruti Suzuki Brezza ZXi+",
-            "dealer": "Akansha Automobiles, Rudrapur",
+            "dealer": "Akansha Automobiles",
             "rating": 5,
             "date": "2 weeks ago",
             "badge": "Verified Buyer",
@@ -187,9 +187,9 @@ async def get_reviews(limit: Optional[int] = Query(default=None)):
         {
             "id": 5,
             "name": "Dr. Arvind Joshi",
-            "city": "Kathgodam",
+            "city": "Hill View",
             "car": "Toyota Hyryder Hybrid",
-            "dealer": "Trust Toyota, Haldwani",
+            "dealer": "Trust Toyota",
             "rating": 5,
             "date": "3 weeks ago",
             "badge": "Verified Buyer",
@@ -198,9 +198,9 @@ async def get_reviews(limit: Optional[int] = Query(default=None)):
         {
             "id": 6,
             "name": "Neha Bisht",
-            "city": "Haldwani",
+            "city": "Lake View",
             "car": "Kia Seltos HTX Diesel",
-            "dealer": "Classic Kia, Haldwani",
+            "dealer": "Classic Kia",
             "rating": 5,
             "date": "1 month ago",
             "badge": "Verified Buyer",
@@ -209,20 +209,20 @@ async def get_reviews(limit: Optional[int] = Query(default=None)):
         {
             "id": 7,
             "name": "Deepak Mehra",
-            "city": "Bhimtal",
+            "city": "Valley Ridge",
             "car": "Mahindra Thar 4WD",
-            "dealer": "Kumar Autowheels, Rudrapur",
+            "dealer": "Kumar Autowheels",
             "rating": 5,
             "date": "1 month ago",
             "badge": "Verified Buyer",
-            "quote": "Found the exact Everest White hardtop model in transit allocation. The direct dealer connect feature meant zero middlemen commission. Outstanding platform for Uttarakhand!"
+            "quote": "Found the exact Everest White hardtop model in transit allocation. The direct dealer connect feature meant zero middlemen commission. Outstanding platform for car buyers!"
         },
         {
             "id": 8,
             "name": "Kavita Tiwari",
-            "city": "Pantnagar",
+            "city": "Station Road",
             "car": "Tata Punch Creative",
-            "dealer": "Gola Ganapati Motors, Haldwani",
+            "dealer": "Gola Ganapati Motors",
             "rating": 5,
             "date": "1 month ago",
             "badge": "Verified Buyer",
@@ -609,7 +609,7 @@ async def create_inquiry(inquiry: InquiryCreate):
     # Fetch dealer details for response
     cursor.execute("SELECT name, phone, whatsapp, city FROM dealerships WHERE id = ?;", (dealer_id,))
     dealer_row = cursor.fetchone()
-    dealer = dict(dealer_row) if dealer_row else {"name": "Authorized Showroom", "phone": "+91 5946 220 188", "whatsapp": "919837012345", "city": "Uttarakhand"}
+    dealer = dict(dealer_row) if dealer_row else {"name": "Authorized Showroom", "phone": "+91 5946 220 188", "whatsapp": "919837012345", "city": "Authorized Network"}
 
     # Fetch vehicle & variant details for WhatsApp & Google Sheet
     car_name = "Selected Model"
@@ -714,7 +714,7 @@ async def handle_contact_form(contact: ContactMessageCreate):
     phone = contact.phone.strip()
     message = contact.message.strip()
     email = (contact.email or "").strip()
-    city = (contact.city or "Haldwani").strip()
+    city = (contact.city or "City Center").strip()
     subject = (contact.subject or "General Inquiry").strip()
 
     if not name:
@@ -912,7 +912,7 @@ async def update_inquiry_status(update: InquiryStatusUpdate):
     return {"success": True, "message": f"Inquiry status updated to {update.status}"}
 
 @app.get("/api/price-estimate")
-async def get_price_estimate(variant_id: int, rto_city: str = "Haldwani"):
+async def get_price_estimate(variant_id: int, rto_city: str = "Standard"):
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -931,7 +931,7 @@ async def get_price_estimate(variant_id: int, rto_city: str = "Haldwani"):
 
     ex_showroom = variant["ex_showroom_price"]
 
-    # Uttarakhand RTO tax calculation (roughly 8% - 10% depending on engine/price tier)
+    # Standard RTO tax calculation (roughly 8% - 10% depending on engine/price tier)
     if ex_showroom < 1000000:
         rto_rate = 0.08
     else:
@@ -947,7 +947,7 @@ async def get_price_estimate(variant_id: int, rto_city: str = "Haldwani"):
     return {
         "variant": variant,
         "rto_city": rto_city,
-        "rto_code": "UK-04 (Haldwani)" if "haldwani" in rto_city.lower() else "UK-06 (Rudrapur)",
+        "rto_code": "Standard RTO",
         "ex_showroom": ex_showroom,
         "rto_tax": rto_tax,
         "insurance": insurance,
