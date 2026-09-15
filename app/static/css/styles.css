@@ -150,3 +150,12 @@ body {
   border-color: rgba(255, 255, 255, 0.55);
   box-shadow: 0 20px 30px -10px rgba(16, 185, 129, 0.35), 0 10px 15px -3px rgba(0, 0, 0, 0.12);
 }
+
+/* Hide scrollbars on horizontal scrollable brand rails */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari, Opera */
+}

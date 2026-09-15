@@ -1,1 +1,25 @@
 ﻿Timestamp,Inquiry ID,Customer Name,Customer Phone,Customer Email,Customer Location,Car Model,Variant Name,Fuel Type,Transmission,Colour,Ex-Showroom Price,Buying Timeline,Finance Required,Preferred Bank,Exchange Required,Exchange Car Details,Notes,Status
+2026-09-15 20:47:12,2,Buyer 0-15 days,9876543210,N/A,Rudrapur,Selected Model,Standard,N/A,N/A,Any,N/A,0-15 days,yes,N/A,No,N/A,,NEW
+2026-09-15 20:47:12,3,Buyer 15 - 30 days,9876543210,N/A,Rudrapur,Selected Model,Standard,N/A,N/A,Any,N/A,15 - 30 days,no,N/A,No,N/A,,NEW
+2026-09-15 20:47:12,4,Buyer 30 - 60 days,9876543210,N/A,Rudrapur,Selected Model,Standard,N/A,N/A,Any,N/A,30 - 60 days,not decided yet,N/A,No,N/A,,NEW
+2026-09-15 20:47:12,5,Buyer just enquiring,9876543210,N/A,Rudrapur,Selected Model,Standard,N/A,N/A,Any,N/A,just enquiring,not decided yet,N/A,No,N/A,,NEW
+2026-09-15 20:47:12,6,Virender Singh,'+91 94120 99887,virender.singh@example.com,Haldwani,Maruti Suzuki Alto K10,Std,Petrol,Manual (MT),Any,"₹ 399,000",0-15 days,yes,SBI,Yes,2020 Hyundai i20,Timeline: 0-15 days | Finance: yes (Preferred Bank: SBI),NEW
+2026-09-15 20:47:12,7,Rohan Rawat,'+91 98970 11223,rohan.rawat@example.com,Haldwani,Maruti Suzuki Alto K10,Std,Petrol,Manual (MT),Any,"₹ 399,000",0-15 days,yes,N/A,Yes,2019 Maruti Brezza,Timeline: 0-15 days | Finance: yes,NEW
+2026-09-15 20:47:26,2,Buyer 0-15 days,9876543210,N/A,Rudrapur,Selected Model,Standard,N/A,N/A,Any,N/A,0-15 days,yes,N/A,No,N/A,,NEW
+2026-09-15 20:47:26,3,Buyer 15 - 30 days,9876543210,N/A,Rudrapur,Selected Model,Standard,N/A,N/A,Any,N/A,15 - 30 days,no,N/A,No,N/A,,NEW
+2026-09-15 20:47:26,4,Buyer 30 - 60 days,9876543210,N/A,Rudrapur,Selected Model,Standard,N/A,N/A,Any,N/A,30 - 60 days,not decided yet,N/A,No,N/A,,NEW
+2026-09-15 20:47:26,5,Buyer just enquiring,9876543210,N/A,Rudrapur,Selected Model,Standard,N/A,N/A,Any,N/A,just enquiring,not decided yet,N/A,No,N/A,,NEW
+2026-09-15 20:47:27,6,Virender Singh,'+91 94120 99887,virender.singh@example.com,Haldwani,Maruti Suzuki Alto K10,Std,Petrol,Manual (MT),Any,"₹ 399,000",0-15 days,yes,SBI,Yes,2020 Hyundai i20,Timeline: 0-15 days | Finance: yes (Preferred Bank: SBI),NEW
+2026-09-15 20:47:27,7,Rohan Rawat,'+91 98970 11223,rohan.rawat@example.com,Haldwani,Maruti Suzuki Alto K10,Std,Petrol,Manual (MT),Any,"₹ 399,000",0-15 days,yes,N/A,Yes,2019 Maruti Brezza,Timeline: 0-15 days | Finance: yes,NEW
+2026-09-15 20:47:34,2,Buyer 0-15 days,9876543210,N/A,Rudrapur,Selected Model,Standard,N/A,N/A,Any,N/A,0-15 days,yes,N/A,No,N/A,,NEW
+2026-09-15 20:47:34,3,Buyer 15 - 30 days,9876543210,N/A,Rudrapur,Selected Model,Standard,N/A,N/A,Any,N/A,15 - 30 days,no,N/A,No,N/A,,NEW
+2026-09-15 20:47:34,4,Buyer 30 - 60 days,9876543210,N/A,Rudrapur,Selected Model,Standard,N/A,N/A,Any,N/A,30 - 60 days,not decided yet,N/A,No,N/A,,NEW
+2026-09-15 20:47:34,5,Buyer just enquiring,9876543210,N/A,Rudrapur,Selected Model,Standard,N/A,N/A,Any,N/A,just enquiring,not decided yet,N/A,No,N/A,,NEW
+2026-09-15 20:47:35,6,Virender Singh,'+91 94120 99887,virender.singh@example.com,Haldwani,Maruti Suzuki Alto K10,Std,Petrol,Manual (MT),Any,"₹ 399,000",0-15 days,yes,SBI,Yes,2020 Hyundai i20,Timeline: 0-15 days | Finance: yes (Preferred Bank: SBI),NEW
+2026-09-15 20:47:35,7,Rohan Rawat,'+91 98970 11223,rohan.rawat@example.com,Haldwani,Maruti Suzuki Alto K10,Std,Petrol,Manual (MT),Any,"₹ 399,000",0-15 days,yes,N/A,Yes,2019 Maruti Brezza,Timeline: 0-15 days | Finance: yes,NEW
+2026-09-15 20:49:32,2,Buyer 0-15 days,9876543210,N/A,Rudrapur,Selected Model,Standard,N/A,N/A,Any,N/A,0-15 days,yes,N/A,No,N/A,,NEW
+2026-09-15 20:49:32,3,Buyer 15 - 30 days,9876543210,N/A,Rudrapur,Selected Model,Standard,N/A,N/A,Any,N/A,15 - 30 days,no,N/A,No,N/A,,NEW
+2026-09-15 20:49:32,4,Buyer 30 - 60 days,9876543210,N/A,Rudrapur,Selected Model,Standard,N/A,N/A,Any,N/A,30 - 60 days,not decided yet,N/A,No,N/A,,NEW
+2026-09-15 20:49:32,5,Buyer just enquiring,9876543210,N/A,Rudrapur,Selected Model,Standard,N/A,N/A,Any,N/A,just enquiring,not decided yet,N/A,No,N/A,,NEW
+2026-09-15 20:49:32,6,Virender Singh,'+91 94120 99887,virender.singh@example.com,Haldwani,Maruti Suzuki Alto K10,Std,Petrol,Manual (MT),Any,"₹ 399,000",0-15 days,yes,SBI,Yes,2020 Hyundai i20,Timeline: 0-15 days | Finance: yes (Preferred Bank: SBI),NEW
+2026-09-15 20:49:32,7,Rohan Rawat,'+91 98970 11223,rohan.rawat@example.com,Haldwani,Maruti Suzuki Alto K10,Std,Petrol,Manual (MT),Any,"₹ 399,000",0-15 days,yes,N/A,Yes,2019 Maruti Brezza,Timeline: 0-15 days | Finance: yes,NEW

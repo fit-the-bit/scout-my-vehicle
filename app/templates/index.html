@@ -145,181 +145,603 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 
       <!-- ================= VIEW 1: BROWSE STOCK ================= -->
-      <div x-show="activeView === 'stock'" class="space-y-8">
-        <!-- Title & Subtitle (Exact User Custom Text) -->
-        <div class="space-y-1">
-          <h1 class="text-2xl sm:text-3xl font-bold text-slate-950 tracking-tight">The smarter way to find your car.</h1>
-          <p class="text-xs sm:text-sm text-slate-500 font-normal">
-            Looking for a car? Let us find it.
-          </p>
-        </div>
+      <div x-show="activeView === 'stock'" class="space-y-6">
 
-        <!-- Filter Box (Streamlined for Model Browsing) -->
-        <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-4 shadow-xs">
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <!-- Brand -->
-            <div>
-              <label class="block text-xs font-normal text-slate-600 mb-1.5">Brand</label>
-              <select x-model="selectedBrand" @change="onBrandChange()" class="filter-input">
-                <option value="Any">All Brands (9 Manufacturers)</option>
-                <template x-for="b in brands" :key="b">
-                  <option :value="b" x-text="b"></option>
-                </template>
-              </select>
-            </div>
-
-            <!-- Model -->
-            <div>
-              <label class="block text-xs font-normal text-slate-600 mb-1.5">Model</label>
-              <select x-model="selectedModel" @change="onModelChange()" class="filter-input">
-                <option value="Any">All Models</option>
-                <template x-for="m in filteredModels" :key="m.model">
-                  <option :value="m.model" x-text="m.model"></option>
-                </template>
-              </select>
-            </div>
-
-            <!-- Action Buttons (Clear all) -->
-            <div class="sm:col-span-2 lg:col-span-1 flex items-end">
-              <div class="w-full flex items-center justify-between sm:justify-end gap-3">
-                <button 
-                  type="button" 
-                  @click="resetFilters()" 
-                  class="w-full sm:w-auto px-4 py-2.5 text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl border border-slate-200 transition cursor-pointer flex items-center justify-center gap-1.5"
-                >
-                  <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                  <span>Clear all</span>
-                </button>
-              </div>
-            </div>
+        <!-- 1. MINIMAL HERO -->
+        <div class="space-y-2 pt-1">
+          <h1 class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-snug">
+            Find live showroom allocation &amp; ready stock.
+          </h1>
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-slate-400 font-medium">
+            <span class="flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block"></span>
+              87 Verified Models
+            </span>
+            <span>·</span>
+            <span>671 Variants</span>
+            <span>·</span>
+            <span>9 Authorized Manufacturers</span>
+            <span>·</span>
+            <span class="text-emerald-600 font-semibold">Zero Middlemen</span>
           </div>
         </div>
 
-        <!-- Model Cards Grid with In-Card Selectors for Variant, Fuel, Transmission, and Colour -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" x-show="displayCars.length > 0">
-          <template x-for="car in displayCars" :key="car.id">
-            <div class="stock-card flex flex-col justify-between hover:shadow-md transition-shadow">
-              <!-- Top Content -->
-              <div class="space-y-3.5">
-                <!-- Header: Brand Badge, Model Title & Ex-Showroom Price -->
-                <div class="flex items-start justify-between gap-2">
-                  <div>
-                    <div class="text-[11px] font-bold text-[#c0262b] uppercase tracking-wider" x-text="getBrandBadge(car)"></div>
-                    <h3 class="font-bold text-slate-900 text-lg leading-snug" x-text="car.model"></h3>
-                    <p class="text-xs text-slate-500 font-normal mt-0.5" x-text="car.selectedVariant ? car.selectedVariant.name : (car.tagline || 'Authorized Dealership Stock')"></p>
-                  </div>
-                  <div class="text-right shrink-0">
-                    <span class="text-[10px] font-semibold text-slate-600 bg-slate-100 border border-slate-200/80 px-2 py-0.5 rounded-full" x-text="car.category"></span>
-                    <div class="text-xs font-bold text-slate-900 mt-1" x-text="formatPrice(car.selectedVariant?.ex_showroom_price || car.min_price)"></div>
-                  </div>
-                </div>
+        <!-- 2. BRAND LOGO STRIP -->
+        <div class="relative">
+          <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide -mx-1 px-1">
 
-                <!-- Inside-Card Selectors (Variant, Fuel, Transmission, Colour) -->
-                <div class="bg-slate-50/90 border border-slate-200/80 rounded-xl p-3 space-y-2.5">
-                  <!-- 1. Car Variant -->
-                  <div>
-                    <div class="flex items-center justify-between mb-1">
-                      <label class="text-[11px] font-semibold text-slate-700">Car Variant</label>
-                      <span class="text-[10px] text-slate-400" x-text="(car.variants?.length || 0) + ' variants available'"></span>
-                    </div>
-                    <select 
-                      x-model="car.selectedVariantId" 
-                      @change="onCardVariantSelect(car)" 
-                      class="w-full text-xs font-medium bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-800 focus:outline-none focus:border-red-500 transition"
-                    >
-                      <template x-for="v in car.variants" :key="v.id">
-                        <option :value="v.id" x-text="v.name + (v.fuel_type ? ' (' + v.fuel_type + ' - ' + v.transmission + ')' : '') + ' • ' + formatPrice(v.ex_showroom_price)"></option>
-                      </template>
-                    </select>
-                  </div>
+            <!-- All (reset) -->
+            <button
+              @click="resetFilters()"
+              :class="selectedBrand === 'Any' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-400'"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[11px] font-bold whitespace-nowrap shrink-0 transition cursor-pointer"
+            >
+              All Brands
+            </button>
 
-                  <!-- 2. Fuel & Transmission in 2 columns -->
-                  <div class="grid grid-cols-2 gap-2">
-                    <div>
-                      <label class="block text-[11px] font-semibold text-slate-700 mb-1">Fuel</label>
-                      <select 
-                        x-model="car.selectedFuel" 
-                        @change="onCardFuelSelect(car)" 
-                        class="w-full text-xs font-medium bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-800 focus:outline-none focus:border-red-500 transition"
-                      >
-                        <template x-for="f in car.fuel_types_list" :key="f">
-                          <option :value="f" x-text="f"></option>
-                        </template>
-                      </select>
-                    </div>
+            <!-- Maruti Suzuki Arena -->
+            <button
+              @click="selectBrandChannel('Maruti Suzuki', 'Arena')"
+              :class="selectedBrand === 'Maruti Suzuki' && selectedChannel === 'Arena' ? 'bg-red-600 text-white border-red-600 shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:border-red-300'"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[11px] font-bold whitespace-nowrap shrink-0 transition cursor-pointer"
+            >
+              <img src="/static/logos/arena.svg" alt="Arena" class="h-3 w-auto">
+              Arena
+            </button>
 
-                    <div>
-                      <label class="block text-[11px] font-semibold text-slate-700 mb-1">Transmission</label>
-                      <select 
-                        x-model="car.selectedTransmission" 
-                        @change="onCardTransmissionSelect(car)" 
-                        class="w-full text-xs font-medium bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-800 focus:outline-none focus:border-red-500 transition"
-                      >
-                        <template x-for="t in car.transmissions_list" :key="t">
-                          <option :value="t" x-text="t"></option>
-                        </template>
-                      </select>
-                    </div>
-                  </div>
+            <!-- Maruti Suzuki Nexa -->
+            <button
+              @click="selectBrandChannel('Maruti Suzuki', 'Nexa')"
+              :class="selectedBrand === 'Maruti Suzuki' && selectedChannel === 'Nexa' ? 'bg-slate-900 text-white border-slate-900 shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[11px] font-bold whitespace-nowrap shrink-0 transition cursor-pointer"
+            >
+              <img src="/static/logos/nexa.svg" alt="Nexa" class="h-2.5 w-auto max-w-[32px]">
+              Nexa
+            </button>
 
-                  <!-- 3. Colour -->
-                  <div>
-                    <label class="block text-[11px] font-semibold text-slate-700 mb-1">Colour</label>
-                    <select 
-                      x-model="car.selectedColor" 
-                      class="w-full text-xs font-medium bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-800 focus:outline-none focus:border-red-500 transition"
-                    >
-                      <template x-for="c in car.colors" :key="c">
-                        <option :value="c" x-text="c"></option>
-                      </template>
-                    </select>
-                  </div>
-                </div>
+            <!-- Tata -->
+            <button
+              @click="selectBrandChannel('Tata Motors')"
+              :class="selectedBrand === 'Tata Motors' ? 'bg-blue-700 text-white border-blue-700 shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:border-blue-300'"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[11px] font-bold whitespace-nowrap shrink-0 transition cursor-pointer"
+            >
+              <img src="/static/logos/tata_emblem.svg" alt="Tata" class="h-3 w-auto">
+              Tata
+            </button>
 
-                <!-- 2x2 Specs Summary of Chosen Variant Configuration -->
-                <div class="grid grid-cols-2 gap-y-2 gap-x-3 text-[11px] pt-1">
-                  <div>
-                    <span class="text-slate-400 font-normal">Engine / Spec:</span>
-                    <div class="font-semibold text-slate-800 truncate" x-text="car.selectedVariant?.engine_spec || car.selectedVariant?.drivetrain || 'Standard'"></div>
-                  </div>
-                  <div>
-                    <span class="text-slate-400 font-normal">Seating:</span>
-                    <div class="font-semibold text-slate-800" x-text="(car.selectedVariant?.seating || 5) + ' Seater'"></div>
-                  </div>
-                </div>
+            <!-- Mahindra -->
+            <button
+              @click="selectBrandChannel('Mahindra')"
+              :class="selectedBrand === 'Mahindra' ? 'bg-[#c0262b] text-white border-[#c0262b] shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:border-red-300'"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[11px] font-bold whitespace-nowrap shrink-0 transition cursor-pointer"
+            >
+              <img src="/static/logos/mahindra.svg" alt="Mahindra" class="h-3 w-auto max-w-[22px]">
+              Mahindra
+            </button>
 
-                <!-- Stock Live Indicator (Dealer Name & Location Completely Hidden) -->
-                <div class="pt-2 border-t border-slate-100">
-                  <div class="text-[11px] text-emerald-700 font-medium flex items-center justify-between">
-                    <span class="flex items-center gap-1.5">
-                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                      <span>Stock live at <span class="font-semibold" x-text="car.live_time || '10:30 AM'"></span></span>
-                    </span>
-                    <span class="text-slate-400 font-normal">Ready for Booking</span>
-                  </div>
+            <!-- Hyundai -->
+            <button
+              @click="selectBrandChannel('Hyundai')"
+              :class="selectedBrand === 'Hyundai' ? 'bg-[#002C6C] text-white border-[#002C6C] shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:border-sky-300'"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[11px] font-bold whitespace-nowrap shrink-0 transition cursor-pointer"
+            >
+              <img src="/static/logos/hyundai_emblem.svg" alt="Hyundai" class="h-3 w-auto max-w-[22px]">
+              Hyundai
+            </button>
+
+            <!-- Kia -->
+            <button
+              @click="selectBrandChannel('Kia')"
+              :class="selectedBrand === 'Kia' ? 'bg-[#05141F] text-white border-[#05141F] shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[11px] font-bold whitespace-nowrap shrink-0 transition cursor-pointer"
+            >
+              <img src="/static/logos/kia.svg" alt="Kia" class="h-3 w-auto max-w-[32px]">
+              Kia
+            </button>
+
+            <!-- Toyota -->
+            <button
+              @click="selectBrandChannel('Toyota')"
+              :class="selectedBrand === 'Toyota' ? 'bg-[#EB0A1E] text-white border-[#EB0A1E] shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:border-rose-300'"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[11px] font-bold whitespace-nowrap shrink-0 transition cursor-pointer"
+            >
+              <img src="/static/logos/toyota_emblem.svg" alt="Toyota" class="h-3 w-auto max-w-[22px]">
+              Toyota
+            </button>
+
+            <!-- Volkswagen -->
+            <button
+              @click="selectBrandChannel('Volkswagen')"
+              :class="selectedBrand === 'Volkswagen' ? 'bg-[#001E50] text-white border-[#001E50] shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:border-blue-300'"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[11px] font-bold whitespace-nowrap shrink-0 transition cursor-pointer"
+            >
+              <img src="/static/logos/volkswagen.svg" alt="VW" class="h-3 w-auto max-w-[22px]">
+              VW
+            </button>
+
+            <!-- Skoda -->
+            <button
+              @click="selectBrandChannel('Skoda')"
+              :class="selectedBrand === 'Skoda' ? 'bg-[#0E3A2F] text-white border-[#0E3A2F] shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:border-emerald-300'"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[11px] font-bold whitespace-nowrap shrink-0 transition cursor-pointer"
+            >
+              <img src="/static/logos/skoda.svg" alt="Skoda" class="h-3.5 w-auto max-w-[22px]">
+              Skoda
+            </button>
+
+            <!-- Nissan -->
+            <button
+              @click="selectBrandChannel('Nissan')"
+              :class="selectedBrand === 'Nissan' ? 'bg-[#C3002F] text-white border-[#C3002F] shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:border-red-300'"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[11px] font-bold whitespace-nowrap shrink-0 transition cursor-pointer"
+            >
+              <img src="/static/logos/nissan.svg" alt="Nissan" class="h-3.5 w-auto max-w-[28px]">
+              Nissan
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. SLIM FILTER ROW (always visible) -->
+        <div class="flex flex-wrap items-end gap-3">
+          <div class="flex-1 min-w-[140px]">
+            <label class="block text-[11px] font-medium text-slate-500 mb-1">Brand</label>
+            <select x-model="selectedBrand" @change="onBrandChange()" class="filter-input">
+              <option value="Any">All Brands</option>
+              <template x-for="b in brands" :key="b">
+                <option :value="b" x-text="b"></option>
+              </template>
+            </select>
+          </div>
+          <div class="flex-1 min-w-[140px]">
+            <label class="block text-[11px] font-medium text-slate-500 mb-1">Model</label>
+            <select x-model="selectedModel" @change="onModelChange()" class="filter-input">
+              <option value="Any">All Models</option>
+              <template x-for="m in filteredModels" :key="m.model">
+                <option :value="m.model" x-text="m.model"></option>
+              </template>
+            </select>
+          </div>
+          <div class="shrink-0">
+            <button
+              type="button"
+              @click="resetFilters()"
+              class="px-3.5 py-2 text-[11px] font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl border border-slate-200 transition cursor-pointer flex items-center gap-1.5"
+            >
+              <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              Clear
+            </button>
+          </div>
+        </div>
+
+        <!-- 4A. BRAND INVENTORY RAILS — shown when no brand filter is active -->
+        <div x-show="selectedBrand === 'Any'" class="space-y-10">
+
+          <!-- Rail: Tata Motors -->
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2.5">
+                <img src="/static/logos/tata_emblem.svg" alt="Tata" class="h-5 w-auto">
+                <div>
+                  <span class="font-bold text-slate-900 text-sm">Tata Motors</span>
+                  <span class="text-[11px] text-slate-400 ml-2">14 Models</span>
                 </div>
               </div>
-
-              <!-- Lead Capture CTA Button -->
-              <div class="mt-4 pt-2 border-t border-slate-100">
-                <button 
-                  @click="openInquiryFromCard(car)" 
-                  class="w-full bg-[#c0262b] hover:bg-[#a51d22] text-white py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 shadow-xs cursor-pointer"
-                >
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-                  <span>Check Availability & Connect</span>
-                </button>
-              </div>
+              <button @click="selectBrandChannel('Tata Motors')" class="text-[11px] font-bold text-blue-700 hover:text-blue-900 flex items-center gap-1 cursor-pointer transition">
+                View All Tata
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </button>
             </div>
-          </template>
+            <div class="flex gap-4 overflow-x-auto pb-3 scrollbar-hide -mx-1 px-1">
+              <template x-for="car in cars.filter(c => c.make === 'Tata Motors').slice(0,8)" :key="'tata-' + car.id">
+                <div class="stock-card flex flex-col justify-between shrink-0 w-[260px] sm:w-[280px] hover:shadow-md transition-shadow">
+                  <div class="space-y-3">
+                    <div class="flex items-start justify-between gap-2">
+                      <div>
+                        <div class="text-[10px] font-bold text-blue-700 uppercase tracking-wider">Tata Motors</div>
+                        <h3 class="font-bold text-slate-900 text-base leading-snug" x-text="car.model"></h3>
+                        <p class="text-[11px] text-slate-500 mt-0.5" x-text="car.category"></p>
+                      </div>
+                      <div class="text-right shrink-0">
+                        <div class="text-xs font-bold text-slate-900" x-text="formatPrice(car.min_price)"></div>
+                        <div class="text-[10px] text-slate-400">onwards*</div>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-3 text-[11px] flex-wrap">
+                      <span class="text-slate-500" x-text="(car.variants?.length || 0) + ' variants'"></span>
+                      <span class="text-slate-300">·</span>
+                      <span class="text-slate-500" x-text="(car.fuel_types_list || []).join(' / ')"></span>
+                    </div>
+                    <div class="pt-2 border-t border-slate-100">
+                      <div class="text-[11px] text-emerald-700 font-medium flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>Stock live at <span class="font-semibold" x-text="car.live_time || '10:30 AM'"></span></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-3 pt-2 border-t border-slate-100">
+                    <button @click="openInquiryFromCard(car)" class="w-full bg-[#c0262b] hover:bg-[#a51d22] text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                      Check Availability
+                    </button>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <!-- Rail: Mahindra -->
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2.5">
+                <img src="/static/logos/mahindra.svg" alt="Mahindra" class="h-4 w-auto max-w-[22px]">
+                <div>
+                  <span class="font-bold text-slate-900 text-sm">Mahindra</span>
+                  <span class="text-[11px] text-slate-400 ml-2">12 Models</span>
+                </div>
+              </div>
+              <button @click="selectBrandChannel('Mahindra')" class="text-[11px] font-bold text-[#c0262b] hover:text-[#a51d22] flex items-center gap-1 cursor-pointer transition">
+                View All Mahindra
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </button>
+            </div>
+            <div class="flex gap-4 overflow-x-auto pb-3 scrollbar-hide -mx-1 px-1">
+              <template x-for="car in cars.filter(c => c.make === 'Mahindra').slice(0,8)" :key="'mah-' + car.id">
+                <div class="stock-card flex flex-col justify-between shrink-0 w-[260px] sm:w-[280px] hover:shadow-md transition-shadow">
+                  <div class="space-y-3">
+                    <div class="flex items-start justify-between gap-2">
+                      <div>
+                        <div class="text-[10px] font-bold text-[#c0262b] uppercase tracking-wider">Mahindra</div>
+                        <h3 class="font-bold text-slate-900 text-base leading-snug" x-text="car.model"></h3>
+                        <p class="text-[11px] text-slate-500 mt-0.5" x-text="car.category"></p>
+                      </div>
+                      <div class="text-right shrink-0">
+                        <div class="text-xs font-bold text-slate-900" x-text="formatPrice(car.min_price)"></div>
+                        <div class="text-[10px] text-slate-400">onwards*</div>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-3 text-[11px] flex-wrap">
+                      <span class="text-slate-500" x-text="(car.variants?.length || 0) + ' variants'"></span>
+                      <span class="text-slate-300">·</span>
+                      <span class="text-slate-500" x-text="(car.fuel_types_list || []).join(' / ')"></span>
+                    </div>
+                    <div class="pt-2 border-t border-slate-100">
+                      <div class="text-[11px] text-emerald-700 font-medium flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>Stock live at <span class="font-semibold" x-text="car.live_time || '10:30 AM'"></span></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-3 pt-2 border-t border-slate-100">
+                    <button @click="openInquiryFromCard(car)" class="w-full bg-[#c0262b] hover:bg-[#a51d22] text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                      Check Availability
+                    </button>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <!-- Rail: Hyundai -->
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2.5">
+                <img src="/static/logos/hyundai_emblem.svg" alt="Hyundai" class="h-4 w-auto max-w-[22px]">
+                <div>
+                  <span class="font-bold text-slate-900 text-sm">Hyundai</span>
+                  <span class="text-[11px] text-slate-400 ml-2">14 Models</span>
+                </div>
+              </div>
+              <button @click="selectBrandChannel('Hyundai')" class="text-[11px] font-bold text-[#002C6C] hover:text-[#001f4d] flex items-center gap-1 cursor-pointer transition">
+                View All Hyundai
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </button>
+            </div>
+            <div class="flex gap-4 overflow-x-auto pb-3 scrollbar-hide -mx-1 px-1">
+              <template x-for="car in cars.filter(c => c.make === 'Hyundai').slice(0,8)" :key="'hyu-' + car.id">
+                <div class="stock-card flex flex-col justify-between shrink-0 w-[260px] sm:w-[280px] hover:shadow-md transition-shadow">
+                  <div class="space-y-3">
+                    <div class="flex items-start justify-between gap-2">
+                      <div>
+                        <div class="text-[10px] font-bold text-sky-700 uppercase tracking-wider">Hyundai</div>
+                        <h3 class="font-bold text-slate-900 text-base leading-snug" x-text="car.model"></h3>
+                        <p class="text-[11px] text-slate-500 mt-0.5" x-text="car.category"></p>
+                      </div>
+                      <div class="text-right shrink-0">
+                        <div class="text-xs font-bold text-slate-900" x-text="formatPrice(car.min_price)"></div>
+                        <div class="text-[10px] text-slate-400">onwards*</div>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-3 text-[11px] flex-wrap">
+                      <span class="text-slate-500" x-text="(car.variants?.length || 0) + ' variants'"></span>
+                      <span class="text-slate-300">·</span>
+                      <span class="text-slate-500" x-text="(car.fuel_types_list || []).join(' / ')"></span>
+                    </div>
+                    <div class="pt-2 border-t border-slate-100">
+                      <div class="text-[11px] text-emerald-700 font-medium flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>Stock live at <span class="font-semibold" x-text="car.live_time || '10:30 AM'"></span></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-3 pt-2 border-t border-slate-100">
+                    <button @click="openInquiryFromCard(car)" class="w-full bg-[#002C6C] hover:bg-[#001f4d] text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                      Check Availability
+                    </button>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <!-- Rail: Maruti Suzuki Arena -->
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2.5">
+                <img src="/static/logos/arena.svg" alt="Arena" class="h-4 w-auto">
+                <div>
+                  <span class="font-bold text-slate-900 text-sm">Maruti Suzuki Arena</span>
+                  <span class="text-[11px] text-slate-400 ml-2">10 Models</span>
+                </div>
+              </div>
+              <button @click="selectBrandChannel('Maruti Suzuki', 'Arena')" class="text-[11px] font-bold text-red-600 hover:text-red-800 flex items-center gap-1 cursor-pointer transition">
+                View All Arena
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </button>
+            </div>
+            <div class="flex gap-4 overflow-x-auto pb-3 scrollbar-hide -mx-1 px-1">
+              <template x-for="car in cars.filter(c => c.make === 'Maruti Suzuki' && arenaModels.includes(c.model)).slice(0,8)" :key="'arena-' + car.id">
+                <div class="stock-card flex flex-col justify-between shrink-0 w-[260px] sm:w-[280px] hover:shadow-md transition-shadow">
+                  <div class="space-y-3">
+                    <div class="flex items-start justify-between gap-2">
+                      <div>
+                        <div class="text-[10px] font-bold text-red-600 uppercase tracking-wider">Maruti · Arena</div>
+                        <h3 class="font-bold text-slate-900 text-base leading-snug" x-text="car.model"></h3>
+                        <p class="text-[11px] text-slate-500 mt-0.5" x-text="car.category"></p>
+                      </div>
+                      <div class="text-right shrink-0">
+                        <div class="text-xs font-bold text-slate-900" x-text="formatPrice(car.min_price)"></div>
+                        <div class="text-[10px] text-slate-400">onwards*</div>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-3 text-[11px] flex-wrap">
+                      <span class="text-slate-500" x-text="(car.variants?.length || 0) + ' variants'"></span>
+                      <span class="text-slate-300">·</span>
+                      <span class="text-slate-500" x-text="(car.fuel_types_list || []).join(' / ')"></span>
+                    </div>
+                    <div class="pt-2 border-t border-slate-100">
+                      <div class="text-[11px] text-emerald-700 font-medium flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>Stock live at <span class="font-semibold" x-text="car.live_time || '10:30 AM'"></span></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-3 pt-2 border-t border-slate-100">
+                    <button @click="openInquiryFromCard(car)" class="w-full bg-[#c0262b] hover:bg-[#a51d22] text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                      Check Availability
+                    </button>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <!-- Rail: Kia -->
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2.5">
+                <img src="/static/logos/kia.svg" alt="Kia" class="h-3.5 w-auto max-w-[36px]">
+                <div>
+                  <span class="font-bold text-slate-900 text-sm">Kia</span>
+                  <span class="text-[11px] text-slate-400 ml-2">9 Models</span>
+                </div>
+              </div>
+              <button @click="selectBrandChannel('Kia')" class="text-[11px] font-bold text-slate-700 hover:text-slate-950 flex items-center gap-1 cursor-pointer transition">
+                View All Kia
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </button>
+            </div>
+            <div class="flex gap-4 overflow-x-auto pb-3 scrollbar-hide -mx-1 px-1">
+              <template x-for="car in cars.filter(c => c.make === 'Kia').slice(0,8)" :key="'kia-' + car.id">
+                <div class="stock-card flex flex-col justify-between shrink-0 w-[260px] sm:w-[280px] hover:shadow-md transition-shadow">
+                  <div class="space-y-3">
+                    <div class="flex items-start justify-between gap-2">
+                      <div>
+                        <div class="text-[10px] font-bold text-slate-800 uppercase tracking-wider">Kia</div>
+                        <h3 class="font-bold text-slate-900 text-base leading-snug" x-text="car.model"></h3>
+                        <p class="text-[11px] text-slate-500 mt-0.5" x-text="car.category"></p>
+                      </div>
+                      <div class="text-right shrink-0">
+                        <div class="text-xs font-bold text-slate-900" x-text="formatPrice(car.min_price)"></div>
+                        <div class="text-[10px] text-slate-400">onwards*</div>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-3 text-[11px] flex-wrap">
+                      <span class="text-slate-500" x-text="(car.variants?.length || 0) + ' variants'"></span>
+                      <span class="text-slate-300">·</span>
+                      <span class="text-slate-500" x-text="(car.fuel_types_list || []).join(' / ')"></span>
+                    </div>
+                    <div class="pt-2 border-t border-slate-100">
+                      <div class="text-[11px] text-emerald-700 font-medium flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>Stock live at <span class="font-semibold" x-text="car.live_time || '10:30 AM'"></span></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-3 pt-2 border-t border-slate-100">
+                    <button @click="openInquiryFromCard(car)" class="w-full bg-[#05141F] hover:bg-slate-900 text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                      Check Availability
+                    </button>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <!-- More Brands Link -->
+          <div class="text-center py-2">
+            <button @click="navigateToView('brands')" class="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-200 text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition cursor-pointer">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+              View All 9 Brands &amp; Full Inventory
+            </button>
+          </div>
+
         </div>
 
-        <!-- Empty Results -->
-        <div x-show="displayCars.length === 0" class="border border-slate-200 rounded-2xl p-12 text-center text-slate-500 space-y-2">
-          <p class="font-medium text-slate-700">No matching vehicle models found</p>
-          <p class="text-xs">Try selecting 'All Brands' or adjusting your filters.</p>
-          <button @click="resetFilters()" class="text-xs text-[#c0262b] font-semibold underline mt-2 cursor-pointer">Reset all filters</button>
+        <!-- 4B. FILTERED INVENTORY GRID — shown when a brand is selected -->
+        <div x-show="selectedBrand !== 'Any'" class="space-y-4">
+
+          <!-- Filtered header -->
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-sm font-bold text-slate-900" x-text="selectedBrand === 'Maruti Suzuki' && selectedChannel ? 'Maruti Suzuki ' + selectedChannel : selectedBrand"></span>
+              <span class="text-[11px] text-slate-400 ml-2" x-text="displayCars.length + ' models'"></span>
+            </div>
+            <button @click="resetFilters()" class="text-[11px] text-slate-500 hover:text-slate-800 underline cursor-pointer">Show all brands</button>
+          </div>
+
+          <!-- Full detail cards grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" x-show="displayCars.length > 0">
+            <template x-for="car in displayCars" :key="car.id">
+              <div class="stock-card flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div class="space-y-3.5">
+                  <div class="flex items-start justify-between gap-2">
+                    <div>
+                      <div class="text-[11px] font-bold text-[#c0262b] uppercase tracking-wider" x-text="getBrandBadge(car)"></div>
+                      <h3 class="font-bold text-slate-900 text-lg leading-snug" x-text="car.model"></h3>
+                      <p class="text-xs text-slate-500 font-normal mt-0.5" x-text="car.selectedVariant ? car.selectedVariant.name : (car.tagline || 'Authorized Dealership Stock')"></p>
+                    </div>
+                    <div class="text-right shrink-0">
+                      <span class="text-[10px] font-semibold text-slate-600 bg-slate-100 border border-slate-200/80 px-2 py-0.5 rounded-full" x-text="car.category"></span>
+                      <div class="text-xs font-bold text-slate-900 mt-1" x-text="formatPrice(car.selectedVariant?.ex_showroom_price || car.min_price)"></div>
+                    </div>
+                  </div>
+                  <div class="bg-slate-50/90 border border-slate-200/80 rounded-xl p-3 space-y-2.5">
+                    <div>
+                      <div class="flex items-center justify-between mb-1">
+                        <label class="text-[11px] font-semibold text-slate-700">Car Variant</label>
+                        <span class="text-[10px] text-slate-400" x-text="(car.variants?.length || 0) + ' variants available'"></span>
+                      </div>
+                      <select x-model="car.selectedVariantId" @change="onCardVariantSelect(car)" class="w-full text-xs font-medium bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-800 focus:outline-none focus:border-red-500 transition">
+                        <template x-for="v in car.variants" :key="v.id">
+                          <option :value="v.id" x-text="v.name + (v.fuel_type ? ' (' + v.fuel_type + ' - ' + v.transmission + ')' : '') + ' • ' + formatPrice(v.ex_showroom_price)"></option>
+                        </template>
+                      </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                      <div>
+                        <label class="block text-[11px] font-semibold text-slate-700 mb-1">Fuel</label>
+                        <select x-model="car.selectedFuel" @change="onCardFuelSelect(car)" class="w-full text-xs font-medium bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-800 focus:outline-none focus:border-red-500 transition">
+                          <template x-for="f in car.fuel_types_list" :key="f">
+                            <option :value="f" x-text="f"></option>
+                          </template>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block text-[11px] font-semibold text-slate-700 mb-1">Transmission</label>
+                        <select x-model="car.selectedTransmission" @change="onCardTransmissionSelect(car)" class="w-full text-xs font-medium bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-800 focus:outline-none focus:border-red-500 transition">
+                          <template x-for="t in car.transmissions_list" :key="t">
+                            <option :value="t" x-text="t"></option>
+                          </template>
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-semibold text-slate-700 mb-1">Colour</label>
+                      <select x-model="car.selectedColor" class="w-full text-xs font-medium bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-800 focus:outline-none focus:border-red-500 transition">
+                        <template x-for="c in car.colors" :key="c">
+                          <option :value="c" x-text="c"></option>
+                        </template>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-y-2 gap-x-3 text-[11px] pt-1">
+                    <div>
+                      <span class="text-slate-400 font-normal">Engine / Spec:</span>
+                      <div class="font-semibold text-slate-800 truncate" x-text="car.selectedVariant?.engine_spec || car.selectedVariant?.drivetrain || 'Standard'"></div>
+                    </div>
+                    <div>
+                      <span class="text-slate-400 font-normal">Seating:</span>
+                      <div class="font-semibold text-slate-800" x-text="(car.selectedVariant?.seating || 5) + ' Seater'"></div>
+                    </div>
+                  </div>
+                  <div class="pt-2 border-t border-slate-100">
+                    <div class="text-[11px] text-emerald-700 font-medium flex items-center justify-between">
+                      <span class="flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>Stock live at <span class="font-semibold" x-text="car.live_time || '10:30 AM'"></span></span>
+                      </span>
+                      <span class="text-slate-400 font-normal">Ready for Booking</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-4 pt-2 border-t border-slate-100">
+                  <button @click="openInquiryFromCard(car)" class="w-full bg-[#c0262b] hover:bg-[#a51d22] text-white py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 shadow-xs cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                    <span>Check Availability &amp; Connect</span>
+                  </button>
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <!-- Empty state -->
+          <div x-show="displayCars.length === 0" class="border border-slate-200 rounded-2xl p-12 text-center text-slate-500 space-y-2">
+            <p class="font-medium text-slate-700">No matching vehicle models found</p>
+            <p class="text-xs">Try selecting 'All Brands' or adjusting your filters.</p>
+            <button @click="resetFilters()" class="text-xs text-[#c0262b] font-semibold underline mt-2 cursor-pointer">Reset all filters</button>
+          </div>
         </div>
+
+        <!-- 5. TRUST STRIP -->
+        <div class="mt-8 bg-slate-950 rounded-2xl overflow-hidden">
+          <div class="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/10">
+
+            <!-- Live Floor Allocation -->
+            <div class="p-6 space-y-2">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-xl bg-emerald-500/20 flex items-center justify-center shrink-0">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse block"></span>
+                </div>
+                <div class="text-sm font-bold text-white">Live Floor Allocation</div>
+              </div>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Real units tracked across authorized dealer networks. Not speculative waiting lists or brochure estimates.
+              </p>
+            </div>
+
+            <!-- Zero Dealer Markup -->
+            <div class="p-6 space-y-2">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-xl bg-amber-500/20 flex items-center justify-center shrink-0">
+                  <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <div class="text-sm font-bold text-white">Zero Dealer Markup</div>
+              </div>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                No forced accessory bundles. No hidden commission overhead. Verified floor price — what you see is what you pay.
+              </p>
+            </div>
+
+            <!-- Direct WhatsApp Access -->
+            <div class="p-6 space-y-2">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                  <img src="/static/images/whatsapp_official.svg" class="w-5 h-5" alt="WhatsApp">
+                </div>
+                <div class="text-sm font-bold text-white">Direct WhatsApp Access</div>
+              </div>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Direct line to showroom decision-makers. No call centers. Your details are never sold to third parties.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
       </div>
 
       <!-- ================= VIEW 2: BRANDS ================= -->
