@@ -163,3 +163,146 @@ body {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;             /* Chrome, Safari, Opera */
 }
+
+/* Dark Mode Support */
+html.dark body {
+  background-color: #0b0f19;
+  color: #f1f5f9;
+}
+
+html.dark header {
+  background-color: #111827 !important;
+  border-color: #1f2937 !important;
+}
+
+html.dark footer {
+  background-color: #080c14 !important;
+  border-color: #1f2937 !important;
+}
+
+html.dark .stock-card {
+  background: #111827;
+  border-color: #1f2937;
+  color: #f1f5f9;
+}
+
+html.dark .stock-card:hover {
+  border-color: #374151;
+}
+
+html.dark .filter-input {
+  background-color: #1f2937;
+  border-color: #374151;
+  color: #f9fafb;
+}
+
+html.dark .filter-input:focus {
+  border-color: #6b7280;
+}
+
+html.dark .btn-call-outline {
+  background-color: #111827;
+  color: #f1f5f9;
+  border-color: #374151;
+}
+
+html.dark .btn-call-outline:hover {
+  background-color: #1f2937;
+  border-color: #4b5563;
+}
+
+html.dark .badge-in-stock {
+  background-color: rgba(22, 101, 52, 0.2);
+  color: #4ade80;
+  border-color: rgba(74, 222, 128, 0.3);
+}
+
+html.dark .badge-arriving-soon {
+  background-color: rgba(146, 64, 14, 0.2);
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+html.dark .badge-sold-out {
+  background-color: #1f2937;
+  color: #9ca3af;
+  border-color: #374151;
+}
+
+/* Modals & Popups in Dark Mode */
+html.dark [x-show="inquiryModalOpen"] > div,
+html.dark [x-show="reviewModalOpen"] > div,
+html.dark [x-show="showHowItWorks"] > div,
+html.dark [x-show="showFinanceModal"] > div {
+  background-color: #111827 !important;
+  border-color: #1f2937 !important;
+  color: #f1f5f9 !important;
+}
+
+/* Form inputs & controls in Dark Mode */
+html.dark input[type="text"],
+html.dark input[type="tel"],
+html.dark input[type="email"],
+html.dark textarea,
+html.dark select {
+  background-color: #1f2937 !important;
+  border-color: #374151 !important;
+  color: #f9fafb !important;
+}
+
+html.dark select option {
+  background-color: #111827 !important;
+  color: #f9fafb !important;
+}
+
+/* Common text & background adaptations for dark mode */
+html.dark .bg-slate-50,
+html.dark .bg-slate-50\/80,
+html.dark .bg-slate-50\/90,
+html.dark .bg-slate-50\/50 {
+  background-color: #161f30 !important;
+}
+
+html.dark .bg-slate-100 {
+  background-color: #1f2937 !important;
+}
+
+html.dark .border-slate-100,
+html.dark .border-slate-200,
+html.dark .border-slate-200\/80,
+html.dark .border-slate-200\/60,
+html.dark .border-gray-100 {
+  border-color: #1f2937 !important;
+}
+
+html.dark .text-slate-900,
+html.dark .text-slate-950,
+html.dark .text-slate-800 {
+  color: #f1f5f9;
+}
+
+html.dark .text-slate-700 {
+  color: #e2e8f0;
+}
+
+html.dark .text-slate-600 {
+  color: #cbd5e1;
+}
+
+html.dark .text-slate-500 {
+  color: #94a3b8;
+}
+
+html.dark .hover\:bg-slate-50:hover {
+  background-color: #1e293b !important;
+}
+
+html.dark .hover\:bg-slate-100:hover {
+  background-color: #1f2937 !important;
+}
+
+html.dark .hover\:text-slate-900:hover,
+html.dark .hover\:text-slate-950:hover {
+  color: #ffffff !important;
+}
+
