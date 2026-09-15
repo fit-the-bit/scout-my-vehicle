@@ -78,9 +78,8 @@
               </button>
 
               <button 
-                @click="navigateToView('brands')" 
-                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 transition cursor-pointer flex items-center gap-3 font-medium"
-                :class="activeView === 'brands' ? 'text-[#c0262b] font-bold bg-red-50/50' : 'text-slate-800'"
+                @click="navigateToView('stock'); resetFilters(); openNav = false" 
+                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 transition cursor-pointer flex items-center gap-3 font-medium text-slate-800"
               >
                 <svg class="w-4 h-4 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                 <div>
@@ -166,14 +165,50 @@
           </div>
         </div>
 
-        <!-- 2. BRAND LOGO STRIP -->
+        <!-- 2. BRAND SEARCH & FILTER BAR (At Top) -->
+        <div class="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-3 sm:p-3.5">
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <div class="flex items-center gap-2 text-slate-700 font-bold text-xs shrink-0">
+              <svg class="w-4 h-4 text-[#c0262b]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <span>Search Showroom Stock:</span>
+            </div>
+            <div class="flex-1 min-w-[140px]">
+              <select x-model="selectedBrand" @change="onBrandChange()" class="filter-input text-xs">
+                <option value="Any">All Brands (9 Manufacturers)</option>
+                <template x-for="b in brands" :key="b">
+                  <option :value="b" x-text="b"></option>
+                </template>
+              </select>
+            </div>
+            <div class="flex-1 min-w-[140px]">
+              <select x-model="selectedModel" @change="onModelChange()" class="filter-input text-xs">
+                <option value="Any">All Models</option>
+                <template x-for="m in filteredModels" :key="m.model">
+                  <option :value="m.model" x-text="m.model"></option>
+                </template>
+              </select>
+            </div>
+            <div class="shrink-0" x-show="selectedBrand !== 'Any' || selectedModel !== 'Any'" x-cloak>
+              <button
+                type="button"
+                @click="resetFilters()"
+                class="w-full sm:w-auto px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 rounded-xl border border-slate-200 transition cursor-pointer flex items-center justify-center gap-1.5"
+              >
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                <span>Clear</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. BRAND QUICK TAGS (LOGO STRIP) -->
         <div class="relative">
           <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide -mx-1 px-1">
 
             <!-- All (reset) -->
             <button
               @click="resetFilters()"
-              :class="selectedBrand === 'Any' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-400'"
+              :class="selectedBrand === 'Any' && selectedModel === 'Any' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-400'"
               class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[11px] font-bold whitespace-nowrap shrink-0 transition cursor-pointer"
             >
               All Brands
@@ -281,40 +316,8 @@
           </div>
         </div>
 
-        <!-- 3. SLIM FILTER ROW (always visible) -->
-        <div class="flex flex-wrap items-end gap-3">
-          <div class="flex-1 min-w-[140px]">
-            <label class="block text-[11px] font-medium text-slate-500 mb-1">Brand</label>
-            <select x-model="selectedBrand" @change="onBrandChange()" class="filter-input">
-              <option value="Any">All Brands</option>
-              <template x-for="b in brands" :key="b">
-                <option :value="b" x-text="b"></option>
-              </template>
-            </select>
-          </div>
-          <div class="flex-1 min-w-[140px]">
-            <label class="block text-[11px] font-medium text-slate-500 mb-1">Model</label>
-            <select x-model="selectedModel" @change="onModelChange()" class="filter-input">
-              <option value="Any">All Models</option>
-              <template x-for="m in filteredModels" :key="m.model">
-                <option :value="m.model" x-text="m.model"></option>
-              </template>
-            </select>
-          </div>
-          <div class="shrink-0">
-            <button
-              type="button"
-              @click="resetFilters()"
-              class="px-3.5 py-2 text-[11px] font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl border border-slate-200 transition cursor-pointer flex items-center gap-1.5"
-            >
-              <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-              Clear
-            </button>
-          </div>
-        </div>
-
-        <!-- 4A. BRAND INVENTORY RAILS — shown when no brand filter is active -->
-        <div x-show="selectedBrand === 'Any'" class="space-y-10">
+        <!-- 4A. BRAND INVENTORY RAILS — shown when no brand or model filter is active -->
+        <div x-show="selectedBrand === 'Any' && selectedModel === 'Any'" class="space-y-10">
 
           <!-- Rail: Tata Motors -->
           <div>
@@ -581,26 +584,23 @@
             </div>
           </div>
 
-          <!-- More Brands Link -->
-          <div class="text-center py-2">
-            <button @click="navigateToView('brands')" class="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-200 text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition cursor-pointer">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-              View All 9 Brands &amp; Full Inventory
-            </button>
-          </div>
-
         </div>
 
-        <!-- 4B. FILTERED INVENTORY GRID — shown when a brand is selected -->
-        <div x-show="selectedBrand !== 'Any'" class="space-y-4">
+        <!-- 4B. FILTERED INVENTORY GRID — shown when a brand or model filter is active -->
+        <div x-show="selectedBrand !== 'Any' || selectedModel !== 'Any'" x-cloak class="space-y-4">
 
           <!-- Filtered header -->
-          <div class="flex items-center justify-between">
-            <div>
-              <span class="text-sm font-bold text-slate-900" x-text="selectedBrand === 'Maruti Suzuki' && selectedChannel ? 'Maruti Suzuki ' + selectedChannel : selectedBrand"></span>
-              <span class="text-[11px] text-slate-400 ml-2" x-text="displayCars.length + ' models'"></span>
+          <div class="flex items-center justify-between bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span class="text-xs sm:text-sm font-bold text-slate-900" x-text="selectedBrand !== 'Any' ? (selectedBrand === 'Maruti Suzuki' && selectedChannel ? 'Maruti Suzuki ' + selectedChannel : selectedBrand) : 'All Brands'"></span>
+              <span class="text-xs sm:text-sm font-bold text-slate-900" x-show="selectedModel !== 'Any'" x-text="' • ' + selectedModel"></span>
+              <span class="text-[11px] text-slate-500 ml-1" x-text="'(' + displayCars.length + ' matching models)'"></span>
             </div>
-            <button @click="resetFilters()" class="text-[11px] text-slate-500 hover:text-slate-800 underline cursor-pointer">Show all brands</button>
+            <button @click="resetFilters()" class="text-xs text-[#c0262b] hover:text-[#a51d22] font-bold transition flex items-center gap-1 cursor-pointer">
+              <span>Show All Carousels</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
           </div>
 
           <!-- Full detail cards grid -->
@@ -742,366 +742,6 @@
           </div>
         </div>
 
-      </div>
-
-      <!-- ================= VIEW 2: BRANDS ================= -->
-      <div x-show="activeView === 'brands'" class="space-y-8" x-cloak>
-        <!-- Title & Subtitle -->
-        <div class="space-y-1">
-          <h1 class="text-2xl sm:text-3xl font-bold text-slate-950 tracking-tight">Explore by Brand</h1>
-          <p class="text-xs sm:text-sm text-slate-500 font-normal">
-            Select a manufacturer network to view verified live showroom allocation.
-          </p>
-        </div>
-
-        <!-- Brands Grid (10 Cards) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-
-          <!-- 1. Maruti Suzuki Arena -->
-          <div class="stock-card flex flex-col justify-between hover:border-red-300 transition group cursor-pointer" @click="selectBrandChannel('Maruti Suzuki', 'Arena')">
-            <div class="space-y-4">
-              <div class="flex items-start justify-between gap-3">
-                <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center shrink-0 shadow-2xs">
-                  <img src="/static/logos/arena.svg" alt="Maruti Suzuki Arena" class="w-6 h-6 object-contain">
-                </div>
-                <div class="text-right">
-                  <span class="text-[10px] font-bold uppercase tracking-wider text-red-600 bg-red-50 border border-red-100 px-2 py-0.5 rounded-full">Arena Network</span>
-                  <div class="text-[11px] text-slate-400 font-normal mt-1">10 Models • 94 Variants</div>
-                </div>
-              </div>
-              <div>
-                <h3 class="font-bold text-slate-900 text-base group-hover:text-[#c0262b] transition">Maruti Suzuki Arena</h3>
-                <p class="text-xs text-slate-500 mt-0.5">India's most popular passenger & family cars.</p>
-              </div>
-              <div class="pt-2 border-t border-slate-100">
-                <div class="text-[11px] text-slate-400 font-normal mb-1.5">Key Models:</div>
-                <div class="flex flex-wrap gap-1">
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Swift</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Brezza</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Dzire</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Ertiga</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Wagon R</span>
-                </div>
-              </div>
-            </div>
-            <div class="mt-5 pt-3 border-t border-slate-100">
-              <button class="w-full bg-[#c0262b] hover:bg-[#a51d22] text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
-                <span>Explore Arena Stock</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- 2. Maruti Suzuki Nexa -->
-          <div class="stock-card flex flex-col justify-between hover:border-slate-400 transition group cursor-pointer" @click="selectBrandChannel('Maruti Suzuki', 'Nexa')">
-            <div class="space-y-4">
-              <div class="flex items-start justify-between gap-3">
-                <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center shrink-0 shadow-2xs">
-                  <img src="/static/logos/nexa.svg" alt="Maruti Suzuki Nexa" class="h-3.5 w-auto max-w-[2.6rem] object-contain">
-                </div>
-                <div class="text-right">
-                  <span class="text-[10px] font-bold uppercase tracking-wider text-slate-800 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded-full">Nexa Experience</span>
-                  <div class="text-[11px] text-slate-400 font-normal mt-1">8 Models • 54 Variants</div>
-                </div>
-              </div>
-              <div>
-                <h3 class="font-bold text-slate-900 text-base group-hover:text-slate-700 transition">Maruti Suzuki Nexa</h3>
-                <p class="text-xs text-slate-500 mt-0.5">Premium crossovers, luxury hybrids & 4x4s.</p>
-              </div>
-              <div class="pt-2 border-t border-slate-100">
-                <div class="text-[11px] text-slate-400 font-normal mb-1.5">Key Models:</div>
-                <div class="flex flex-wrap gap-1">
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Grand Vitara</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Fronx</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Baleno</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Jimny</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">XL6</span>
-                </div>
-              </div>
-            </div>
-            <div class="mt-5 pt-3 border-t border-slate-100">
-              <button class="w-full bg-slate-900 hover:bg-slate-800 text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
-                <span>Explore Nexa Stock</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- 3. Tata Motors -->
-          <div class="stock-card flex flex-col justify-between hover:border-blue-300 transition group cursor-pointer" @click="selectBrandChannel('Tata Motors')">
-            <div class="space-y-4">
-              <div class="flex items-start justify-between gap-3">
-                <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center shrink-0 shadow-2xs">
-                  <img src="/static/logos/tata_emblem.svg" alt="Tata Motors" class="w-6 h-6 object-contain">
-                </div>
-                <div class="text-right">
-                  <span class="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-full">Tata Motors</span>
-                  <div class="text-[11px] text-slate-400 font-normal mt-1">14 Models • 114 Variants</div>
-                </div>
-              </div>
-              <div>
-                <h3 class="font-bold text-slate-900 text-base group-hover:text-blue-700 transition">Tata Motors</h3>
-                <p class="text-xs text-slate-500 mt-0.5">India's safest SUVs, cutting-edge EVs & coupes.</p>
-              </div>
-              <div class="pt-2 border-t border-slate-100">
-                <div class="text-[11px] text-slate-400 font-normal mb-1.5">Key Models:</div>
-                <div class="flex flex-wrap gap-1">
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Nexon</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Punch</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Curvv</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Harrier</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Safari</span>
-                </div>
-              </div>
-            </div>
-            <div class="mt-5 pt-3 border-t border-slate-100">
-              <button class="w-full bg-blue-700 hover:bg-blue-800 text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
-                <span>Explore Tata Stock</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- 4. Mahindra -->
-          <div class="stock-card flex flex-col justify-between hover:border-red-300 transition group cursor-pointer" @click="selectBrandChannel('Mahindra')">
-            <div class="space-y-4">
-              <div class="flex items-start justify-between gap-3">
-                <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center shrink-0 shadow-2xs">
-                  <img src="/static/logos/mahindra.svg" alt="Mahindra" class="h-4.5 w-auto max-w-[2.2rem] object-contain">
-                </div>
-                <div class="text-right">
-                  <span class="text-[10px] font-bold uppercase tracking-wider text-[#c0262b] bg-red-50 border border-red-100 px-2 py-0.5 rounded-full">Mahindra Rise</span>
-                  <div class="text-[11px] text-slate-400 font-normal mt-1">12 Models • 110 Variants</div>
-                </div>
-              </div>
-              <div>
-                <h3 class="font-bold text-slate-900 text-base group-hover:text-[#c0262b] transition">Mahindra</h3>
-                <p class="text-xs text-slate-500 mt-0.5">Authentic SUVs, iconic 4x4s & electric pioneers.</p>
-              </div>
-              <div class="pt-2 border-t border-slate-100">
-                <div class="text-[11px] text-slate-400 font-normal mb-1.5">Key Models:</div>
-                <div class="flex flex-wrap gap-1">
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Thar Roxx</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Scorpio N</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">XUV700</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">XUV 3XO</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Thar</span>
-                </div>
-              </div>
-            </div>
-            <div class="mt-5 pt-3 border-t border-slate-100">
-              <button class="w-full bg-[#c0262b] hover:bg-[#a51d22] text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
-                <span>Explore Mahindra Stock</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- 5. Hyundai -->
-          <div class="stock-card flex flex-col justify-between hover:border-sky-300 transition group cursor-pointer" @click="selectBrandChannel('Hyundai')">
-            <div class="space-y-4">
-              <div class="flex items-start justify-between gap-3">
-                <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center shrink-0 shadow-2xs">
-                  <img src="/static/logos/hyundai_emblem.svg" alt="Hyundai" class="h-4.5 w-auto max-w-[2.2rem] object-contain">
-                </div>
-                <div class="text-right">
-                  <span class="text-[10px] font-bold uppercase tracking-wider text-sky-700 bg-sky-50 border border-sky-100 px-2 py-0.5 rounded-full">Hyundai</span>
-                  <div class="text-[11px] text-slate-400 font-normal mt-1">14 Models • 108 Variants</div>
-                </div>
-              </div>
-              <div>
-                <h3 class="font-bold text-slate-900 text-base group-hover:text-sky-800 transition">Hyundai</h3>
-                <p class="text-xs text-slate-500 mt-0.5">High-tech SUVs, connected sedans & EV innovation.</p>
-              </div>
-              <div class="pt-2 border-t border-slate-100">
-                <div class="text-[11px] text-slate-400 font-normal mb-1.5">Key Models:</div>
-                <div class="flex flex-wrap gap-1">
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Creta</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Venue</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Exter</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Verna</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">i20</span>
-                </div>
-              </div>
-            </div>
-            <div class="mt-5 pt-3 border-t border-slate-100">
-              <button class="w-full bg-[#002C6C] hover:bg-[#001f4d] text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
-                <span>Explore Hyundai Stock</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- 6. Kia -->
-          <div class="stock-card flex flex-col justify-between hover:border-slate-400 transition group cursor-pointer" @click="selectBrandChannel('Kia')">
-            <div class="space-y-4">
-              <div class="flex items-start justify-between gap-3">
-                <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center shrink-0 shadow-2xs">
-                  <img src="/static/logos/kia.svg" alt="Kia" class="h-4.5 w-auto max-w-[2.85rem] object-contain">
-                </div>
-                <div class="text-right">
-                  <span class="text-[10px] font-bold uppercase tracking-wider text-slate-800 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded-full">Kia</span>
-                  <div class="text-[11px] text-slate-400 font-normal mt-1">9 Models • 80 Variants</div>
-                </div>
-              </div>
-              <div>
-                <h3 class="font-bold text-slate-900 text-base group-hover:text-slate-900 transition">Kia</h3>
-                <p class="text-xs text-slate-500 mt-0.5">Bold design, smart tech features & luxury MPVs.</p>
-              </div>
-              <div class="pt-2 border-t border-slate-100">
-                <div class="text-[11px] text-slate-400 font-normal mb-1.5">Key Models:</div>
-                <div class="flex flex-wrap gap-1">
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Seltos</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Sonet</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Carens</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Carnival</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">EV6</span>
-                </div>
-              </div>
-            </div>
-            <div class="mt-5 pt-3 border-t border-slate-100">
-              <button class="w-full bg-[#05141F] hover:bg-slate-900 text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
-                <span>Explore Kia Stock</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- 7. Toyota -->
-          <div class="stock-card flex flex-col justify-between hover:border-rose-300 transition group cursor-pointer" @click="selectBrandChannel('Toyota')">
-            <div class="space-y-4">
-              <div class="flex items-start justify-between gap-3">
-                <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center shrink-0 shadow-2xs">
-                  <img src="/static/logos/toyota_emblem.svg" alt="Toyota" class="h-4.5 w-auto max-w-[2.2rem] object-contain">
-                </div>
-                <div class="text-right">
-                  <span class="text-[10px] font-bold uppercase tracking-wider text-rose-600 bg-rose-50 border border-rose-100 px-2 py-0.5 rounded-full">Toyota</span>
-                  <div class="text-[11px] text-slate-400 font-normal mt-1">11 Models • 66 Variants</div>
-                </div>
-              </div>
-              <div>
-                <h3 class="font-bold text-slate-900 text-base group-hover:text-rose-700 transition">Toyota</h3>
-                <p class="text-xs text-slate-500 mt-0.5">Legendary reliability, hybrid tech & iconic 4x4s.</p>
-              </div>
-              <div class="pt-2 border-t border-slate-100">
-                <div class="text-[11px] text-slate-400 font-normal mb-1.5">Key Models:</div>
-                <div class="flex flex-wrap gap-1">
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Fortuner</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Innova Hycross</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Hyryder</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Glanza</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Hilux</span>
-                </div>
-              </div>
-            </div>
-            <div class="mt-5 pt-3 border-t border-slate-100">
-              <button class="w-full bg-[#EB0A1E] hover:bg-[#c90718] text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
-                <span>Explore Toyota Stock</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- 8. Volkswagen -->
-          <div class="stock-card flex flex-col justify-between hover:border-blue-300 transition group cursor-pointer" @click="selectBrandChannel('Volkswagen')">
-            <div class="space-y-4">
-              <div class="flex items-start justify-between gap-3">
-                <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center shrink-0 shadow-2xs">
-                  <img src="/static/logos/volkswagen.svg" alt="Volkswagen" class="w-6 h-6 object-contain">
-                </div>
-                <div class="text-right">
-                  <span class="text-[10px] font-bold uppercase tracking-wider text-blue-800 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-full">Volkswagen</span>
-                  <div class="text-[11px] text-slate-400 font-normal mt-1">3 Models • 21 Variants</div>
-                </div>
-              </div>
-              <div>
-                <h3 class="font-bold text-slate-900 text-base group-hover:text-blue-900 transition">Volkswagen</h3>
-                <p class="text-xs text-slate-500 mt-0.5">5-star safety, German TSI turbos & DSG dynamics.</p>
-              </div>
-              <div class="pt-2 border-t border-slate-100">
-                <div class="text-[11px] text-slate-400 font-normal mb-1.5">Key Models:</div>
-                <div class="flex flex-wrap gap-1">
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Virtus</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Taigun</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Tiguan</span>
-                </div>
-              </div>
-            </div>
-            <div class="mt-5 pt-3 border-t border-slate-100">
-              <button class="w-full bg-[#001E50] hover:bg-[#001438] text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
-                <span>Explore Volkswagen Stock</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- 9. Skoda -->
-          <div class="stock-card flex flex-col justify-between hover:border-emerald-300 transition group cursor-pointer" @click="selectBrandChannel('Skoda')">
-            <div class="space-y-4">
-              <div class="flex items-start justify-between gap-3">
-                <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center shrink-0 shadow-2xs">
-                  <img src="/static/logos/skoda.svg" alt="Skoda" class="w-6 h-6 object-contain">
-                </div>
-                <div class="text-right">
-                  <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full">Skoda</span>
-                  <div class="text-[11px] text-slate-400 font-normal mt-1">4 Models • 28 Variants</div>
-                </div>
-              </div>
-              <div>
-                <h3 class="font-bold text-slate-900 text-base group-hover:text-emerald-900 transition">Skoda</h3>
-                <p class="text-xs text-slate-500 mt-0.5">Simply Clever engineering, driving finesse & luxury.</p>
-              </div>
-              <div class="pt-2 border-t border-slate-100">
-                <div class="text-[11px] text-slate-400 font-normal mb-1.5">Key Models:</div>
-                <div class="flex flex-wrap gap-1">
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Slavia</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Kylaq</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Kushaq</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Kodiaq</span>
-                </div>
-              </div>
-            </div>
-            <div class="mt-5 pt-3 border-t border-slate-100">
-              <button class="w-full bg-[#0E3A2F] hover:bg-[#09271f] text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
-                <span>Explore Skoda Stock</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- 10. Nissan -->
-          <div class="stock-card flex flex-col justify-between hover:border-red-300 transition group cursor-pointer" @click="selectBrandChannel('Nissan')">
-            <div class="space-y-4">
-              <div class="flex items-start justify-between gap-3">
-                <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center shrink-0 shadow-2xs">
-                  <img src="/static/logos/nissan.svg" alt="Nissan" class="w-7.5 h-7.5 object-contain">
-                </div>
-                <div class="text-right">
-                  <span class="text-[10px] font-bold uppercase tracking-wider text-red-700 bg-red-50 border border-red-100 px-2 py-0.5 rounded-full">Nissan</span>
-                  <div class="text-[11px] text-slate-400 font-normal mt-1">2 Models • 16 Variants</div>
-                </div>
-              </div>
-              <div>
-                <h3 class="font-bold text-slate-900 text-base group-hover:text-red-800 transition">Nissan</h3>
-                <p class="text-xs text-slate-500 mt-0.5">Big on attitude, advanced turbo power & bold presence.</p>
-              </div>
-              <div class="pt-2 border-t border-slate-100">
-                <div class="text-[11px] text-slate-400 font-normal mb-1.5">Key Models:</div>
-                <div class="flex flex-wrap gap-1">
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">Magnite</span>
-                  <span class="text-[11px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded border border-slate-100">X-Trail</span>
-                </div>
-              </div>
-            </div>
-            <div class="mt-5 pt-3 border-t border-slate-100">
-              <button class="w-full bg-[#C3002F] hover:bg-[#a10026] text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
-                <span>Explore Nissan Stock</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-              </button>
-            </div>
-          </div>
-
-        </div>
       </div>
 
       <!-- ================= VIEW 3: ABOUT US ================= -->
@@ -1737,7 +1377,7 @@
       </div>
 
       <!-- ================= CUSTOMER REVIEWS & EXPERIENCES ================= -->
-      <section class="mt-20 pt-12 border-t border-slate-100" id="reviews-section" x-show="activeView === 'stock' || activeView === 'brands'">
+      <section class="mt-20 pt-12 border-t border-slate-100" id="reviews-section" x-show="activeView === 'stock'">
         <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
           <div>
             <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-50 text-[#c0262b] text-[11px] font-bold uppercase tracking-wider mb-2">
@@ -2525,7 +2165,7 @@
           <div class="font-bold text-slate-900 text-sm">Explore</div>
           <ul class="space-y-2">
             <li><button @click="navigateToView('stock')" class="hover:text-slate-900 cursor-pointer">Browse Stock</button></li>
-            <li><button @click="navigateToView('brands')" class="hover:text-slate-900 cursor-pointer">Explore Brands</button></li>
+            <li><button @click="navigateToView('stock'); resetFilters(); window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-slate-900 cursor-pointer">Explore Brands</button></li>
             <li><button @click="showFinanceModal = true" class="hover:text-slate-900 cursor-pointer">Bank & Finance Options</button></li>
             <li><button @click="showHowItWorks = true" class="hover:text-slate-900 cursor-pointer">How it Works</button></li>
           </ul>
@@ -2562,6 +2202,47 @@
           <div class="pt-2 border-t border-slate-100 text-[11px] text-slate-400 leading-relaxed">
             Authorized Network Across 9 Brands<br>
             Multi-Brand Showroom Floor Inventory
+          </div>
+        </div>
+      </div>
+
+      <!-- Compact Single-Line Brand Logo Strip Directly Below Footer Navigation -->
+      <div class="border-t border-slate-100 pt-6">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">
+            Authorized Dealership Networks
+          </div>
+          <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+            <button @click="selectBrandChannel('Maruti Suzuki', 'Arena'); window.scrollTo({top: 0, behavior: 'smooth'})" class="opacity-60 hover:opacity-100 transition cursor-pointer grayscale hover:grayscale-0" title="Maruti Suzuki Arena">
+              <img src="/static/logos/arena.svg" alt="Arena" class="h-3.5 w-auto">
+            </button>
+            <button @click="selectBrandChannel('Maruti Suzuki', 'Nexa'); window.scrollTo({top: 0, behavior: 'smooth'})" class="opacity-60 hover:opacity-100 transition cursor-pointer grayscale hover:grayscale-0" title="Maruti Suzuki Nexa">
+              <img src="/static/logos/nexa.svg" alt="Nexa" class="h-3 w-auto max-w-[34px]">
+            </button>
+            <button @click="selectBrandChannel('Tata Motors'); window.scrollTo({top: 0, behavior: 'smooth'})" class="opacity-60 hover:opacity-100 transition cursor-pointer grayscale hover:grayscale-0" title="Tata Motors">
+              <img src="/static/logos/tata_emblem.svg" alt="Tata" class="h-3.5 w-auto">
+            </button>
+            <button @click="selectBrandChannel('Mahindra'); window.scrollTo({top: 0, behavior: 'smooth'})" class="opacity-60 hover:opacity-100 transition cursor-pointer grayscale hover:grayscale-0" title="Mahindra">
+              <img src="/static/logos/mahindra.svg" alt="Mahindra" class="h-3.5 w-auto max-w-[22px]">
+            </button>
+            <button @click="selectBrandChannel('Hyundai'); window.scrollTo({top: 0, behavior: 'smooth'})" class="opacity-60 hover:opacity-100 transition cursor-pointer grayscale hover:grayscale-0" title="Hyundai">
+              <img src="/static/logos/hyundai_emblem.svg" alt="Hyundai" class="h-3.5 w-auto max-w-[22px]">
+            </button>
+            <button @click="selectBrandChannel('Kia'); window.scrollTo({top: 0, behavior: 'smooth'})" class="opacity-60 hover:opacity-100 transition cursor-pointer grayscale hover:grayscale-0" title="Kia">
+              <img src="/static/logos/kia.svg" alt="Kia" class="h-3 w-auto max-w-[30px]">
+            </button>
+            <button @click="selectBrandChannel('Toyota'); window.scrollTo({top: 0, behavior: 'smooth'})" class="opacity-60 hover:opacity-100 transition cursor-pointer grayscale hover:grayscale-0" title="Toyota">
+              <img src="/static/logos/toyota_emblem.svg" alt="Toyota" class="h-3.5 w-auto max-w-[22px]">
+            </button>
+            <button @click="selectBrandChannel('Volkswagen'); window.scrollTo({top: 0, behavior: 'smooth'})" class="opacity-60 hover:opacity-100 transition cursor-pointer grayscale hover:grayscale-0" title="Volkswagen">
+              <img src="/static/logos/volkswagen.svg" alt="VW" class="h-3.5 w-auto max-w-[22px]">
+            </button>
+            <button @click="selectBrandChannel('Skoda'); window.scrollTo({top: 0, behavior: 'smooth'})" class="opacity-60 hover:opacity-100 transition cursor-pointer grayscale hover:grayscale-0" title="Skoda">
+              <img src="/static/logos/skoda.svg" alt="Skoda" class="h-3.5 w-auto max-w-[22px]">
+            </button>
+            <button @click="selectBrandChannel('Nissan'); window.scrollTo({top: 0, behavior: 'smooth'})" class="opacity-60 hover:opacity-100 transition cursor-pointer grayscale hover:grayscale-0" title="Nissan">
+              <img src="/static/logos/nissan.svg" alt="Nissan" class="h-3.5 w-auto max-w-[26px]">
+            </button>
           </div>
         </div>
       </div>
@@ -2796,12 +2477,17 @@
         },
 
         navigateToView(view) {
-          this.activeView = view;
+          if (view === 'brands') {
+            this.activeView = 'stock';
+            this.resetFilters();
+          } else {
+            this.activeView = view;
+          }
           this.openNav = false;
           if (history.pushState) {
-            history.pushState(null, null, '#' + view);
+            history.pushState(null, null, '#' + this.activeView);
           } else {
-            window.location.hash = view;
+            window.location.hash = this.activeView;
           }
           window.scrollTo({ top: 0, behavior: 'smooth' });
         },
@@ -2858,7 +2544,10 @@
         async init() {
           const validViews = ['stock', 'brands', 'about', 'privacy', 'terms', 'contact'];
           const hash = window.location.hash.replace('#', '');
-          if (validViews.includes(hash)) {
+          if (hash === 'brands') {
+            this.activeView = 'stock';
+            this.resetFilters();
+          } else if (validViews.includes(hash)) {
             this.activeView = hash;
           }
           await this.loadBrands();
