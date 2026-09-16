@@ -206,11 +206,11 @@ html.dark footer button:hover {
 }
 
 html.dark footer .grayscale {
-  filter: grayscale(1) brightness(1.6) !important;
+  filter: brightness(0) invert(0.7) !important;
 }
 
 html.dark footer .grayscale:hover {
-  filter: none !important;
+  filter: brightness(0) invert(1) !important;
 }
 
 /* Surface Containers & Cards Across the Whole App */
@@ -435,45 +435,86 @@ html.dark .mt-8.bg-slate-950 {
   border: 1px solid #2f3036 !important;
 }
 
-/* Brand Pills in Quick Tag Strip */
-html.dark button.border-slate-200 {
+/* ==========================================================================
+   BRAND QUICK TAGS STRIP & LOGO CONTRAST (LIGHT & DARK MODES)
+   ========================================================================== */
+
+/* Brand Strip Pill Base */
+.brand-strip-pill {
+  transition: all 0.15s ease;
+}
+
+/* 1. Unified Selection Color Across All Brand Strip Elements (Light & Dark) */
+.brand-strip-pill.brand-pill-active,
+.brand-strip-pill.bg-\[\#c0262b\] {
+  background-color: #c0262b !important;
+  border-color: #c0262b !important;
+  color: #ffffff !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+html.dark .brand-strip-pill.brand-pill-active,
+html.dark .brand-strip-pill.bg-\[\#c0262b\] {
+  background-color: #c0262b !important;
+  border-color: #c0262b !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(192, 38, 43, 0.4) !important;
+}
+
+/* 2. Inactive Brand Pills in Light Mode */
+html:not(.dark) .brand-strip-pill.brand-pill-inactive,
+html:not(.dark) .brand-strip-pill:not(.brand-pill-active) {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+html:not(.dark) .brand-strip-pill.brand-pill-inactive:hover,
+html:not(.dark) .brand-strip-pill:not(.brand-pill-active):hover {
+  border-color: #94a3b8 !important;
+  color: #0f172a !important;
+}
+
+/* 3. Inactive Brand Pills in Charcoal Dark Mode */
+html.dark .brand-strip-pill.brand-pill-inactive,
+html.dark .brand-strip-pill:not(.brand-pill-active) {
   background-color: #242529 !important;
   border-color: #383a40 !important;
   color: #e4e4e7 !important;
 }
 
-html.dark button.border-slate-200:hover {
+html.dark .brand-strip-pill.brand-pill-inactive:hover,
+html.dark .brand-strip-pill:not(.brand-pill-active):hover {
   background-color: #2e3036 !important;
   border-color: #52525b !important;
+  color: #ffffff !important;
 }
 
-/* Inactive Brand Pills Text */
-html.dark button.bg-white.text-slate-700,
-html.dark button.bg-white.text-slate-600 {
-  background-color: #242529 !important;
-  border-color: #383a40 !important;
-  color: #e4e4e7 !important;
-}
-
-/* Active Highlight Pills in Dark Mode (e.g. All Brands or Nexa) */
-html.dark button.bg-slate-900.text-white {
-  background-color: #f4f4f6 !important;
-  border-color: #f4f4f6 !important;
-  color: #18181b !important;
-}
-
-/* Logo contrast on dark charcoal */
-html.dark img[src*="kia.svg"],
-html.dark img[src*="volkswagen.svg"] {
+/* 4. Brand Logos on Active Pills: 100% Crisp White in both Light and Dark mode */
+.brand-strip-pill.brand-pill-active img,
+.brand-strip-pill.bg-\[\#c0262b\] img {
   filter: brightness(0) invert(1) !important;
 }
 
-html.dark button:not(.bg-slate-900) img[src*="nexa.svg"] {
+/* 5. Brand Logos on Inactive Pills in Dark Mode: Crisp White on Charcoal */
+html.dark .brand-strip-pill:not(.brand-pill-active) img {
   filter: brightness(0) invert(1) !important;
 }
 
-html.dark button.bg-slate-900 img[src*="nexa.svg"] {
+/* 6. Brand Logos on Inactive Pills in Light Mode: Authentic Brand Vector Colors */
+html:not(.dark) .brand-strip-pill:not(.brand-pill-active) img {
   filter: none !important;
+}
+
+/* 7. General Logo Contrast on Dark Charcoal Canvas (Rail Headers, Cards, etc.) */
+html.dark img[src*="tata_emblem.svg"],
+html.dark img[src*="mahindra.svg"],
+html.dark img[src*="hyundai_emblem.svg"],
+html.dark img[src*="kia.svg"],
+html.dark img[src*="volkswagen.svg"],
+html.dark img[src*="skoda.svg"],
+html.dark img[src*="nexa.svg"] {
+  filter: brightness(0) invert(1) !important;
 }
 
 /* Sliders in EMI Calculator */
