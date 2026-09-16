@@ -74,17 +74,25 @@
           <button 
             @click="toggleDarkMode()" 
             type="button" 
-            class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#2e3036] transition cursor-pointer flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#c0262b]/20"
+            class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-slate-200 dark:border-[#383a40] bg-slate-50 dark:bg-[#242529] hover:bg-slate-100 dark:hover:bg-[#2e3036] text-slate-700 dark:text-amber-400 hover:text-slate-950 dark:hover:text-amber-300 transition-all duration-200 cursor-pointer flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#c0262b]/20 shadow-xs"
             :title="darkMode ? 'Switch to Light Mode' : 'Switch to Charcoal Dark Mode'"
             aria-label="Toggle Dark Mode"
           >
-            <!-- Sun Icon (shown in dark mode) -->
-            <svg x-show="darkMode" class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" x-cloak>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            <!-- Sun Icon (shown in dark mode to switch to light mode) -->
+            <svg x-show="darkMode" class="w-5 h-5 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.35)] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x-cloak>
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2"/>
+              <path d="M12 20v2"/>
+              <path d="m4.93 4.93 1.41 1.41"/>
+              <path d="m17.66 17.66 1.41 1.41"/>
+              <path d="M2 12h2"/>
+              <path d="M20 12h2"/>
+              <path d="m6.34 17.66-1.41 1.41"/>
+              <path d="m19.07 4.93-1.41 1.41"/>
             </svg>
-            <!-- Moon Icon (shown in light mode) -->
-            <svg x-show="!darkMode" class="w-5 h-5 text-slate-700 dark:text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            <!-- Moon Icon (shown in light mode to switch to dark mode) -->
+            <svg x-show="!darkMode" class="w-5 h-5 text-slate-700 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
             </svg>
           </button>
 
@@ -93,16 +101,16 @@
             <button 
               @click="openNav = !openNav" 
               type="button" 
-              class="p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#2e3036] transition cursor-pointer flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#c0262b]/20"
+              class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-slate-200 dark:border-[#383a40] bg-slate-50 dark:bg-[#242529] hover:bg-slate-100 dark:hover:bg-[#2e3036] text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-all duration-200 cursor-pointer flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#c0262b]/20 shadow-xs"
               aria-label="Navigation Menu"
               :aria-expanded="openNav"
             >
               <!-- Hamburger Icon (3 lines) -->
-              <svg x-show="!openNav" class="w-6 h-6 text-slate-800 dark:text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg x-show="!openNav" class="w-5 h-5 sm:w-6 sm:h-6 text-slate-800 dark:text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
               <!-- Close Icon (X) -->
-              <svg x-show="openNav" class="w-6 h-6 text-slate-800 dark:text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" x-cloak>
+              <svg x-show="openNav" class="w-5 h-5 sm:w-6 sm:h-6 text-slate-800 dark:text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" x-cloak>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -199,19 +207,32 @@
                 class="w-full text-left px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-[#2e3036] transition cursor-pointer flex items-center justify-between font-medium text-slate-800 dark:text-[#e4e4e7]"
               >
                 <div class="flex items-center gap-3">
-                  <svg x-show="darkMode" class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  <!-- Lucide Sun (shown in dark mode) -->
+                  <svg x-show="darkMode" class="w-4 h-4 text-amber-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x-cloak>
+                    <circle cx="12" cy="12" r="4"/>
+                    <path d="M12 2v2"/>
+                    <path d="M12 20v2"/>
+                    <path d="m4.93 4.93 1.41 1.41"/>
+                    <path d="m17.66 17.66 1.41 1.41"/>
+                    <path d="M2 12h2"/>
+                    <path d="M20 12h2"/>
+                    <path d="m6.34 17.66-1.41 1.41"/>
+                    <path d="m19.07 4.93-1.41 1.41"/>
                   </svg>
-                  <svg x-show="!darkMode" class="w-4 h-4 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                  <!-- Lucide Moon (shown in light mode) -->
+                  <svg x-show="!darkMode" class="w-4 h-4 text-slate-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
                   </svg>
                   <div>
                     <div class="text-xs font-bold text-slate-900 dark:text-white" x-text="darkMode ? 'Light Theme' : 'Charcoal Theme'"></div>
                     <div class="text-[10px] text-slate-400 dark:text-[#a1a1aa] font-normal" x-text="darkMode ? 'Switch to daylight interface' : 'Switch to charcoal dark theme'"></div>
                   </div>
                 </div>
-                <div class="w-8 h-4 bg-slate-200 dark:bg-[#383a40] rounded-full p-0.5 transition-colors duration-200 flex items-center">
-                  <div class="bg-white dark:bg-[#c0262b] w-3 h-3 rounded-full shadow-md transform transition-transform duration-200" :class="darkMode ? 'translate-x-4' : 'translate-x-0'"></div>
+                <!-- Perfectly proportioned toggle switch -->
+                <div class="w-9 h-5 rounded-full p-0.5 transition-colors duration-200 flex items-center shrink-0 border"
+                     :class="darkMode ? 'bg-[#c0262b] border-[#c0262b]' : 'bg-slate-200 border-slate-300 dark:bg-[#383a40] dark:border-[#4a4c55]'">
+                  <div class="bg-white w-4 h-4 rounded-full shadow-sm transform transition-transform duration-200 ease-out"
+                       :class="darkMode ? 'translate-x-4' : 'translate-x-0'"></div>
                 </div>
               </button>
             </div>
