@@ -2227,8 +2227,18 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <!-- Col 1: About & Identity -->
         <div class="space-y-3">
-          <div class="cursor-pointer" @click="navigateToView('stock')">
-            <img src="/static/images/logo_transparent.png" alt="ScoutMyVehicle" class="h-8 sm:h-9 w-auto object-contain">
+          <div class="inline-flex flex-col items-start cursor-pointer select-none py-1" @click="navigateToView('stock')" aria-label="ScoutMyVehicle">
+            <span class="sr-only">ScoutMyVehicle</span>
+            <div class="text-base sm:text-lg md:text-xl font-black tracking-normal leading-tight text-slate-900 dark:text-white whitespace-nowrap">
+              <span class="text-[#c0262b]">S</span>cout<span class="text-[#c0262b]">M</span>y<span class="text-[#c0262b]">V</span>ehicle
+            </div>
+            <div class="w-full flex items-center justify-between text-[8px] sm:text-[9.5px] md:text-[11px] font-bold uppercase text-slate-800 dark:text-[#a1a1aa] leading-tight mt-0.5">
+              <span>FIND</span>
+              <span class="text-[#c0262b] font-black">|</span>
+              <span>VERIFY</span>
+              <span class="text-[#c0262b] font-black">|</span>
+              <span>DRIVE</span>
+            </div>
           </div>
           <p class="leading-relaxed text-slate-500">
             Independent showroom vehicle discovery platform connecting buyers with authorized multi-brand dealership networks.
