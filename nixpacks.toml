@@ -2,7 +2,7 @@
 nixPkgs = ["python312"]
 
 [phases.install]
-cmds = ["pip install --no-cache-dir -r requirements.txt"]
+cmds = ["python -m pip install --no-cache-dir -r requirements.txt"]
 
 [start]
 cmd = "python run.py"
