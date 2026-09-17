@@ -99,5 +99,32 @@ python -m unittest tests/test_app.py
 ## 🌐 Application Endpoints
 
 - **Customer Portal**: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+- **Health Check Endpoint**: [http://127.0.0.1:8000/health](http://127.0.0.1:8000/health)
 - **Inquiries Google Sheets Export**: [http://127.0.0.1:8000/api/inquiries/export.csv](http://127.0.0.1:8000/api/inquiries/export.csv)
 - **Interactive API Documentation (Swagger)**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+
+---
+
+## 🚂 Railway Hosting & Deployment
+
+This project is pre-configured for seamless 1-click deployment on [Railway](https://railway.app/).
+
+### Files Included for Railway:
+- **`railway.json`**: Configures Railway's native Nixpacks builder, production startup command, and health check route (`/health`).
+- **`Procfile`**: Process definition (`web: python run.py`) recognized by Railway and standard PaaS platforms.
+- **`runtime.txt`**: Specifies `python-3.12` runtime environment.
+- **`nixpacks.toml`**: Nixpacks build configuration pinning Python 3.12 and automated dependency caching.
+
+### How to Deploy on Railway:
+1. Log in to [Railway](https://railway.app/).
+2. Click **New Project** > **Deploy from GitHub repo**.
+3. Select this repository (`fit-the-bit/scout-my-vehicle`).
+4. Railway will automatically detect the configuration, install dependencies from `requirements.txt`, run the database auto-seeder, and launch the server on `$PORT`.
+
+### Useful Environment Variables:
+| Variable | Default | Description |
+| :--- | :--- | :--- |
+| `PORT` | Auto-assigned by Railway | Web server listening port (automatically handled) |
+| `HOST` | `0.0.0.0` (in cloud) | Host interface to bind to |
+| `DATABASE_PATH` | `./scoutmycar.db` | Custom path to SQLite file (e.g. `/data/scoutmycar.db` if using a persistent Railway Volume) |
+| `GOOGLE_SHEETS_WEBHOOK_URL` | Optional | Google Apps Script Web App webhook URL for live inquiry dispatch |

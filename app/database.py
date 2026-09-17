@@ -3,7 +3,8 @@ import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-DB_PATH = BASE_DIR / "scoutmycar.db"
+DB_PATH = Path(os.environ.get("DATABASE_PATH", str(BASE_DIR / "scoutmycar.db")))
+DB_PATH.parent.mkdir(parents=True, exist_ok=True)
 
 def get_db_connection():
     conn = sqlite3.connect(DB_PATH)

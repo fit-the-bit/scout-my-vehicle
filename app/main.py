@@ -37,7 +37,29 @@ if os.path.exists(_env_path):
     except Exception:
         pass
 
-app = FastAPI(title="ScoutMyVehicle - Multi-Brand Showroom Stock Network", version="1.0.0")
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Auto-initialize and seed SQLite database if not present on startup
+    from app.database import DB_PATH, init_db
+    if not DB_PATH.exists():
+        print("Database not found on startup. Initializing and seeding...")
+        from app.seed_data import seed
+        seed()
+    else:
+        init_db()
+    yield
+
+app = FastAPI(
+    title="ScoutMyVehicle - Multi-Brand Showroom Stock Network",
+    version="1.0.0",
+    lifespan=lifespan
+)
+
+@app.get("/health", tags=["System"])
+def health_check():
+    return {"status": "healthy", "service": "ScoutMyVehicle"}
 
 BASE_DIR = Path(__file__).resolve().parent
 STATIC_DIR = BASE_DIR / "static"
