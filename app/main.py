@@ -182,8 +182,8 @@ async def get_reviews(limit: Optional[int] = Query(default=3)):
             "car": r["car_model"],
             "dealer": r["dealership_name"] or "Authorized Showroom",
             "rating": r["rating"],
-            "date": "Verified Buyer",
-            "badge": "Verified Review",
+            "date": "Customer Feedback",
+            "badge": "Customer Review",
             "quote": r["review_text"]
         })
     return reviews
@@ -579,6 +579,17 @@ async def create_inquiry(inquiry: InquiryCreate):
     cursor = conn.cursor()
 
     dealer_id = inquiry.dealership_id if inquiry.dealership_id else 1
+    
+    # Collect extra attributes into notes if provided
+    notes_parts = []
+    if inquiry.notes:
+        notes_parts.append(inquiry.notes)
+    if inquiry.budget and f"Budget: {inquiry.budget}" not in (inquiry.notes or ""):
+        notes_parts.append(f"Budget: {inquiry.budget}")
+    if inquiry.preferred_color and f"Color: {inquiry.preferred_color}" not in (inquiry.notes or ""):
+        notes_parts.append(f"Color: {inquiry.preferred_color}")
+    final_notes = " | ".join(notes_parts) if notes_parts else None
+
     cursor.execute("""
         INSERT INTO inquiries (
             dealership_id, car_id, variant_id, customer_name, customer_phone, customer_email, customer_city,
@@ -590,7 +601,7 @@ async def create_inquiry(inquiry: InquiryCreate):
         inquiry.customer_name, inquiry.customer_phone, inquiry.customer_email, inquiry.customer_city,
         inquiry.inquiry_type, inquiry.preferred_date, inquiry.preferred_time,
         inquiry.buying_timeline, inquiry.finance_required, inquiry.exchange_required,
-        inquiry.exchange_car_details, inquiry.notes
+        inquiry.exchange_car_details, final_notes
     ))
     inquiry_id = cursor.lastrowid
     conn.commit()
@@ -620,17 +631,17 @@ async def create_inquiry(inquiry: InquiryCreate):
             transmission_name = v_row[2]
             price_val = f"₹ {v_row[3]:,}" if v_row[3] else "N/A"
 
-    # Extract preferred bank if specified in notes
+    # Extract preferred bank or payment details if specified
     preferred_bank = "N/A"
-    if inquiry.notes:
-        if "Preferred Bank:" in inquiry.notes:
+    if final_notes:
+        if "Preferred Bank:" in final_notes:
             try:
-                preferred_bank = inquiry.notes.split("Preferred Bank:")[1].split(")")[0].split("|")[0].strip()
+                preferred_bank = final_notes.split("Preferred Bank:")[1].split(")")[0].split("|")[0].strip()
             except Exception:
                 pass
-        elif "Finance:" in inquiry.notes and "(" in inquiry.notes:
+        elif "Finance:" in final_notes and "(" in final_notes:
             try:
-                candidate = inquiry.notes.split("(")[1].split(")")[0].strip()
+                candidate = final_notes.split("(")[1].split(")")[0].strip()
                 if any(b in candidate for b in ["SBI", "PNB", "HDFC", "Chola"]):
                     preferred_bank = candidate
             except Exception:
@@ -647,15 +658,17 @@ async def create_inquiry(inquiry: InquiryCreate):
         f"• Phone: {inquiry.customer_phone}\n"
         f"• Email: {inquiry.customer_email or 'N/A'}\n"
         f"• Location: {inquiry.customer_city or 'Not Specified'}\n\n"
-        f"*Vehicle Selected:*\n"
+        f"*Vehicle Requirement:*\n"
         f"• Model: {car_name}\n"
         f"• Variant: {variant_name}\n"
         f"• Fuel: {fuel_name}\n"
-        f"• Transmission: {transmission_name}\n\n"
+        f"• Transmission: {transmission_name}\n"
+        f"• Preferred Colour: {inquiry.preferred_color or 'Any'}\n"
+        f"• Budget: {inquiry.budget or 'Standard Budget'}\n\n"
         f"*Purchase Preferences:*\n"
         f"• Timeline: {inquiry.buying_timeline or 'N/A'}\n"
-        f"• Finance: {inquiry.finance_required or 'No'}\n"
-        f"• Preferred Bank: {preferred_bank}\n"
+        f"• Payment / Finance: {inquiry.finance_required or 'Not Decided'}\n"
+        f"• Preferred Lender: {preferred_bank}\n"
         f"• Exchange: {'Yes - ' + str(inquiry.exchange_car_details) if inquiry.exchange_required else 'No'}\n"
         f"----------------------------------------"
     )
@@ -752,7 +765,7 @@ async def handle_contact_form(contact: ContactMessageCreate):
         "message": "Thank you! Your message has been received. Our team will get back to you shortly.",
         "whatsapp_url": whatsapp_url,
         "phone": "+91 92752 51003",
-        "email": "support@scoutmyvehicle.com"
+        "email": "scoutmyvehicle1003@gmail.com"
     }
 
 @app.get("/api/inquiries/export.csv")
