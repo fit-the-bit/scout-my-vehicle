@@ -42,7 +42,11 @@ class TestScoutMyVehicle(unittest.TestCase):
         self.assertIn("Email ID", response.text)
         self.assertIn("Purchase Timeline", response.text)
         self.assertIn("Immediate (0-15 days)", response.text)
-        self.assertIn("Payment Preference", response.text)
+        self.assertIn("Select Variant", response.text)
+        self.assertNotIn("TRANS:", response.text)
+        self.assertNotIn("FUEL:", response.text)
+        self.assertNotIn("Check Availability & Connect", response.text)
+        self.assertNotIn("Check Availability &amp; Connect", response.text)
         # Ensure no RTO codes or regional terms exposed in customer view
         self.assertNotIn("(UK-04)", response.text)
         self.assertNotIn("(UK-06)", response.text)

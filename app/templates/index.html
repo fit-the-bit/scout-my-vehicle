@@ -483,19 +483,11 @@
                       </div>
                     </div>
 
-                    <!-- Core Decision Tags: Transmission, Fuel, Waiting Period -->
+                    <!-- Waiting Period Tag -->
                     <div class="flex items-center gap-1.5 flex-wrap pt-0.5">
                       <span :class="getWaitingPeriodBadge(car).class" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border">
                         <span class="w-1.5 h-1.5 rounded-full bg-current opacity-80"></span>
                         <span x-text="getWaitingPeriodBadge(car).text"></span>
-                      </span>
-                      <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-100 dark:bg-[#28292e] text-slate-700 dark:text-[#d4d4d8] border border-slate-200/80 dark:border-[#383a40]">
-                        <span class="text-slate-400 dark:text-[#71717a] mr-1 text-[9px]">TRANS:</span>
-                        <span x-text="getTransmissionBadge(car)"></span>
-                      </span>
-                      <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-100 dark:bg-[#28292e] text-slate-700 dark:text-[#d4d4d8] border border-slate-200/80 dark:border-[#383a40]">
-                        <span class="text-slate-400 dark:text-[#71717a] mr-1 text-[9px]">FUEL:</span>
-                        <span x-text="getFuelBadge(car)"></span>
                       </span>
                     </div>
 
@@ -512,7 +504,7 @@
                   <div class="mt-3 pt-2 border-t border-slate-100 dark:border-white/5">
                     <button @click.stop="openInquiryFromCard(car)" class="w-full bg-[#c0262b] group-hover:bg-[#a51d22] text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
                       <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-                      <span>Check Availability</span>
+                      <span>Select Variant</span>
                     </button>
                   </div>
                 </div>
@@ -557,19 +549,11 @@
                       </div>
                     </div>
 
-                    <!-- Core Decision Tags: Transmission, Fuel, Waiting Period -->
+                    <!-- Waiting Period Tag -->
                     <div class="flex items-center gap-1.5 flex-wrap pt-0.5">
                       <span :class="getWaitingPeriodBadge(car).class" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border">
                         <span class="w-1.5 h-1.5 rounded-full bg-current opacity-80"></span>
                         <span x-text="getWaitingPeriodBadge(car).text"></span>
-                      </span>
-                      <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-100 dark:bg-[#28292e] text-slate-700 dark:text-[#d4d4d8] border border-slate-200/80 dark:border-[#383a40]">
-                        <span class="text-slate-400 dark:text-[#71717a] mr-1 text-[9px]">TRANS:</span>
-                        <span x-text="getTransmissionBadge(car)"></span>
-                      </span>
-                      <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-100 dark:bg-[#28292e] text-slate-700 dark:text-[#d4d4d8] border border-slate-200/80 dark:border-[#383a40]">
-                        <span class="text-slate-400 dark:text-[#71717a] mr-1 text-[9px]">FUEL:</span>
-                        <span x-text="getFuelBadge(car)"></span>
                       </span>
                     </div>
 
@@ -586,7 +570,7 @@
                   <div class="mt-3 pt-2 border-t border-slate-100 dark:border-white/5">
                     <button @click.stop="openInquiryFromCard(car)" class="w-full bg-[#c0262b] group-hover:bg-[#a51d22] text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
                       <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-                      <span>Check Availability</span>
+                      <span>Select Variant</span>
                     </button>
                   </div>
                 </div>
@@ -631,19 +615,11 @@
                       </div>
                     </div>
 
-                    <!-- Core Decision Tags: Transmission, Fuel, Waiting Period -->
+                    <!-- Waiting Period Tag -->
                     <div class="flex items-center gap-1.5 flex-wrap pt-0.5">
                       <span :class="getWaitingPeriodBadge(car).class" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border">
                         <span class="w-1.5 h-1.5 rounded-full bg-current opacity-80"></span>
                         <span x-text="getWaitingPeriodBadge(car).text"></span>
-                      </span>
-                      <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-100 dark:bg-[#28292e] text-slate-700 dark:text-[#d4d4d8] border border-slate-200/80 dark:border-[#383a40]">
-                        <span class="text-slate-400 dark:text-[#71717a] mr-1 text-[9px]">TRANS:</span>
-                        <span x-text="getTransmissionBadge(car)"></span>
-                      </span>
-                      <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-100 dark:bg-[#28292e] text-slate-700 dark:text-[#d4d4d8] border border-slate-200/80 dark:border-[#383a40]">
-                        <span class="text-slate-400 dark:text-[#71717a] mr-1 text-[9px]">FUEL:</span>
-                        <span x-text="getFuelBadge(car)"></span>
                       </span>
                     </div>
 
@@ -660,7 +636,7 @@
                   <div class="mt-3 pt-2 border-t border-slate-100 dark:border-white/5">
                     <button @click.stop="openInquiryFromCard(car)" class="w-full bg-[#002C6C] group-hover:bg-[#001f4d] text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
                       <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-                      <span>Check Availability</span>
+                      <span>Select Variant</span>
                     </button>
                   </div>
                 </div>
@@ -705,19 +681,11 @@
                       </div>
                     </div>
 
-                    <!-- Core Decision Tags: Transmission, Fuel, Waiting Period -->
+                    <!-- Waiting Period Tag -->
                     <div class="flex items-center gap-1.5 flex-wrap pt-0.5">
                       <span :class="getWaitingPeriodBadge(car).class" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border">
                         <span class="w-1.5 h-1.5 rounded-full bg-current opacity-80"></span>
                         <span x-text="getWaitingPeriodBadge(car).text"></span>
-                      </span>
-                      <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-100 dark:bg-[#28292e] text-slate-700 dark:text-[#d4d4d8] border border-slate-200/80 dark:border-[#383a40]">
-                        <span class="text-slate-400 dark:text-[#71717a] mr-1 text-[9px]">TRANS:</span>
-                        <span x-text="getTransmissionBadge(car)"></span>
-                      </span>
-                      <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-100 dark:bg-[#28292e] text-slate-700 dark:text-[#d4d4d8] border border-slate-200/80 dark:border-[#383a40]">
-                        <span class="text-slate-400 dark:text-[#71717a] mr-1 text-[9px]">FUEL:</span>
-                        <span x-text="getFuelBadge(car)"></span>
                       </span>
                     </div>
 
@@ -734,7 +702,7 @@
                   <div class="mt-3 pt-2 border-t border-slate-100 dark:border-white/5">
                     <button @click.stop="openInquiryFromCard(car)" class="w-full bg-[#c0262b] group-hover:bg-[#a51d22] text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
                       <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-                      <span>Check Availability</span>
+                      <span>Select Variant</span>
                     </button>
                   </div>
                 </div>
@@ -779,19 +747,11 @@
                       </div>
                     </div>
 
-                    <!-- Core Decision Tags: Transmission, Fuel, Waiting Period -->
+                    <!-- Waiting Period Tag -->
                     <div class="flex items-center gap-1.5 flex-wrap pt-0.5">
                       <span :class="getWaitingPeriodBadge(car).class" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border">
                         <span class="w-1.5 h-1.5 rounded-full bg-current opacity-80"></span>
                         <span x-text="getWaitingPeriodBadge(car).text"></span>
-                      </span>
-                      <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-100 dark:bg-[#28292e] text-slate-700 dark:text-[#d4d4d8] border border-slate-200/80 dark:border-[#383a40]">
-                        <span class="text-slate-400 dark:text-[#71717a] mr-1 text-[9px]">TRANS:</span>
-                        <span x-text="getTransmissionBadge(car)"></span>
-                      </span>
-                      <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-100 dark:bg-[#28292e] text-slate-700 dark:text-[#d4d4d8] border border-slate-200/80 dark:border-[#383a40]">
-                        <span class="text-slate-400 dark:text-[#71717a] mr-1 text-[9px]">FUEL:</span>
-                        <span x-text="getFuelBadge(car)"></span>
                       </span>
                     </div>
 
@@ -806,9 +766,9 @@
                     </div>
                   </div>
                   <div class="mt-3 pt-2 border-t border-slate-100 dark:border-white/5">
-                    <button @click.stop="openInquiryFromCard(car)" class="w-full bg-[#05141F] group-hover:bg-[#a51d22] text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
+                    <button @click.stop="openInquiryFromCard(car)" class="w-full bg-[#c0262b] group-hover:bg-[#a51d22] text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
                       <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-                      <span>Check Availability</span>
+                      <span>Select Variant</span>
                     </button>
                   </div>
                 </div>
@@ -835,7 +795,7 @@
             </button>
           </div>
 
-          <!-- Full detail cards grid -->
+          <!-- Standardized Brand Filter Cards Grid -->
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" x-show="displayCars.length > 0">
             <template x-for="car in displayCars" :key="car.id">
               <div 
@@ -845,98 +805,41 @@
                 tabindex="0"
                 @keydown.enter="openInquiryFromCard(car)"
               >
-                <div class="space-y-3.5">
+                <div class="space-y-2.5">
                   <div class="flex items-start justify-between gap-2">
                     <div>
-                      <div class="text-[11px] font-bold text-[#c0262b] uppercase tracking-wider" x-text="getBrandBadge(car)"></div>
-                      <h3 class="font-bold text-slate-900 dark:text-white text-lg leading-snug group-hover:text-[#c0262b] transition-colors" x-text="car.model"></h3>
-                      <p class="text-xs text-slate-500 dark:text-[#a1a1aa] font-normal mt-0.5" x-text="car.selectedVariant ? car.selectedVariant.name : (car.tagline || 'Authorized Dealership Stock')"></p>
+                      <div class="text-[10px] font-bold text-[#c0262b] uppercase tracking-wider" x-text="getBrandBadge(car)"></div>
+                      <h3 class="font-bold text-slate-900 dark:text-white text-base leading-snug group-hover:text-[#c0262b] transition-colors" x-text="car.model"></h3>
+                      <p class="text-[11px] text-slate-500 mt-0.5" x-text="car.category"></p>
                     </div>
                     <div class="text-right shrink-0">
-                      <span class="text-[10px] font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-[#28292e] border border-slate-200/80 dark:border-[#383a40] px-2 py-0.5 rounded-full" x-text="car.category"></span>
-                      <div class="text-xs font-bold text-slate-900 dark:text-white mt-1" x-text="formatPrice(car.selectedVariant?.ex_showroom_price || car.min_price)"></div>
+                      <div class="text-xs font-bold text-slate-900 dark:text-white" x-text="formatPrice(car.min_price)"></div>
+                      <div class="text-[10px] text-slate-400">onwards*</div>
                     </div>
                   </div>
 
-                  <!-- Core Decision Tags: Transmission, Fuel, Waiting Period -->
+                  <!-- Waiting Period Tag -->
                   <div class="flex items-center gap-1.5 flex-wrap pt-0.5">
                     <span :class="getWaitingPeriodBadge(car).class" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border">
                       <span class="w-1.5 h-1.5 rounded-full bg-current opacity-80"></span>
                       <span x-text="getWaitingPeriodBadge(car).text"></span>
                     </span>
-                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-100 dark:bg-[#28292e] text-slate-700 dark:text-[#d4d4d8] border border-slate-200/80 dark:border-[#383a40]">
-                      <span class="text-slate-400 dark:text-[#71717a] mr-1 text-[9px]">TRANS:</span>
-                      <span x-text="getTransmissionBadge(car)"></span>
-                    </span>
-                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-100 dark:bg-[#28292e] text-slate-700 dark:text-[#d4d4d8] border border-slate-200/80 dark:border-[#383a40]">
-                      <span class="text-slate-400 dark:text-[#71717a] mr-1 text-[9px]">FUEL:</span>
-                      <span x-text="getFuelBadge(car)"></span>
-                    </span>
                   </div>
 
-                  <div @click.stop class="bg-slate-50/90 dark:bg-[#1e1f23] border border-slate-200/80 dark:border-[#383a40] rounded-xl p-3 space-y-2.5">
-                    <div>
-                      <div class="flex items-center justify-between mb-1">
-                        <label class="text-[11px] font-semibold text-slate-700 dark:text-[#d4d4d8]">Car Variant</label>
-                        <span class="text-[10px] text-slate-400" x-text="(car.variants?.length || 0) + ' variants available'"></span>
-                      </div>
-                      <select x-model="car.selectedVariantId" @change="onCardVariantSelect(car)" class="w-full text-xs font-medium bg-white dark:bg-[#28292e] border border-slate-200 dark:border-[#383a40] rounded-lg px-2.5 py-1.5 text-slate-800 dark:text-[#f4f4f6] focus:outline-none focus:border-red-500 transition">
-                        <template x-for="v in car.variants" :key="v.id">
-                          <option :value="v.id" x-text="v.name + (v.fuel_type ? ' (' + v.fuel_type + ' - ' + v.transmission + ')' : '') + ' • ' + formatPrice(v.ex_showroom_price)"></option>
-                        </template>
-                      </select>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                      <div>
-                        <label class="block text-[11px] font-semibold text-slate-700 dark:text-[#d4d4d8] mb-1">Fuel</label>
-                        <select x-model="car.selectedFuel" @change="onCardFuelSelect(car)" class="w-full text-xs font-medium bg-white dark:bg-[#28292e] border border-slate-200 dark:border-[#383a40] rounded-lg px-2.5 py-1.5 text-slate-800 dark:text-[#f4f4f6] focus:outline-none focus:border-red-500 transition">
-                          <template x-for="f in car.fuel_types_list" :key="f">
-                            <option :value="f" x-text="f"></option>
-                          </template>
-                        </select>
-                      </div>
-                      <div>
-                        <label class="block text-[11px] font-semibold text-slate-700 dark:text-[#d4d4d8] mb-1">Transmission</label>
-                        <select x-model="car.selectedTransmission" @change="onCardTransmissionSelect(car)" class="w-full text-xs font-medium bg-white dark:bg-[#28292e] border border-slate-200 dark:border-[#383a40] rounded-lg px-2.5 py-1.5 text-slate-800 dark:text-[#f4f4f6] focus:outline-none focus:border-red-500 transition">
-                          <template x-for="t in car.transmissions_list" :key="t">
-                            <option :value="t" x-text="t"></option>
-                          </template>
-                        </select>
-                      </div>
-                    </div>
-                    <div>
-                      <label class="block text-[11px] font-semibold text-slate-700 dark:text-[#d4d4d8] mb-1">Colour</label>
-                      <select x-model="car.selectedColor" class="w-full text-xs font-medium bg-white dark:bg-[#28292e] border border-slate-200 dark:border-[#383a40] rounded-lg px-2.5 py-1.5 text-slate-800 dark:text-[#f4f4f6] focus:outline-none focus:border-red-500 transition">
-                        <template x-for="c in car.colors" :key="c">
-                          <option :value="c" x-text="c"></option>
-                        </template>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="grid grid-cols-2 gap-y-2 gap-x-3 text-[11px] pt-1">
-                    <div>
-                      <span class="text-slate-400 font-normal">Engine / Spec:</span>
-                      <div class="font-semibold text-slate-800 dark:text-[#d4d4d8] truncate" x-text="car.selectedVariant?.engine_spec || car.selectedVariant?.drivetrain || 'Standard'"></div>
-                    </div>
-                    <div>
-                      <span class="text-slate-400 font-normal">Seating:</span>
-                      <div class="font-semibold text-slate-800 dark:text-[#d4d4d8]" x-text="(car.selectedVariant?.seating || 5) + ' Seater'"></div>
-                    </div>
-                  </div>
                   <div class="pt-2 border-t border-slate-100 dark:border-white/5">
                     <div class="text-[11px] text-emerald-700 dark:text-emerald-400 font-medium flex items-center justify-between">
                       <span class="flex items-center gap-1.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                         <span>Availability checked on request</span>
                       </span>
-                      <span class="text-slate-400 font-normal">Ready for Booking</span>
+                      <span class="text-slate-400 text-[10px]" x-text="(car.variants?.length || 0) + ' variants'"></span>
                     </div>
                   </div>
                 </div>
-                <div class="mt-4 pt-2 border-t border-slate-100 dark:border-white/5">
-                  <button @click.stop="openInquiryFromCard(car)" class="w-full bg-[#c0262b] group-hover:bg-[#a51d22] text-white py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 shadow-xs cursor-pointer">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-                    <span>Check Availability &amp; Connect</span>
+                <div class="mt-3 pt-2 border-t border-slate-100 dark:border-white/5">
+                  <button @click.stop="openInquiryFromCard(car)" class="w-full bg-[#c0262b] group-hover:bg-[#a51d22] text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                    <span>Select Variant</span>
                   </button>
                 </div>
               </div>
@@ -992,19 +895,11 @@
                         </div>
                       </div>
 
-                      <!-- Core Decision Tags: Transmission, Fuel, Waiting Period -->
+                      <!-- Waiting Period Tag -->
                       <div class="flex items-center gap-1.5 flex-wrap pt-0.5">
                         <span :class="getWaitingPeriodBadge(car).class" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border">
                           <span class="w-1.5 h-1.5 rounded-full bg-current opacity-80"></span>
                           <span x-text="getWaitingPeriodBadge(car).text"></span>
-                        </span>
-                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-100 dark:bg-[#28292e] text-slate-700 dark:text-[#d4d4d8] border border-slate-200/80 dark:border-[#383a40]">
-                          <span class="text-slate-400 dark:text-[#71717a] mr-1 text-[9px]">TRANS:</span>
-                          <span x-text="getTransmissionBadge(car)"></span>
-                        </span>
-                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-100 dark:bg-[#28292e] text-slate-700 dark:text-[#d4d4d8] border border-slate-200/80 dark:border-[#383a40]">
-                          <span class="text-slate-400 dark:text-[#71717a] mr-1 text-[9px]">FUEL:</span>
-                          <span x-text="getFuelBadge(car)"></span>
                         </span>
                       </div>
 
@@ -1021,7 +916,7 @@
                     <div class="mt-3 pt-2 border-t border-slate-100 dark:border-white/5">
                       <button @click.stop="openInquiryFromCard(car)" class="w-full bg-[#c0262b] group-hover:bg-[#a51d22] text-white py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-                        <span>Check Availability</span>
+                        <span>Select Variant</span>
                       </button>
                     </div>
                   </div>
@@ -1936,17 +1831,34 @@
         </div>
 
         <!-- Selected Vehicle Summary Pill (When opened from a specific card) -->
-        <div x-show="selectedInquiryItem.car_model" class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs space-y-1">
+        <div x-show="selectedInquiryItem.car_model" class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs space-y-2">
           <div class="flex items-center justify-between font-bold text-slate-900">
-            <span x-text="selectedInquiryItem.car_model || 'Vehicle'"></span>
+            <span x-text="(selectedInquiryItem.car_brand ? selectedInquiryItem.car_brand + ' ' : '') + selectedInquiryItem.car_model"></span>
             <span class="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">Availability checked on request</span>
           </div>
+
+          <!-- Car Variant selector when variants available -->
+          <div x-show="selectedInquiryItem.variants && selectedInquiryItem.variants.length > 0">
+            <label class="block font-semibold text-slate-700 mb-1 text-[11px]">Car Variant</label>
+            <select 
+              x-model="selectedInquiryItem.variant_id" 
+              @change="onModalVariantSelect($event.target.value)"
+              class="w-full text-xs font-medium bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-800 focus:outline-none focus:border-red-500 transition"
+            >
+              <template x-for="v in selectedInquiryItem.variants" :key="v.id">
+                <option :value="v.id" x-text="v.name + (v.fuel_type ? ' (' + v.fuel_type + ' - ' + v.transmission + ')' : '') + (v.ex_showroom_price ? ' • ' + formatPrice(v.ex_showroom_price) : '')"></option>
+              </template>
+            </select>
+          </div>
+
           <div class="text-slate-600 flex items-center gap-2 text-[11px]">
             <span x-text="selectedInquiryItem.variant_name || ''"></span>
             <span x-show="selectedInquiryItem.fuel_type">•</span>
             <span x-text="selectedInquiryItem.fuel_type || ''"></span>
             <span x-show="selectedInquiryItem.transmission">•</span>
             <span x-text="selectedInquiryItem.transmission || ''"></span>
+            <span x-show="selectedInquiryItem.price">•</span>
+            <span x-show="selectedInquiryItem.price" x-text="formatPrice(selectedInquiryItem.price)"></span>
           </div>
         </div>
 
@@ -3208,12 +3120,25 @@
             fuel_type: car.selectedFuel || v.fuel_type || 'Petrol',
             transmission: car.selectedTransmission || v.transmission || 'Manual (MT)',
             colors_available: car.selectedColor || (car.colors && car.colors[0]) || 'White',
-            price: v.ex_showroom_price || car.min_price || null
+            price: v.ex_showroom_price || car.min_price || null,
+            variants: car.variants || []
           };
           this.inquirySubmitted = false;
           this.submitting = false;
           this.inquiryForm.location = '';
           this.inquiryModalOpen = true;
+        },
+
+        onModalVariantSelect(variantId) {
+          if (!this.selectedInquiryItem || !this.selectedInquiryItem.variants) return;
+          const v = this.selectedInquiryItem.variants.find(x => String(x.id) === String(variantId));
+          if (v) {
+            this.selectedInquiryItem.variant_id = v.id;
+            this.selectedInquiryItem.variant_name = v.name;
+            if (v.fuel_type) this.selectedInquiryItem.fuel_type = v.fuel_type;
+            if (v.transmission) this.selectedInquiryItem.transmission = v.transmission;
+            if (v.ex_showroom_price) this.selectedInquiryItem.price = v.ex_showroom_price;
+          }
         },
 
         openInquiry(item) {
