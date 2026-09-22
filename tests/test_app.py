@@ -58,6 +58,9 @@ class TestScoutMyVehicle(unittest.TestCase):
         self.assertNotIn("(UK-06)", response.text)
         self.assertNotIn("Rudrapur", response.text)
         self.assertNotIn("Kumaon", response.text)
+        # Ensure Google tag (gtag.js) for AW-18451964501 is present
+        self.assertIn("googletagmanager.com/gtag/js?id=AW-18451964501", response.text)
+        self.assertIn("AW-18451964501", response.text)
 
     def test_showroom_staff_and_admin_login_completely_removed(self):
         # 1. Verify /admin/login is completely removed (returns 404)
