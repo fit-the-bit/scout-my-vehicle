@@ -517,17 +517,25 @@ Toyota,Trust Toyota,Rudrapur,Toyota Urban Cruiser Hyryder,G Strong Hybrid,Hybrid
         self.assertNotIn("(UK-06)", about_res.text)
         self.assertNotIn("Rudrapur", about_res.text)
 
-        # 2. Test GET /privacy page
-        privacy_res = self.client.get("/privacy")
-        self.assertEqual(privacy_res.status_code, 200)
-        self.assertIn("Privacy Policy", privacy_res.text)
-        self.assertIn("What Customer Information We Collect", privacy_res.text)
-        self.assertIn("Why We Collect Phone Number, Name, Location", privacy_res.text)
-        self.assertIn("Information Sharing with Dealerships", privacy_res.text)
-        self.assertIn("Data Security & Protection", privacy_res.text)
-        self.assertNotIn("(UK-04)", privacy_res.text)
-        self.assertNotIn("(UK-06)", privacy_res.text)
-        self.assertNotIn("Rudrapur", privacy_res.text)
+        # 2. Test GET /privacy and /privacy-policy pages
+        for endpoint in ["/privacy", "/privacy-policy"]:
+            privacy_res = self.client.get(endpoint)
+            self.assertEqual(privacy_res.status_code, 200)
+            self.assertIn("Privacy Policy", privacy_res.text)
+            self.assertIn("About ScoutMyVehicle", privacy_res.text)
+            self.assertIn("Information We Collect", privacy_res.text)
+            self.assertIn("Sharing Your Information with Dealerships", privacy_res.text)
+            self.assertIn("Data Security", privacy_res.text)
+            self.assertIn("scoutmyvehicle@gmail.com", privacy_res.text)
+            self.assertNotIn("(UK-04)", privacy_res.text)
+            self.assertNotIn("(UK-06)", privacy_res.text)
+            self.assertNotIn("Rudrapur", privacy_res.text)
+
+        # 2b. Test Explicit Consent Checkbox on Forms
+        home_res = self.client.get("/")
+        self.assertIn("I agree that ScoutMyVehicle may use my information to process my vehicle enquiry", home_res.text)
+        self.assertIn("Please provide consent to proceed with your vehicle enquiry.", home_res.text)
+        self.assertIn("/privacy-policy", home_res.text)
 
         # 3. Test GET /terms page
         terms_res = self.client.get("/terms")

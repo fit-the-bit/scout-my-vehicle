@@ -132,6 +132,7 @@ async def about_page(request: Request):
         context=get_portal_context(request, "about")
     )
 
+@app.get("/privacy-policy", response_class=HTMLResponse)
 @app.get("/privacy", response_class=HTMLResponse)
 async def privacy_page(request: Request):
     return templates.TemplateResponse(
