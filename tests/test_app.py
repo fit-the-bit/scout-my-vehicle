@@ -559,7 +559,7 @@ Toyota,Trust Toyota,Rudrapur,Toyota Urban Cruiser Hyryder,G Strong Hybrid,Hybrid
         self.assertIn("Contact ScoutMyVehicle", contact_res.text)
         self.assertIn("+91 92752 51003", contact_res.text)
         self.assertIn("scoutmyvehicle1003@gmail.com", contact_res.text)
-        self.assertIn("Haldwani, Uttarakhand", contact_res.text)
+        self.assertIn("Nainital, Uttarakhand", contact_res.text)
         self.assertNotIn("Central Showroom Corridor", contact_res.text)
         self.assertNotIn("Regional Network Hub", contact_res.text)
         self.assertIn("Send Us a Message", contact_res.text)
