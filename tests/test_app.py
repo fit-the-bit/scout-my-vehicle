@@ -61,6 +61,9 @@ class TestScoutMyVehicle(unittest.TestCase):
         # Ensure Google tag (gtag.js) for AW-18451964501 is present
         self.assertIn("googletagmanager.com/gtag/js?id=AW-18451964501", response.text)
         self.assertIn("AW-18451964501", response.text)
+        # Ensure conversion event snippet for Submit lead form (1) is present
+        self.assertIn("AW-18451964501/BeqqCMHE5YQdENXEyt5E", response.text)
+        self.assertIn("reportLeadConversion", response.text)
 
     def test_showroom_staff_and_admin_login_completely_removed(self):
         # 1. Verify /admin/login is completely removed (returns 404)
@@ -588,6 +591,13 @@ Toyota,Trust Toyota,Rudrapur,Toyota Urban Cruiser Hyryder,G Strong Hybrid,Hybrid
         self.assertIn("919275251003", post_data["whatsapp_url"])
         self.assertEqual(post_data["phone"], "+91 92752 51003")
         self.assertEqual(post_data["email"], "scoutmyvehicle1003@gmail.com")
+
+    def test_thank_you_page_and_google_ads_conversion(self):
+        res = self.client.get("/thank-you")
+        self.assertEqual(res.status_code, 200)
+        self.assertIn("Thank You! Enquiry Received", res.text)
+        self.assertIn("AW-18451964501/BeqqCMHE5YQdENXEyt5E", res.text)
+        self.assertIn("gtag('event', 'conversion'", res.text)
 
 if __name__ == "__main__":
     unittest.main()

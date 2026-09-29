@@ -11,6 +11,20 @@
 
     gtag('config', 'AW-18451964501');
   </script>
+
+  <!-- Event snippet for Submit lead form (1) conversion page -->
+  <script>
+    function reportLeadConversion() {
+      if (typeof gtag === 'function') {
+        gtag('event', 'conversion', {'send_to': 'AW-18451964501/BeqqCMHE5YQdENXEyt5E'});
+      }
+    }
+  </script>
+  {% if initial_view == "thank-you" %}
+  <script>
+    gtag('event', 'conversion', {'send_to': 'AW-18451964501/BeqqCMHE5YQdENXEyt5E'});
+  </script>
+  {% endif %}
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ScoutMyVehicle - The smarter way to find your car</title>
   <meta name="application-name" content="ScoutMyVehicle">
@@ -1870,6 +1884,37 @@
         </div>
       </div>
 
+      <!-- ================= VIEW 7: THANK YOU / CONVERSION ================= -->
+      <div x-show="activeView === 'thank-you'" class="space-y-8 py-12 text-center max-w-xl mx-auto" x-cloak>
+        <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-xs">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        
+        <div class="space-y-2">
+          <h1 class="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">Thank You! Enquiry Received</h1>
+          <p class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto leading-relaxed">
+            Your vehicle requirement has been successfully submitted to our coordination desk. Our team will verify dealership availability and connect with you shortly.
+          </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+          <button 
+            @click="navigateToView('stock')" 
+            class="w-full sm:w-auto px-6 py-3 bg-[#c0262b] hover:bg-[#a51d22] text-white font-bold rounded-xl text-xs transition cursor-pointer"
+          >
+            Explore More Vehicles
+          </button>
+          <a 
+            href="https://api.whatsapp.com/send?phone=919275251003" 
+            target="_blank" 
+            class="w-full sm:w-auto px-6 py-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold rounded-xl text-xs transition flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <img src="/static/images/whatsapp_official.svg" class="w-4 h-4" alt="WhatsApp">
+            <span>Chat on WhatsApp</span>
+          </a>
+        </div>
+      </div>
+
       <!-- ================= CUSTOMER REVIEWS & EXPERIENCES ================= -->
       <section class="mt-20 pt-12 border-t border-slate-100" id="reviews-section" x-show="activeView === 'stock'">
         <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
@@ -3330,6 +3375,9 @@
               this.contactForm.submitted = true;
               this.contactForm.successMsg = data.message;
               this.contactForm.whatsappUrl = data.whatsapp_url;
+              if (typeof reportLeadConversion === 'function') {
+                reportLeadConversion();
+              }
             } else {
               this.contactForm.errorMsg = data.detail || 'Failed to submit message. Please try again or WhatsApp us directly.';
             }
@@ -3358,13 +3406,18 @@
 
         async init() {
           this.darkMode = document.documentElement.classList.contains('dark');
-          const validViews = ['stock', 'brands', 'about', 'privacy', 'privacy-policy', 'terms', 'contact'];
+          const validViews = ['stock', 'brands', 'about', 'privacy', 'privacy-policy', 'terms', 'contact', 'thank-you'];
           const hash = window.location.hash.replace('#', '');
           if (hash === 'brands') {
             this.activeView = 'stock';
             this.resetFilters();
           } else if (hash === 'privacy-policy') {
             this.activeView = 'privacy';
+          } else if (hash === 'thank-you' || window.location.pathname === '/thank-you') {
+            this.activeView = 'thank-you';
+            if (typeof reportLeadConversion === 'function') {
+              reportLeadConversion();
+            }
           } else if (validViews.includes(hash)) {
             this.activeView = hash;
           }
@@ -3737,6 +3790,9 @@
               const data = await res.json();
               this.submittedWhatsappUrl = data.whatsapp_url || 'https://api.whatsapp.com/send?phone=919275251003';
               this.inquirySubmitted = true;
+              if (typeof reportLeadConversion === 'function') {
+                reportLeadConversion();
+              }
 
               // Direct client-side fail-safe dispatch to Google Sheets webhook if backend did not confirm sync
               if (!data.google_sheet_forwarded) {
@@ -3807,6 +3863,9 @@
                 body: JSON.stringify(gasPayload)
               });
               this.inquirySubmitted = true;
+              if (typeof reportLeadConversion === 'function') {
+                reportLeadConversion();
+              }
               return;
             } catch (fallbackErr) {}
             alert('Network error. Please try again.');

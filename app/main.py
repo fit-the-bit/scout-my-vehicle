@@ -157,6 +157,14 @@ async def contact_page(request: Request):
         context=get_portal_context(request, "contact")
     )
 
+@app.get("/thank-you", response_class=HTMLResponse)
+async def thank_you_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context=get_portal_context(request, "thank-you")
+    )
+
 # ----------------- REST API ROUTES -----------------
 
 @app.get("/api/reviews")
