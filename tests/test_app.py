@@ -32,7 +32,7 @@ class TestScoutMyVehicle(unittest.TestCase):
         self.assertIn("ScoutMyVehicle", response.text)
         self.assertIn("Looking for a Specific New Car?", response.text)
         self.assertIn("No customer purchase commission.", response.text)
-        self.assertIn("FIND MY CAR", response.text)
+        self.assertNotIn("FIND MY CAR", response.text)
         self.assertIn("Dealer Availability Check", response.text)
         self.assertIn("Others", response.text)
         self.assertIn("Car Variant", response.text)
