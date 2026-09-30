@@ -331,12 +331,13 @@
             <div class="shrink-0 flex items-center gap-2">
               <button 
                 type="button"
+                x-show="selectedBrand !== 'Any' && selectedModel !== 'Any'"
+                x-cloak
                 @click="onCatalogueOk()"
-                class="w-full sm:w-auto px-4 py-2 text-xs font-bold text-white bg-[#c0262b] hover:bg-[#a51d22] rounded-xl shadow-xs transition cursor-pointer flex items-center justify-center gap-1.5"
+                class="w-full sm:w-auto px-4 py-2 text-xs font-bold text-white bg-[#c0262b] hover:bg-[#a51d22] rounded-xl shadow-xs transition cursor-pointer flex items-center justify-center"
                 title="Select variant for chosen model"
               >
                 <span>OK</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
               </button>
               <button 
                 type="button"
@@ -3580,15 +3581,16 @@
         },
 
         onCatalogueOk() {
-          this.updateDisplayCars();
-          let targetCar = null;
-          if (this.selectedModel && this.selectedModel !== 'Any') {
-            targetCar = this.cars.find(c => (c.model || '').toLowerCase() === this.selectedModel.toLowerCase());
-          } else if (this.displayCars && this.displayCars.length > 0) {
-            targetCar = this.displayCars[0];
-          } else if (this.cars && this.cars.length > 0) {
-            targetCar = this.cars[0];
+          if (!this.selectedBrand || this.selectedBrand === 'Any' || !this.selectedModel || this.selectedModel === 'Any') {
+            return;
           }
+          this.updateDisplayCars();
+          let targetCar = this.cars.find(c => 
+            (c.model || '').toLowerCase() === this.selectedModel.toLowerCase() && 
+            (c.brand || '').toLowerCase() === this.selectedBrand.toLowerCase()
+          ) || this.cars.find(c => 
+            (c.model || '').toLowerCase() === this.selectedModel.toLowerCase()
+          );
           if (targetCar) {
             this.openVariantModal(targetCar);
           }

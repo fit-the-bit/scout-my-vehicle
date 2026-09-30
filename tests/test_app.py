@@ -40,6 +40,7 @@ class TestScoutMyVehicle(unittest.TestCase):
         self.assertIn("Clear", response.text)
         self.assertIn("Search Model Catalogue:", response.text)
         self.assertIn("onCatalogueOk", response.text)
+        self.assertIn("selectedBrand !== 'Any' && selectedModel !== 'Any'", response.text)
         self.assertIn("OK", response.text)
         self.assertIn("Check Availability", response.text)
         self.assertIn("Email ID", response.text)
