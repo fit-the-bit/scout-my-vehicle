@@ -307,7 +307,7 @@
 
         <!-- 2. BRAND SEARCH & FILTER BAR (At Top) -->
         <div class="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-3 sm:p-3.5">
-          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3" @keydown.enter.prevent="onCatalogueOk()">
             <div class="flex items-center gap-2 text-slate-700 font-bold text-xs shrink-0">
               <svg class="w-4 h-4 text-[#c0262b]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
               <span>Search Model Catalogue:</span>
@@ -328,9 +328,20 @@
                 </template>
               </select>
             </div>
-            <div class="shrink-0" x-show="selectedBrand !== 'Any' || selectedModel !== 'Any'" x-cloak>
-              <button
+            <div class="shrink-0 flex items-center gap-2">
+              <button 
                 type="button"
+                @click="onCatalogueOk()"
+                class="w-full sm:w-auto px-4 py-2 text-xs font-bold text-white bg-[#c0262b] hover:bg-[#a51d22] rounded-xl shadow-xs transition cursor-pointer flex items-center justify-center gap-1.5"
+                title="Select variant for chosen model"
+              >
+                <span>OK</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+              </button>
+              <button 
+                type="button"
+                x-show="selectedBrand !== 'Any' || selectedModel !== 'Any'"
+                x-cloak
                 @click="resetFilters()"
                 class="w-full sm:w-auto px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 rounded-xl border border-slate-200 transition cursor-pointer flex items-center justify-center gap-1.5"
               >
@@ -3566,6 +3577,21 @@
           this.selectedChannel = null;
           this.selectedModel = 'Any';
           this.updateDisplayCars();
+        },
+
+        onCatalogueOk() {
+          this.updateDisplayCars();
+          let targetCar = null;
+          if (this.selectedModel && this.selectedModel !== 'Any') {
+            targetCar = this.cars.find(c => (c.model || '').toLowerCase() === this.selectedModel.toLowerCase());
+          } else if (this.displayCars && this.displayCars.length > 0) {
+            targetCar = this.displayCars[0];
+          } else if (this.cars && this.cars.length > 0) {
+            targetCar = this.cars[0];
+          }
+          if (targetCar) {
+            this.openVariantModal(targetCar);
+          }
         },
 
         formatTrans(t) {
