@@ -603,5 +603,36 @@ Toyota,Trust Toyota,Rudrapur,Toyota Urban Cruiser Hyryder,G Strong Hybrid,Hybrid
         self.assertIn("AW-18451964501/BeqqCMHE5YQdENXEyt5E", res.text)
         self.assertIn("gtag('event', 'conversion'", res.text)
 
+    def test_quick_lead_popup_modal_and_sync(self):
+        # 1. Verify Quick-Lead popup modal markup is rendered on homepage
+        res = self.client.get("/")
+        self.assertEqual(res.status_code, 200)
+        self.assertIn("quickLeadModalOpen", res.text)
+        self.assertIn("Looking for a Specific New Car?", res.text)
+        self.assertIn("Tell us what you need. We'll check availability with dealerships.", res.text)
+        self.assertIn("Quick Availability Scout", res.text)
+        self.assertIn("closeQuickLeadModal", res.text)
+        self.assertIn("submitQuickLead", res.text)
+        self.assertIn("Find Availability", res.text)
+        self.assertIn("I agree that ScoutMyVehicle may use my information to check availability with relevant dealerships.", res.text)
+        self.assertIn("/privacy-policy", res.text)
+        self.assertIn("quickLeadForm.phone", res.text)
+
+        # 2. Test Quick-Lead submission syncs with WhatsApp and Google Sheets
+        payload = {
+            "customer_name": "Pooja Joshi",
+            "customer_phone": "9876543210",
+            "brand": "Tata Motors",
+            "car_model": "Nexon",
+            "notes": "Quick Lead Popup | Brand: Tata Motors | Model: Nexon"
+        }
+        post_res = self.client.post("/api/inquiries", json=payload)
+        self.assertEqual(post_res.status_code, 200)
+        data = post_res.json()
+        self.assertTrue(data["success"])
+        self.assertIn("whatsapp_url", data)
+        self.assertIn("Tata%20Motors%20Nexon", data["whatsapp_url"])
+        self.assertTrue(data["google_sheet_stored"])
+
 if __name__ == "__main__":
     unittest.main()

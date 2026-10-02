@@ -5,6 +5,8 @@ class InquiryCreate(BaseModel):
     dealership_id: Optional[int] = 1
     car_id: Optional[int] = None
     variant_id: Optional[int] = None
+    car_model: Optional[str] = None
+    brand: Optional[str] = None
     customer_name: str
     customer_phone: str
     customer_email: Optional[str] = None

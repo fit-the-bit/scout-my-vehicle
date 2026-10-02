@@ -2313,6 +2313,210 @@
     </div>
   </div>
 
+  <!-- ================= QUICK-LEAD POPUP MODAL (Google Sheets & WhatsApp Sync) ================= -->
+  <div 
+    x-show="quickLeadModalOpen" 
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs" 
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0 scale-95"
+    x-transition:enter-end="opacity-100 scale-100"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100 scale-100"
+    x-transition:leave-end="opacity-0 scale-95"
+    x-cloak
+    @keydown.escape.window="if (quickLeadModalOpen) closeQuickLeadModal()"
+  >
+    <div 
+      class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 max-w-md w-full rounded-2xl p-6 sm:p-7 shadow-2xl relative max-h-[90vh] overflow-y-auto" 
+      @click.away="closeQuickLeadModal()"
+    >
+      <!-- Dismiss Controls [x] -->
+      <button 
+        type="button"
+        @click="closeQuickLeadModal()" 
+        class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+        title="Close &amp; Browse Site"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <!-- Form State -->
+      <div x-show="!quickLeadSubmitted" class="space-y-4">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-[#c0262b] bg-red-50 dark:bg-red-950/60 dark:text-red-400 px-2 py-0.5 rounded">Quick Availability Scout</span>
+          <h3 class="font-black text-xl text-slate-950 dark:text-white mt-1.5 leading-snug">Looking for a Specific New Car?</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Tell us what you need. We'll check availability with dealerships.</p>
+        </div>
+
+        <form @submit.prevent="submitQuickLead()" class="space-y-3.5 pt-1">
+          <!-- Brand (Dropdown or text) -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              Brand <span class="text-red-500">*</span>
+            </label>
+            <select 
+              x-model="quickLeadForm.brand" 
+              required 
+              class="w-full text-xs font-medium bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2.5 text-slate-800 dark:text-slate-100 focus:outline-none focus:border-[#c0262b] focus:ring-1 focus:ring-[#c0262b] transition"
+            >
+              <option value="" disabled selected>Select Brand</option>
+              <template x-for="b in brands" :key="b">
+                <option :value="b" x-text="b"></option>
+              </template>
+              <option value="Other">Other Brand</option>
+            </select>
+            <div x-show="quickLeadForm.brand === 'Other'" class="mt-2" x-cloak>
+              <input 
+                type="text" 
+                x-model="quickLeadForm.otherBrand" 
+                placeholder="Enter Brand Name" 
+                class="w-full text-xs font-medium bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 focus:outline-none focus:border-[#c0262b]"
+              >
+            </div>
+          </div>
+
+          <!-- Model (Text input) -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              Model <span class="text-red-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              x-model="quickLeadForm.model" 
+              required 
+              placeholder="e.g. Nexon, Thar Roxx, Creta, Swift..." 
+              class="w-full text-xs font-medium bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2.5 text-slate-800 dark:text-slate-100 focus:outline-none focus:border-[#c0262b] focus:ring-1 focus:ring-[#c0262b] transition"
+            >
+          </div>
+
+          <!-- Name (Text input) -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              Name <span class="text-red-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              x-model="quickLeadForm.name" 
+              required 
+              placeholder="Enter your full name" 
+              class="w-full text-xs font-medium bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2.5 text-slate-800 dark:text-slate-100 focus:outline-none focus:border-[#c0262b] focus:ring-1 focus:ring-[#c0262b] transition"
+            >
+          </div>
+
+          <!-- Mobile Number (Tel input, 10 digits validation) -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              Mobile Number <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-500 dark:text-slate-400 select-none">+91</span>
+              <input 
+                type="tel" 
+                x-model="quickLeadForm.phone" 
+                required 
+                maxlength="10" 
+                placeholder="10-digit mobile number" 
+                @input="quickLeadForm.phone = quickLeadForm.phone.replace(/[^0-9]/g, '').slice(0, 10); if (quickLeadForm.phone.length === 10) quickLeadPhoneError = ''"
+                class="w-full text-xs font-medium bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl pl-11 pr-3 py-2.5 text-slate-800 dark:text-slate-100 focus:outline-none focus:border-[#c0262b] focus:ring-1 focus:ring-[#c0262b] transition"
+              >
+            </div>
+            <div x-show="quickLeadPhoneError" class="text-[11px] text-red-600 dark:text-red-400 font-medium mt-1 flex items-center gap-1" x-cloak>
+              <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span x-text="quickLeadPhoneError"></span>
+            </div>
+          </div>
+
+          <!-- Compliance Checkbox (Required) -->
+          <div class="pt-1">
+            <label class="flex items-start gap-2.5 cursor-pointer select-none text-left">
+              <input 
+                type="checkbox" 
+                x-model="quickLeadForm.consent" 
+                required 
+                @change="if (quickLeadForm.consent) quickLeadConsentError = ''"
+                class="mt-0.5 rounded border-slate-300 dark:border-slate-600 text-[#c0262b] focus:ring-[#c0262b] cursor-pointer shrink-0"
+              >
+              <span class="text-[11px] text-slate-600 dark:text-slate-300 leading-snug">
+                I agree that ScoutMyVehicle may use my information to check availability with relevant dealerships. Read <a href="/privacy-policy" @click.prevent="closeQuickLeadModal(); navigateToView('privacy')" class="text-[#c0262b] underline font-semibold hover:text-[#a51d22]">Privacy Policy</a>.
+              </span>
+            </label>
+            <div x-show="quickLeadConsentError" class="text-[11px] text-red-600 dark:text-red-400 font-medium mt-1.5 flex items-center gap-1" x-cloak>
+              <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span x-text="quickLeadConsentError"></span>
+            </div>
+          </div>
+
+          <!-- CTA Button -->
+          <div class="pt-2">
+            <button 
+              type="submit" 
+              :disabled="quickLeadSubmitting" 
+              class="w-full bg-[#c0262b] hover:bg-[#a51d22] text-white py-3 px-4 rounded-xl font-bold text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-sm cursor-pointer disabled:opacity-50"
+            >
+              <span x-show="!quickLeadSubmitting" class="flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <span>Find Availability</span>
+              </span>
+              <span x-show="quickLeadSubmitting" class="flex items-center gap-2" x-cloak>
+                <svg class="animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+                <span>Checking Availability...</span>
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Success Confirmation State -->
+      <div x-show="quickLeadSubmitted" class="space-y-4 py-3 text-center" x-cloak>
+        <div class="w-14 h-14 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto shadow-xs">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white">Availability Check Started!</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-xs mx-auto">
+            We've logged your requirement to Google Sheets and routed it to relevant dealerships.
+          </p>
+        </div>
+
+        <div class="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 rounded-xl p-3 text-xs text-emerald-900 dark:text-emerald-300 text-left space-y-1">
+          <div class="flex items-center gap-1.5 font-bold text-emerald-800 dark:text-emerald-300">
+            <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>Synced with Google Sheets</span>
+          </div>
+          <div class="text-[11px] text-emerald-700 dark:text-emerald-400">
+            Logged for authorized dealership availability check.
+          </div>
+        </div>
+
+        <div class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-xs text-slate-700 dark:text-slate-300 text-left space-y-1">
+          <div><strong>Vehicle:</strong> <span x-text="((quickLeadForm.brand === 'Other' ? quickLeadForm.otherBrand : quickLeadForm.brand) || '') + ' ' + (quickLeadForm.model || '')"></span></div>
+          <div><strong>Name:</strong> <span x-text="quickLeadForm.name"></span></div>
+          <div><strong>Mobile:</strong> +91 <span x-text="quickLeadForm.phone"></span></div>
+        </div>
+
+        <!-- WhatsApp Direct CTA -->
+        <a 
+          :href="quickLeadWhatsappUrl || 'https://api.whatsapp.com/send?phone=919275251003'" 
+          target="_blank"
+          class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white py-3 px-4 rounded-xl font-bold text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+        >
+          <img src="/static/images/whatsapp_official.svg" class="w-4.5 h-4.5 shrink-0" alt="WhatsApp">
+          <span>Connect via WhatsApp (+91 92752 51003)</span>
+        </a>
+
+        <button 
+          type="button" 
+          @click="closeQuickLeadModal()" 
+          class="w-full bg-slate-900 hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600 text-white py-2.5 px-4 rounded-xl text-xs font-bold transition cursor-pointer"
+        >
+          Done &amp; Browse Site
+        </button>
+      </div>
+
+    </div>
+  </div>
+
   <!-- ================= INQUIRY / LEAD CAPTURE MODAL ================= -->
   <div x-show="inquiryModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs" x-cloak>
     <div class="bg-white border border-slate-200 max-w-lg w-full rounded-2xl p-6 space-y-5 shadow-2xl relative max-h-[90vh] overflow-y-auto" @click.away="closeInquiryModal()">
@@ -3210,6 +3414,22 @@
           return '₹ ' + this.formatNumber(price);
         },
 
+        // Quick-Lead Popup Modal State
+        quickLeadModalOpen: false,
+        quickLeadSubmitting: false,
+        quickLeadSubmitted: false,
+        quickLeadConsentError: '',
+        quickLeadPhoneError: '',
+        quickLeadWhatsappUrl: '',
+        quickLeadForm: {
+          brand: '',
+          otherBrand: '',
+          model: '',
+          name: '',
+          phone: '',
+          consent: false
+        },
+
         // Variant Selection Modal State
         variantModalOpen: false,
         selectedConfigCar: null,
@@ -3427,6 +3647,13 @@
           await this.loadBrands();
           await this.loadCars();
           await this.loadReviews();
+
+          // Auto-trigger Quick-Lead popup modal on homepage load after 600ms delay
+          setTimeout(() => {
+            if (this.activeView === 'stock' && !sessionStorage.getItem('quick_lead_dismissed')) {
+              this.quickLeadModalOpen = true;
+            }
+          }, 600);
         },
 
         get filteredModels() {
@@ -3890,6 +4117,163 @@
             alert('Network error. Please try again.');
           } finally {
             this.submitting = false;
+          }
+        },
+
+        closeQuickLeadModal() {
+          this.quickLeadModalOpen = false;
+          this.quickLeadSubmitted = false;
+          try {
+            sessionStorage.setItem('quick_lead_dismissed', 'true');
+          } catch (e) {}
+        },
+
+        async submitQuickLead() {
+          const brandVal = (this.quickLeadForm.brand === 'Other' && this.quickLeadForm.otherBrand) 
+            ? this.quickLeadForm.otherBrand.trim() 
+            : (this.quickLeadForm.brand || '').trim();
+          const modelVal = (this.quickLeadForm.model || '').trim();
+          const nameVal = (this.quickLeadForm.name || '').trim();
+          const cleanPhone = (this.quickLeadForm.phone || '').replace(/[^0-9]/g, '');
+
+          if (!nameVal) {
+            alert('Please enter your name.');
+            return;
+          }
+
+          if (!this.quickLeadForm.consent) {
+            this.quickLeadConsentError = 'Please provide consent to proceed with your vehicle enquiry.';
+            return;
+          }
+          this.quickLeadConsentError = '';
+
+          if (cleanPhone.length !== 10) {
+            this.quickLeadPhoneError = 'Please enter a valid 10-digit mobile number.';
+            return;
+          }
+          this.quickLeadPhoneError = '';
+
+          this.quickLeadSubmitting = true;
+          const combinedCarName = `${brandVal} ${modelVal}`.trim();
+
+          // Try matching car model in this.cars
+          const matchedCar = (this.cars || []).find(c => 
+            (c.model || '').toLowerCase() === modelVal.toLowerCase() ||
+            ((c.make || '').toLowerCase() === brandVal.toLowerCase() && (c.model || '').toLowerCase().includes(modelVal.toLowerCase()))
+          );
+
+          try {
+            const payload = {
+              dealership_id: matchedCar ? (matchedCar.dealership_id || 1) : 1,
+              car_id: matchedCar ? matchedCar.id : null,
+              car_model: combinedCarName,
+              brand: brandVal,
+              customer_name: nameVal,
+              customer_phone: cleanPhone,
+              customer_city: 'Uttarakhand',
+              inquiry_type: 'availability_check',
+              notes: `Quick Lead Popup | Brand: ${brandVal} | Model: ${modelVal}`
+            };
+
+            const res = await fetch('/api/inquiries', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+              const data = await res.json();
+              this.quickLeadWhatsappUrl = data.whatsapp_url || `https://api.whatsapp.com/send?phone=919275251003&text=${encodeURIComponent('Hello ScoutMyVehicle, I am looking for ' + combinedCarName)}`;
+              this.quickLeadSubmitted = true;
+              try {
+                sessionStorage.setItem('quick_lead_dismissed', 'true');
+              } catch (e) {}
+
+              if (typeof reportLeadConversion === 'function') {
+                reportLeadConversion();
+              }
+
+              // Direct client-side fail-safe dispatch to Google Sheets webhook if backend did not confirm sync
+              if (!data.google_sheet_forwarded) {
+                try {
+                  const gasPayload = {
+                    timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19),
+                    inquiry_id: data.inquiry_id || Date.now().toString().slice(-6),
+                    customer_name: nameVal,
+                    customer_phone: "'" + cleanPhone,
+                    customer_email: 'N/A',
+                    customer_city: 'Uttarakhand',
+                    car_model: combinedCarName || 'Any Model',
+                    variant_name: 'Standard (Quick Enquiry)',
+                    fuel_type: 'N/A',
+                    transmission: 'N/A',
+                    color: 'Any',
+                    buying_timeline: 'Immediate (Quick Enquiry)',
+                    finance_required: 'no',
+                    preferred_bank: 'N/A',
+                    exchange_car_details: 'N/A',
+                    notes: `Quick Lead Popup | Brand: ${brandVal} | Model: ${modelVal}`
+                  };
+                  fetch('https://script.google.com/macros/s/AKfycbyGjbZe4owqaBoY_m76pQOSxlisjHFbfqxMKhS7FFCbaBr0G3wa3XBNq1h14uyn5nMD/exec', {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(gasPayload)
+                  }).catch(() => {});
+                } catch (err) {}
+              }
+
+              if (this.quickLeadWhatsappUrl) {
+                try {
+                  window.open(this.quickLeadWhatsappUrl, '_blank');
+                } catch (e) {
+                  console.warn('Popup blocked, accessible via on-screen button', e);
+                }
+              }
+            } else {
+              alert('Could not submit enquiry. Please check your inputs.');
+            }
+          } catch (e) {
+            console.error(e);
+            // Fallback: If backend server is down, directly dispatch to Google Apps Script Web App
+            try {
+              const gasPayload = {
+                timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19),
+                inquiry_id: Date.now().toString().slice(-6),
+                customer_name: nameVal,
+                customer_phone: "'" + cleanPhone,
+                customer_email: 'N/A',
+                customer_city: 'Uttarakhand',
+                car_model: combinedCarName || 'Any Model',
+                variant_name: 'Standard (Quick Enquiry)',
+                fuel_type: 'N/A',
+                transmission: 'N/A',
+                color: 'Any',
+                buying_timeline: 'Immediate (Quick Enquiry)',
+                finance_required: 'no',
+                preferred_bank: 'N/A',
+                exchange_car_details: 'N/A',
+                notes: `Quick Lead Popup | Brand: ${brandVal} | Model: ${modelVal}`
+              };
+              await fetch('https://script.google.com/macros/s/AKfycbyGjbZe4owqaBoY_m76pQOSxlisjHFbfqxMKhS7FFCbaBr0G3wa3XBNq1h14uyn5nMD/exec', {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(gasPayload)
+              });
+              this.quickLeadWhatsappUrl = `https://api.whatsapp.com/send?phone=919275251003&text=${encodeURIComponent('Hello ScoutMyVehicle, I am looking for ' + combinedCarName)}`;
+              this.quickLeadSubmitted = true;
+              try {
+                sessionStorage.setItem('quick_lead_dismissed', 'true');
+              } catch (e) {}
+              if (typeof reportLeadConversion === 'function') {
+                reportLeadConversion();
+              }
+              return;
+            } catch (fallbackErr) {}
+            alert('Network error. Please try again.');
+          } finally {
+            this.quickLeadSubmitting = false;
           }
         }
       }

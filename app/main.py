@@ -598,6 +598,7 @@ async def create_inquiry(inquiry: InquiryCreate):
     if inquiry.preferred_color and f"Color: {inquiry.preferred_color}" not in (inquiry.notes or ""):
         notes_parts.append(f"Color: {inquiry.preferred_color}")
     final_notes = " | ".join(notes_parts) if notes_parts else None
+    city_val = (inquiry.customer_city or "").strip() or "Uttarakhand"
 
     cursor.execute("""
         INSERT INTO inquiries (
@@ -607,7 +608,7 @@ async def create_inquiry(inquiry: InquiryCreate):
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'NEW');
     """, (
         dealer_id, inquiry.car_id, inquiry.variant_id,
-        inquiry.customer_name, inquiry.customer_phone, inquiry.customer_email, inquiry.customer_city,
+        inquiry.customer_name, inquiry.customer_phone, inquiry.customer_email, city_val,
         inquiry.inquiry_type, inquiry.preferred_date, inquiry.preferred_time,
         inquiry.buying_timeline, inquiry.finance_required, inquiry.exchange_required,
         inquiry.exchange_car_details, final_notes
@@ -631,6 +632,18 @@ async def create_inquiry(inquiry: InquiryCreate):
         c_row = cursor.fetchone()
         if c_row:
             car_name = f"{c_row[0]} {c_row[1]}"
+    elif getattr(inquiry, 'car_model', None):
+        brand_prefix = f"{inquiry.brand} " if getattr(inquiry, 'brand', None) and not inquiry.car_model.lower().startswith(inquiry.brand.lower()) else ""
+        car_name = f"{brand_prefix}{inquiry.car_model}".strip()
+    elif final_notes and "Model:" in final_notes:
+        try:
+            brand_part = ""
+            if "Brand:" in final_notes:
+                brand_part = final_notes.split("Brand:")[1].split("|")[0].strip()
+            model_part = final_notes.split("Model:")[1].split("|")[0].strip()
+            car_name = f"{brand_part} {model_part}".strip()
+        except Exception:
+            pass
     if inquiry.variant_id:
         cursor.execute("SELECT name, fuel_type, transmission, ex_showroom_price FROM variants WHERE id = ?;", (inquiry.variant_id,))
         v_row = cursor.fetchone()
@@ -690,7 +703,7 @@ async def create_inquiry(inquiry: InquiryCreate):
         "customer_name": inquiry.customer_name,
         "customer_phone": inquiry.customer_phone,
         "customer_email": inquiry.customer_email,
-        "customer_city": inquiry.customer_city,
+        "customer_city": city_val,
         "car_model": car_name,
         "variant_name": variant_name,
         "fuel_type": fuel_name,
